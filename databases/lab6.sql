@@ -216,7 +216,7 @@ GO
 SELECT * FROM Customer
 GO
 
-/*DELETE FROM Customer	-- äëÿ NO ACTION
+/*DELETE FROM Customer	-- для NO ACTION
 WHERE City='Саратов'
 GO
 
