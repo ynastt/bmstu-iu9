@@ -1,4 +1,4 @@
--- 1 Создание базы данных --
+-- 1 РЎРѕР·РґР°РЅРёРµ Р±Р°Р·С‹ РґР°РЅРЅС‹С… --
 USE master;
 GO
 
@@ -21,7 +21,7 @@ LOG ON
     FILEGROWTH = 5MB );
 GO
 
--- 2 Создание произвольной таблицы --
+-- 2 РЎРѕР·РґР°РЅРёРµ РїСЂРѕРёР·РІРѕР»СЊРЅРѕР№ С‚Р°Р±Р»РёС†С‹ --
 USE BooksOnlineService;
 GO 
 
@@ -37,17 +37,17 @@ CREATE TABLE Customer (
 GO
 
 INSERT INTO Customer(Phone, LastName, FirstName, Patronymic, Email, City) 
-VALUES ('89573652341','Иванов','Петр', 'Сергеевич', 'petya92@gmail.com', 'Москва')
+VALUES ('89573652341','РРІР°РЅРѕРІ','РџРµС‚СЂ', 'РЎРµСЂРіРµРµРІРёС‡', 'petya92@gmail.com', 'РњРѕСЃРєРІР°')
 GO
 
 INSERT INTO Customer(Phone, LastName, FirstName, Patronymic, Email, City) 
-VALUES ('89342435152','Сергеева','Ирина', 'Ивановна', 'sergiriv@gmail.com', 'Казань')
+VALUES ('89342435152','РЎРµСЂРіРµРµРІР°','РСЂРёРЅР°', 'РРІР°РЅРѕРІРЅР°', 'sergiriv@gmail.com', 'РљР°Р·Р°РЅСЊ')
 GO
 
 SELECT * FROM Customer
 GO
 
--- 3 Добавление файловой группы и файла данных --
+-- 3 Р”РѕР±Р°РІР»РµРЅРёРµ С„Р°Р№Р»РѕРІРѕР№ РіСЂСѓРїРїС‹ Рё С„Р°Р№Р»Р° РґР°РЅРЅС‹С… --
 USE master;
 GO
 
@@ -67,12 +67,12 @@ ADD FILE
 TO FILEGROUP lab5_filegroup
 GO
 
--- 4 Назначение созданной файловой группы файловой группой по умолчанию --
+-- 4 РќР°Р·РЅР°С‡РµРЅРёРµ СЃРѕР·РґР°РЅРЅРѕР№ С„Р°Р№Р»РѕРІРѕР№ РіСЂСѓРїРїС‹ С„Р°Р№Р»РѕРІРѕР№ РіСЂСѓРїРїРѕР№ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ --
 ALTER DATABASE BooksOnlineService
 MODIFY FILEGROUP lab5_filegroup DEFAULT;
 GO
 
--- 5 Создание еще одной произвольной таблицы --
+-- 5 РЎРѕР·РґР°РЅРёРµ РµС‰Рµ РѕРґРЅРѕР№ РїСЂРѕРёР·РІРѕР»СЊРЅРѕР№ С‚Р°Р±Р»РёС†С‹ --
 USE BooksOnlineService;
 GO 
 
@@ -86,13 +86,13 @@ CREATE TABLE BookStore (
 GO
 
 INSERT INTO BookStore(BookStoreName, Email, URL_, Phone) 
-VALUES ('Лабиринт', 'labirint@mail.ru', 'labirint.ru', '84999209525')
+VALUES ('Р›Р°Р±РёСЂРёРЅС‚', 'labirint@mail.ru', 'labirint.ru', '84999209525')
 GO
 
 SELECT * FROM BookStore
 GO
 
--- 6 Удаление созданной вручную файловой группы --
+-- 6 РЈРґР°Р»РµРЅРёРµ СЃРѕР·РґР°РЅРЅРѕР№ РІСЂСѓС‡РЅСѓСЋ С„Р°Р№Р»РѕРІРѕР№ РіСЂСѓРїРїС‹ --
 
 ALTER DATABASE BooksOnlineService
 MODIFY FILEGROUP [PRIMARY] DEFAULT;
@@ -112,7 +112,7 @@ ALTER DATABASE BooksOnlineService
 REMOVE FILEGROUP lab5_filegroup
 GO
 
--- 7 Создание схемы, перемещение в нее одной из таблиц, удаление схемы --
+-- 7 РЎРѕР·РґР°РЅРёРµ СЃС…РµРјС‹, РїРµСЂРµРјРµС‰РµРЅРёРµ РІ РЅРµРµ РѕРґРЅРѕР№ РёР· С‚Р°Р±Р»РёС†, СѓРґР°Р»РµРЅРёРµ СЃС…РµРјС‹ --
 USE BooksOnlineService;
 GO 
 
