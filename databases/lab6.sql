@@ -1,4 +1,4 @@
--- Ñîçäàíèå áàçû äàííûõ --
+-- Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ð±Ð°Ð·Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ… --
 USE master;
 GO
 
@@ -21,9 +21,10 @@ LOG ON
     FILEGROWTH = 5MB );
 GO
 
--- 1 Ñîçäàíèå òàáëèöû ñ àâòîèíêðåìåíòíûì ïåðâè÷íûì êëþ÷îì --
--- Èçó÷åíèå ôóíêöèé, ïðåäíàçíà÷åííûõ äëÿ ïîëó÷åíèÿ ñãåíåðèðîâàííîãî çíà÷åíèÿ IDENTITY.
--- 2 Äîáàâëåíèå ïîëåé, äëÿ êîòîðûõ èñïîëüçóþòñÿ îãðàíè÷åíèÿ (CHECK), çíà÷åíèÿ ïî óìîë÷àíèþ (DEFAULT), âñòðîåííûå ôóíêöèè äëÿ âû÷èñëåíèÿ çíà÷åíèé --
+-- 1 Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹ Ñ Ð°Ð²Ñ‚Ð¾Ð¸Ð½ÐºÑ€ÐµÐ¼ÐµÐ½Ñ‚Ð½Ñ‹Ð¼ Ð¿ÐµÑ€Ð²Ð¸Ñ‡Ð½Ñ‹Ð¼ ÐºÐ»ÑŽÑ‡Ð¾Ð¼ --
+-- Ð˜Ð·ÑƒÑ‡ÐµÐ½Ð¸Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¹, Ð¿Ñ€ÐµÐ´Ð½Ð°Ð·Ð½Ð°Ñ‡ÐµÐ½Ð½Ñ‹Ñ… Ð´Ð»Ñ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ñ ÑÐ³ÐµÐ½ÐµÑ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ð³Ð¾ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ IDENTITY.
+-- 2 Ð”Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð»ÐµÐ¹, Ð´Ð»Ñ ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ñ… Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÑŽÑ‚ÑÑ Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ñ (CHECK),
+-- Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ (DEFAULT), Ð²ÑÑ‚Ñ€Ð¾ÐµÐ½Ð½Ñ‹Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð´Ð»Ñ Ð²Ñ‹Ñ‡Ð¸ÑÐ»ÐµÐ½Ð¸Ñ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ð¹ --
 USE lab6;
 GO 
 
@@ -35,22 +36,22 @@ CREATE TABLE Book (
 	BookID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	ISBN  nvarchar(17) NOT NULL,
 	Title nvarchar(50) NOT NULL,
-	Genre nvarchar(50) NOT NULL CHECK (Genre IN ('Äåòåêòèâ', 'Íàó÷íàÿ ôàíòàñòèêà', 'Äðàìà', 'Ðîìàí', 'Ðîìàí-ýïîïåÿ', 'Ìèñòèêà', 'Ïüåñà', 'Ñêàçêà', 'Òåõíè÷åñêàÿ ëèòåðàòóðà')),
+	Genre nvarchar(50) NOT NULL CHECK (Genre IN ('Ð”ÐµÑ‚ÐµÐºÑ‚Ð¸Ð²', 'ÐÐ°ÑƒÑ‡Ð½Ð°Ñ Ñ„Ð°Ð½Ñ‚Ð°ÑÑ‚Ð¸ÐºÐ°', 'Ð”Ñ€Ð°Ð¼Ð°', 'Ð Ð¾Ð¼Ð°Ð½', 'Ð Ð¾Ð¼Ð°Ð½-ÑÐ¿Ð¾Ð¿ÐµÑ', 'ÐœÐ¸ÑÑ‚Ð¸ÐºÐ°', 'ÐŸÑŒÐµÑÐ°', 'Ð¡ÐºÐ°Ð·ÐºÐ°', 'Ð¢ÐµÑ…Ð½Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð»Ð¸Ñ‚ÐµÑ€Ð°Ñ‚ÑƒÑ€Ð°')),
 	PublishingYear numeric(4) NOT NULL CHECK (PublishingYear >= 1500 AND PublishingYear <= 2020),
-	PublishingHouse nvarchar(20) NULL DEFAULT(N'Íåèçâåñòíî'),
+	PublishingHouse nvarchar(20) NULL DEFAULT(N'ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ð¾'),
 	Price smallmoney NOT NULL CHECK (Price > 0),
 );
 GO
 
 INSERT INTO Book(ISBN, Title, Genre, PublishingYear, PublishingHouse, Price)
-VALUES ('978-5-94387-772-8', 'Ñ++ íà ïðèìåðàõ', 'Òåõíè÷åñêàÿ ëèòåðàòóðà', 2019, 'Íàóêà è Òåõíèêà', '1700'),
-	('978-5-04-112699-5', 'Êàïèòàíñêàÿ äî÷êà', 'Ðîìàí', 2020, 'Ýêñìî', '621'),
-	('978-5-04-159290-5', 'ß - ðîáîò', CONCAT_WS(' ','Íàó÷íàÿ', 'ôàíòàñòèêà'), 2019, 'Ýêñìî', '780.99')
+VALUES ('978-5-94387-772-8', 'Ð¡++ Ð½Ð° Ð¿Ñ€Ð¸Ð¼ÐµÑ€Ð°Ñ…', 'Ð¢ÐµÑ…Ð½Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð»Ð¸Ñ‚ÐµÑ€Ð°Ñ‚ÑƒÑ€Ð°', 2019, 'ÐÐ°ÑƒÐºÐ° Ð¸ Ð¢ÐµÑ…Ð½Ð¸ÐºÐ°', '1700'),
+	('978-5-04-112699-5', 'ÐšÐ°Ð¿Ð¸Ñ‚Ð°Ð½ÑÐºÐ°Ñ Ð´Ð¾Ñ‡ÐºÐ°', 'Ð Ð¾Ð¼Ð°Ð½', 2020, 'Ð­ÐºÑÐ¼Ð¾', '621'),
+	('978-5-04-159290-5', 'Ð¯ - Ñ€Ð¾Ð±Ð¾Ñ‚', CONCAT_WS(' ','ÐÐ°ÑƒÑ‡Ð½Ð°Ñ', 'Ñ„Ð°Ð½Ñ‚Ð°ÑÑ‚Ð¸ÐºÐ°'), 2019, 'Ð­ÐºÑÐ¼Ð¾', '780.99')
 GO
 
 INSERT INTO Book(ISBN, Title, Genre, PublishingYear, Price) 
-VALUES ('978-5-9287-3237-0', 'Ïðèêëþ÷åíèÿ Øåðëîêà Õîëìñà: Ñîáàêà Áàñêåðâèëåé', 'Äåòåêòèâ', 2011, '1472'),
-	('874-2-7586-1265-9', LOWER('Ñòðàííàÿ èñòîðèÿ äîêòîðà Äæåêèëà'), UPPER('Äðàìà'), 2002, '340.45')
+VALUES ('978-5-9287-3237-0', 'ÐŸÑ€Ð¸ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ð¨ÐµÑ€Ð»Ð¾ÐºÐ° Ð¥Ð¾Ð»Ð¼ÑÐ°: Ð¡Ð¾Ð±Ð°ÐºÐ° Ð‘Ð°ÑÐºÐµÑ€Ð²Ð¸Ð»ÐµÐ¹', 'Ð”ÐµÑ‚ÐµÐºÑ‚Ð¸Ð²', 2011, '1472'),
+	('874-2-7586-1265-9', LOWER('Ð¡Ñ‚Ñ€Ð°Ð½Ð½Ð°Ñ Ð¸ÑÑ‚Ð¾Ñ€Ð¸Ñ Ð´Ð¾ÐºÑ‚Ð¾Ñ€Ð° Ð”Ð¶ÐµÐºÐ¸Ð»Ð°'), UPPER('Ð”Ñ€Ð°Ð¼Ð°'), 2002, '340.45')
 GO
 
 SELECT * FROM Book
@@ -60,15 +61,15 @@ CREATE TABLE BookSecond (
 	BookID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	ISBN  nvarchar(17) NOT NULL,
 	Title nvarchar(50) NOT NULL,
-	Genre nvarchar(50) NOT NULL CHECK (Genre IN ('Äåòåêòèâ', 'Íàó÷íàÿ ôàíòàñòèêà', 'Äðàìà', 'Ðîìàí', 'Ðîìàí-ýïîïåÿ', 'Ìèñòèêà', 'Ïüåñà', 'Ñêàçêà', 'Òåõíè÷åñêàÿ ëèòåðàòóðà')),
+	Genre nvarchar(50) NOT NULL CHECK (Genre IN ('Ð”ÐµÑ‚ÐµÐºÑ‚Ð¸Ð²', 'ÐÐ°ÑƒÑ‡Ð½Ð°Ñ Ñ„Ð°Ð½Ñ‚Ð°ÑÑ‚Ð¸ÐºÐ°', 'Ð”Ñ€Ð°Ð¼Ð°', 'Ð Ð¾Ð¼Ð°Ð½', 'Ð Ð¾Ð¼Ð°Ð½-ÑÐ¿Ð¾Ð¿ÐµÑ', 'ÐœÐ¸ÑÑ‚Ð¸ÐºÐ°', 'ÐŸÑŒÐµÑÐ°', 'Ð¡ÐºÐ°Ð·ÐºÐ°', 'Ð¢ÐµÑ…Ð½Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð»Ð¸Ñ‚ÐµÑ€Ð°Ñ‚ÑƒÑ€Ð°')),
 	PublishingYear numeric(4) NOT NULL CHECK (PublishingYear >= 1500 AND PublishingYear <= 2020),
-	PublishingHouse nvarchar(20) NULL DEFAULT('Íåèçâåñòíî'),
+	PublishingHouse nvarchar(20) NULL DEFAULT('ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ð¾'),
 	Price smallmoney NOT NULL CHECK (Price > 0),
 );
 GO
 
 INSERT INTO BookSecond(ISBN, Title, Genre, PublishingYear, Price) 
-VALUES ('345-2-1234-1265-8', UPPER('Ñòðàííàÿ èñòîðèÿ ëÿãóøåê'), UPPER('ïüåñà'), 2002, '340')
+VALUES ('345-2-1234-1265-8', UPPER('Ð¡Ñ‚Ñ€Ð°Ð½Ð½Ð°Ñ Ð¸ÑÑ‚Ð¾Ñ€Ð¸Ñ Ð»ÑÐ³ÑƒÑˆÐµÐº'), UPPER('Ð¿ÑŒÐµÑÐ°'), 2002, '340')
 GO
 
 SELECT CAST(Price AS DECIMAL)  AS [TEST_CAST]
@@ -80,7 +81,7 @@ SELECT IDENT_CURRENT('Book') AS [IDENT_CURRENT]
 SELECT @@IDENTITY AS [@@IDENTITY]
 SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY]
 
--- 3 Ñîçäàíèå òàáëèöû ñ ïåðâè÷íûì êëþ÷îì íà îñíîâå ãëîáàëüíîãî óíèêàëüíîãî èäåíòèôèêàòîðà --
+-- 3 Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹ Ñ Ð¿ÐµÑ€Ð²Ð¸Ñ‡Ð½Ñ‹Ð¼ ÐºÐ»ÑŽÑ‡Ð¾Ð¼ Ð½Ð° Ð¾ÑÐ½Ð¾Ð²Ðµ Ð³Ð»Ð¾Ð±Ð°Ð»ÑŒÐ½Ð¾Ð³Ð¾ ÑƒÐ½Ð¸ÐºÐ°Ð»ÑŒÐ½Ð¾Ð³Ð¾ Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€Ð° --
 
 IF OBJECT_ID(N'Author', N'U') IS NOT NULL
 	DROP TABLE Author;
@@ -93,28 +94,28 @@ CREATE TABLE Author (
 	Patronymic nvarchar(20) NULL,
 	BirthYear numeric(4) NOT NULL CHECK (BirthYear > 1500 AND BirthYear < 2000),
 	DeathYear numeric(4) NULL, 
-	Country nvarchar(30) NULL DEFAULT ('Íåèçâåñòíà'),
+	Country nvarchar(30) NULL DEFAULT ('ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ð°'),
 );
 GO
 
 INSERT INTO Author(FirstName, LastName, Patronymic, BirthYear, DeathYear, Country)
-VALUES ('Àðòóð','Êîíàí Äîéë', NULL, 1859, 1930, 'Âåëèêîáðèòàíèÿ'),
-	   ('×àðëüç','Äèêêåíñ', NULL, 1812, 1870, 'Âåëèêîáðèòàíèÿ'),
-	   ('Îñêàð','Óàéëüä', NULL, 1854, 1900, 'Èðëàíäèÿ'),
-	   ('Ñòèâåí','Êèíã', NULL, 1947, NULL, 'ÑØÀ'),	
-	   ('Àëåêñàíäð', 'Ïóøêèí', 'Ñåðãååâè÷', 1799, 1837, 'Ðîññèÿ')
+VALUES ('ÐÑ€Ñ‚ÑƒÑ€','ÐšÐ¾Ð½Ð°Ð½ Ð”Ð¾Ð¹Ð»', NULL, 1859, 1930, 'Ð’ÐµÐ»Ð¸ÐºÐ¾Ð±Ñ€Ð¸Ñ‚Ð°Ð½Ð¸Ñ'),
+	   ('Ð§Ð°Ñ€Ð»ÑŒÐ·','Ð”Ð¸ÐºÐºÐµÐ½Ñ', NULL, 1812, 1870, 'Ð’ÐµÐ»Ð¸ÐºÐ¾Ð±Ñ€Ð¸Ñ‚Ð°Ð½Ð¸Ñ'),
+	   ('ÐžÑÐºÐ°Ñ€','Ð£Ð°Ð¹Ð»ÑŒÐ´', NULL, 1854, 1900, 'Ð˜Ñ€Ð»Ð°Ð½Ð´Ð¸Ñ'),
+	   ('Ð¡Ñ‚Ð¸Ð²ÐµÐ½','ÐšÐ¸Ð½Ð³', NULL, 1947, NULL, 'Ð¡Ð¨Ð'),	
+	   ('ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€', 'ÐŸÑƒÑˆÐºÐ¸Ð½', 'Ð¡ÐµÑ€Ð³ÐµÐµÐ²Ð¸Ñ‡', 1799, 1837, 'Ð Ð¾ÑÑÐ¸Ñ')
 GO
 
 INSERT INTO Author(AuthorId, FirstName, LastName, Patronymic, BirthYear, DeathYear, Country)
 VALUES
-    (NEWID(), 'Àíòóàí','äå Ñåíò-Ýêçþïåðè', NULL, 1900, 1944, 'Ôðàíöèÿ'),
-    (NEWID(), 'Èâàí', 'Òóðãåíåâ', 'Ñåðãååâè÷',1813, 1883, 'Ðîññèÿ')
+    (NEWID(), 'ÐÐ½Ñ‚ÑƒÐ°Ð½','Ð´Ðµ Ð¡ÐµÐ½Ñ‚-Ð­ÐºÐ·ÑŽÐ¿ÐµÑ€Ð¸', NULL, 1900, 1944, 'Ð¤Ñ€Ð°Ð½Ñ†Ð¸Ñ'),
+    (NEWID(), 'Ð˜Ð²Ð°Ð½', 'Ð¢ÑƒÑ€Ð³ÐµÐ½ÐµÐ²', 'Ð¡ÐµÑ€Ð³ÐµÐµÐ²Ð¸Ñ‡',1813, 1883, 'Ð Ð¾ÑÑÐ¸Ñ')
 GO
 
 SELECT * FROM Author
 GO
 
--- 4 Ñîçäàíèå òàáëèöû ñ ïåðâè÷íûì êëþ÷îì íà îñíîâå ïîñëåäîâàòåëüíîñòè --
+-- 4 Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹ Ñ Ð¿ÐµÑ€Ð²Ð¸Ñ‡Ð½Ñ‹Ð¼ ÐºÐ»ÑŽÑ‡Ð¾Ð¼ Ð½Ð° Ð¾ÑÐ½Ð¾Ð²Ðµ Ð¿Ð¾ÑÐ»ÐµÐ´Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ÑÑ‚Ð¸ --
 
 IF EXISTS (SELECT * FROM sys.sequences WHERE NAME = N'seq' AND TYPE='SO') 
 DROP SEQUENCE seq
@@ -141,15 +142,15 @@ CREATE TABLE BookStore (
 GO
 
 INSERT INTO BookStore(BookStoreID, BookStoreName, Email, URL_, Phone) 
-VALUES (NEXT VALUE FOR seq, 'Ëàáèðèíò', 'labirint@mail.ru', 'labirint.ru', '84999209525'),
-	(NEXT VALUE FOR seq, 'Ìîñêâà', 'info@moscowbooks.ru', 'moscowbooks.ru', '84957978716')
+VALUES (NEXT VALUE FOR seq, 'Ð›Ð°Ð±Ð¸Ñ€Ð¸Ð½Ñ‚', 'labirint@mail.ru', 'labirint.ru', '84999209525'),
+	(NEXT VALUE FOR seq, 'ÐœÐ¾ÑÐºÐ²Ð°', 'info@moscowbooks.ru', 'moscowbooks.ru', '84957978716')
 GO
 
 SELECT * FROM BookStore
 GO
 
--- 5 Ñîçäàíèå äâóõ ñâÿçàííûõ òàáëèö, è òåñòèðîâàíèå íà íèõ ðàçëè÷íûõ âàðèàíòîâ äåéñòâèé --
--- äëÿ îãðàíè÷åíèé ññûëî÷íîé öåëîñòíîñòè (NO ACTION | CASCADE | SET | SET DEFAULT). --
+-- 5 Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ð´Ð²ÑƒÑ… ÑÐ²ÑÐ·Ð°Ð½Ð½Ñ‹Ñ… Ñ‚Ð°Ð±Ð»Ð¸Ñ†, Ð¸ Ñ‚ÐµÑÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð½Ð° Ð½Ð¸Ñ… Ñ€Ð°Ð·Ð»Ð¸Ñ‡Ð½Ñ‹Ñ… Ð²Ð°Ñ€Ð¸Ð°Ð½Ñ‚Ð¾Ð² Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ð¹ --
+-- Ð´Ð»Ñ Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ð¹ ÑÑÑ‹Ð»Ð¾Ñ‡Ð½Ð¾Ð¹ Ñ†ÐµÐ»Ð¾ÑÑ‚Ð½Ð¾ÑÑ‚Ð¸ (NO ACTION | CASCADE | SET | SET DEFAULT). --
 
 IF OBJECT_ID(N'FK_Customer') is NOT NULL
 	ALTER TABLE Orders DROP CONSTRAINT FK_Customer
@@ -171,10 +172,10 @@ CREATE TABLE Customer (
 GO
 
 INSERT INTO Customer(Phone, LastName, FirstName, Patronymic, Email, City) 
-VALUES ('89573652341','Èâàíîâ','Ïåòð', 'Ñåðãååâè÷', 'petya92@gmail.com', 'Ìîñêâà'),
-	('89342435152','Ñåðãååâà','Èðèíà', 'Èâàíîâíà', 'sergiriv@gmail.com', 'Êàçàíü'),
-	('89649245160','Çóðõàðíèåâà','Îëüãà', 'Èãîðåâíà', 'zoi73@gmail.com', 'Óëüÿíîâñê'),
-	('89876245331','Ïåòðîâ','Ñåðãåâ', 'Àíäðååâè÷', 'kvakva@gmail.com', 'Ñàðàòîâ')	-- íåò ñâÿçè ñ Orders
+VALUES ('89573652341','Ð˜Ð²Ð°Ð½Ð¾Ð²','ÐŸÐµÑ‚Ñ€', 'Ð¡ÐµÑ€Ð³ÐµÐµÐ²Ð¸Ñ‡', 'petya92@gmail.com', 'ÐœÐ¾ÑÐºÐ²Ð°'),
+	('89342435152','Ð¡ÐµÑ€Ð³ÐµÐµÐ²Ð°','Ð˜Ñ€Ð¸Ð½Ð°', 'Ð˜Ð²Ð°Ð½Ð¾Ð²Ð½Ð°', 'sergiriv@gmail.com', 'ÐšÐ°Ð·Ð°Ð½ÑŒ'),
+	('89649245160','Ð—ÑƒÑ€Ñ…Ð°Ñ€Ð½Ð¸ÐµÐ²Ð°','ÐžÐ»ÑŒÐ³Ð°', 'Ð˜Ð³Ð¾Ñ€ÐµÐ²Ð½Ð°', 'zoi73@gmail.com', 'Ð£Ð»ÑŒÑÐ½Ð¾Ð²ÑÐº'),
+	('89876245331','ÐŸÐµÑ‚Ñ€Ð¾Ð²','Ð¡ÐµÑ€Ð³ÐµÐ²', 'ÐÐ½Ð´Ñ€ÐµÐµÐ²Ð¸Ñ‡', 'kvakva@gmail.com', 'Ð¡Ð°Ñ€Ð°Ñ‚Ð¾Ð²')	-- Ð½ÐµÑ‚ ÑÐ²ÑÐ·Ð¸ Ñ Orders
 GO
 
 SELECT * FROM Customer
@@ -190,14 +191,14 @@ CREATE TABLE Orders (
 	ON DELETE CASCADE
 	--ON DELETE SET NULL
 	--ON DELETE SET DEFAULT,
-	--ON DELETE NO ACTION -- ïî äåôîëòó  è (Åñëè ñâÿçàííûõ ñòðîê íåò, òî óäàëåíèå áóäåò âûïîëíåíî)
+	--ON DELETE NO ACTION -- (Ð•ÑÐ»Ð¸ ÑÐ²ÑÐ·Ð°Ð½Ð½Ñ‹Ñ… ÑÑ‚Ñ€Ð¾Ðº Ð½ÐµÑ‚, Ñ‚Ð¾ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ Ð±ÑƒÐ´ÐµÑ‚ Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¾)
 );
 GO
 
 INSERT INTO Orders(PaymentType, DeliveryDate, customer_id) 
-VALUES ('íàëè÷íûå', CONVERT(date, N'10-12-2022'), 2),
-	('ïî êàðòå', CONVERT(date, N'05-11-2022'), 1),
-	('ïî êàðòå', CONVERT(date, N'07-12-2022'), 3)
+VALUES ('Ð½Ð°Ð»Ð¸Ñ‡Ð½Ñ‹Ðµ', CONVERT(date, N'10-12-2022'), 2),
+	('Ð¿Ð¾ ÐºÐ°Ñ€Ñ‚Ðµ', CONVERT(date, N'05-11-2022'), 1),
+	('Ð¿Ð¾ ÐºÐ°Ñ€Ñ‚Ðµ', CONVERT(date, N'07-12-2022'), 3)
 GO
 
 SELECT * FROM Orders
@@ -206,7 +207,7 @@ GO
 
 
 DELETE FROM Customer
-WHERE City='Êàçàíü'
+WHERE City='ÐšÐ°Ð·Ð°Ð½ÑŒ'
 GO
 
 SELECT * FROM Orders
@@ -215,8 +216,8 @@ GO
 SELECT * FROM Customer
 GO
 
-/*DELETE FROM Customer	-- äëÿ NO ACTION
-WHERE City='Ñàðàòîâ'
+/*DELETE FROM Customer	-- Ã¤Ã«Ã¿ NO ACTION
+WHERE City='Ð¡Ð°Ñ€Ð°Ñ‚Ð¾Ð²'
 GO
 
 SELECT * FROM Orders
