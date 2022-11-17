@@ -1,5 +1,5 @@
--- 1 Создание представления на основе одной из таблиц 
--- задания 6
+-- 1 РЎРѕР·РґР°РЅРёРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ РЅР° РѕСЃРЅРѕРІРµ РѕРґРЅРѕР№ РёР· С‚Р°Р±Р»РёС† 
+-- Р·Р°РґР°РЅРёСЏ 6
 
 USE lab6;
 GO
@@ -16,8 +16,8 @@ GO
 SELECT * FROM BookView
 GO
 
--- 2 Создание представления на основе полей обеих  
--- связанных таблиц задания 6
+-- 2 РЎРѕР·РґР°РЅРёРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ РЅР° РѕСЃРЅРѕРІРµ РїРѕР»РµР№ РѕР±РµРёС…  
+-- СЃРІСЏР·Р°РЅРЅС‹С… С‚Р°Р±Р»РёС† Р·Р°РґР°РЅРёСЏ 6
 
 DROP VIEW IF EXISTS CustomerOrderView;
 GO
@@ -33,8 +33,8 @@ GO
 SELECT * FROM CustomerOrderView
 GO
 
--- 3 Создание индекса для одной из таблиц задания 6, 
--- включив в него дополнительные неключевые поля
+-- 3 РЎРѕР·РґР°РЅРёРµ РёРЅРґРµРєСЃР° РґР»СЏ РѕРґРЅРѕР№ РёР· С‚Р°Р±Р»РёС† Р·Р°РґР°РЅРёСЏ 6, 
+-- РІРєР»СЋС‡РёРІ РІ РЅРµРіРѕ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РЅРµРєР»СЋС‡РµРІС‹Рµ РїРѕР»СЏ
 
 IF EXISTS (SELECT * FROM sys.indexes  WHERE name = N'AuthorNameIndex')  
     DROP INDEX AuthorNameIndex ON Author;  
@@ -45,10 +45,10 @@ CREATE INDEX AuthorNameIndex
 	INCLUDE (BirthYear, Country);
 GO
 
-SELECT LastName, FirstName, BirthYear, Country FROM Author WHERE LastName = 'Диккенс' and FirstName = 'Чарльз';
+SELECT LastName, FirstName, BirthYear, Country FROM Author WHERE LastName = 'Р”РёРєРєРµРЅСЃ' and FirstName = 'Р§Р°СЂР»СЊР·';
 GO
 
--- 4 Создание индексированного представления --
+-- 4 РЎРѕР·РґР°РЅРёРµ РёРЅРґРµРєСЃРёСЂРѕРІР°РЅРЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ --
 
 DROP VIEW IF EXISTS AuthorIndexView;
 GO
@@ -63,7 +63,7 @@ GO
 
 /*UPDATE  Author
 SET LastName = 'kva'
-WHERE Country = 'Ирландия';*/ -- работает
+WHERE Country = 'РСЂР»Р°РЅРґРёСЏ';*/ -- СЂР°Р±РѕС‚Р°РµС‚
 
 IF EXISTS (SELECT * FROM sys.indexes  WHERE name = N'AuthorIndex')  
     DROP INDEX AuthorIndex ON Author;  
@@ -80,7 +80,7 @@ GO
     ON Author (LastName)
 	INCLUDE (Country);
 GO*/ 
--- новый индекс после уникального кластеризованного работает, перед ним -  нет
+-- РЅРѕРІС‹Р№ РёРЅРґРµРєСЃ РїРѕСЃР»Рµ СѓРЅРёРєР°Р»СЊРЅРѕРіРѕ РєР»Р°СЃС‚РµСЂРёР·РѕРІР°РЅРЅРѕРіРѕ СЂР°Р±РѕС‚Р°РµС‚, РїРµСЂРµРґ РЅРёРј -  РЅРµС‚
 
 SELECT * FROM AuthorIndexView
 GO
