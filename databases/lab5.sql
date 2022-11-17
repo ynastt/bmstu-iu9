@@ -1,4 +1,4 @@
--- 1 Создание базы данных --
+-- 1 creation of a database --
 USE master;
 GO
 
@@ -21,7 +21,7 @@ LOG ON
     FILEGROWTH = 5MB );
 GO
 
--- 2 Создание произвольной таблицы --
+-- 2 creation of an arbitrary table--
 USE BooksOnlineService;
 GO 
 
@@ -37,17 +37,17 @@ CREATE TABLE Customer (
 GO
 
 INSERT INTO Customer(Phone, LastName, FirstName, Patronymic, Email, City) 
-VALUES ('89573652341','Иванов','Петр', 'Сергеевич', 'petya92@gmail.com', 'Москва')
+VALUES ('89573652341','Г€ГўГ Г­Г®Гў','ГЏГҐГІГ°', 'Г‘ГҐГ°ГЈГҐГҐГўГЁГ·', 'petya92@gmail.com', 'ГЊГ®Г±ГЄГўГ ')
 GO
 
 INSERT INTO Customer(Phone, LastName, FirstName, Patronymic, Email, City) 
-VALUES ('89342435152','Сергеева','Ирина', 'Ивановна', 'sergiriv@gmail.com', 'Казань')
+VALUES ('89342435152','Г‘ГҐГ°ГЈГҐГҐГўГ ','Г€Г°ГЁГ­Г ', 'Г€ГўГ Г­Г®ГўГ­Г ', 'sergiriv@gmail.com', 'ГЉГ Г§Г Г­Гј')
 GO
 
 SELECT * FROM Customer
 GO
 
--- 3 Добавление файловой группы и файла данных --
+-- 3 Add a file group and a data file --
 USE master;
 GO
 
@@ -67,12 +67,12 @@ ADD FILE
 TO FILEGROUP lab5_filegroup
 GO
 
--- 4 Назначение созданной файловой группы файловой группой по умолчанию --
+-- 4 assignment the created file group as a default file group --
 ALTER DATABASE BooksOnlineService
 MODIFY FILEGROUP lab5_filegroup DEFAULT;
 GO
 
--- 5 Создание еще одной произвольной таблицы --
+-- 5 creation of another arbitrary table --
 USE BooksOnlineService;
 GO 
 
@@ -86,13 +86,13 @@ CREATE TABLE BookStore (
 GO
 
 INSERT INTO BookStore(BookStoreName, Email, URL_, Phone) 
-VALUES ('Лабиринт', 'labirint@mail.ru', 'labirint.ru', '84999209525')
+VALUES ('Г‹Г ГЎГЁГ°ГЁГ­ГІ', 'labirint@mail.ru', 'labirint.ru', '84999209525')
 GO
 
 SELECT * FROM BookStore
 GO
 
--- 6 Удаление созданной вручную файловой группы --
+-- 6 removalof a manually created file group --
 
 ALTER DATABASE BooksOnlineService
 MODIFY FILEGROUP [PRIMARY] DEFAULT;
@@ -112,7 +112,7 @@ ALTER DATABASE BooksOnlineService
 REMOVE FILEGROUP lab5_filegroup
 GO
 
--- 7 Создание схемы, перемещение в нее одной из таблиц, удаление схемы --
+-- 7 Schema creation, moving one of the tables into it, removal of the schema --
 USE BooksOnlineService;
 GO 
 
