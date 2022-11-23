@@ -48,7 +48,10 @@ GO
 -- 1. Для одной из таблиц создать триггеры на вставку, удаление и обновление,
 -- при выполнении заданных условий один из триггеров
 -- должен инициировать возникновение ошибки (RAISERROR / THROW).
-
+DROP TRIGGER IF EXISTS Insert_Customer
+DROP TRIGGER IF EXISTS Delete_Customer
+DROP TRIGGER IF EXISTS Update_Customer
+GO
 --
 --	вставка
 --
@@ -105,29 +108,6 @@ CREATE TRIGGER Update_Customer ON Customer
 			RAISERROR ('!ERROR!', 15, -1, 'Update_Customer');
 			ROLLBACK
 		END
-	ELSE
-	BEGIN
-		IF UPDATE(Phone)
-			BEGIN 
-				UPDATE Customer SET Phone = (SELECT TOP 1 Phone FROM inserted) WHERE CustomerID IN (SELECT CustomerID FROM deleted)
-			END
-		IF UPDATE(LastName)
-			BEGIN 
-				UPDATE Customer SET LastName = (SELECT TOP 1 LastName FROM inserted) WHERE CustomerID IN (SELECT CustomerID FROM deleted)
-			END
-		IF UPDATE(FirstName)
-			BEGIN 
-				UPDATE Customer SET FirstName = (SELECT TOP 1 FirstName FROM inserted) WHERE CustomerID IN (SELECT CustomerID FROM deleted)
-			END
-		IF UPDATE(Patronymic)
-			BEGIN 
-				UPDATE Customer SET Patronymic = (SELECT TOP 1 Patronymic FROM inserted) WHERE CustomerID IN (SELECT CustomerID FROM deleted)
-			END
-		IF UPDATE(Email)
-			BEGIN 
-				UPDATE Customer SET Email = (SELECT TOP 1 Email FROM inserted) WHERE CustomerID IN (SELECT CustomerID FROM deleted)
-			END
-	END
 GO
 
 --raiserror
@@ -143,15 +123,6 @@ GO
 -- обеспечивающие возможность выполнения операций с данными 
 -- непосредственно через представление.
 
--- отключаем триггеры с предыдущего пункта
-DISABLE TRIGGER Insert_Customer ON Customer
-GO
-
-DISABLE TRIGGER Delete_Customer ON Customer
-GO
-
-DISABLE TRIGGER Update_Customer ON Customer
-GO
 -- таблицы
 DROP TABLE IF EXISTS Doctor;
 GO
@@ -172,8 +143,7 @@ CREATE TABLE Specialization (
 	SpecID UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
 	SpecDescription nvarchar(MAX) NOT NULL,
 	doctor_id UNIQUEIDENTIFIER,
-	CONSTRAINT FK_Doctor FOREIGN KEY (doctor_id) REFERENCES Doctor (DoctorID) 
-	ON DELETE CASCADE
+	CONSTRAINT FK_Doctor FOREIGN KEY (doctor_id) REFERENCES Doctor (DoctorID)
 );
 GO
 
@@ -199,6 +169,11 @@ CREATE VIEW SpecView(SpecializationDescription, DoctorName, DoctorEmail) WITH SC
 GO
 
 SELECT * FROM SpecView
+GO
+
+DROP TRIGGER IF EXISTS Insert_SpecView
+DROP TRIGGER IF EXISTS Delete_SpecView
+DROP TRIGGER IF EXISTS Update_SpecView
 GO
 
 --
@@ -255,10 +230,14 @@ CREATE TRIGGER Delete_SpecView ON SpecView
 		ON d.Email = del.DoctorEmail)
 GO
 
+-- пример, удаление одной записи
 DELETE FROM SpecView WHERE SpecView.DoctorEmail = 'test1@gmail.com'
+-- пример, удаление нескольких записей с одним атрибутов
+DELETE FROM SpecView WHERE SpecView.SpecializationDescription = 'врач-хирург' 
 
 SELECT * FROM Doctor
 SELECT * FROM Specialization
+SELECT * FROM SpecView
 GO
 
 --
@@ -292,7 +271,9 @@ GO
 --raiserror
 --UPDATE SpecView set SpecView.DoctorEmail = 'badtest@gmail.com' WHERE SpecView.SpecializationDescription = 'Врач-хирург'
 
-
+--SELECT * FROM Doctor
+--SELECT * FROM Specialization
+--SELECT * FROM SpecView
 UPDATE SpecView set SpecView.SpecializationDescription = 'врач-офтальмолог' WHERE SpecView.DoctorEmail = 'test2@gmail.com'
 UPDATE SpecView set SpecView.DoctorName = 'Степан Степанович' WHERE SpecView.SpecializationDescription = 'врач-хирург'
 
