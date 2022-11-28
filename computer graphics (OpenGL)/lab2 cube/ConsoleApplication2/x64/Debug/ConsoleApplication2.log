@@ -1,0 +1,4 @@
+﻿  ConsoleApplication2.cpp
+C:\Users\soyar\source\computer graphics\lab2 cube\ConsoleApplication2\ConsoleApplication2.cpp(124,39): warning C4305: аргумент: усечение из "double" в "GLfloat"
+LINK : warning LNK4098: библиотека по умолчанию "MSVCRT" конфликтует с использованием других библиотек; используйте /NODEFAULTLIB:library
+  ConsoleApplication2.vcxproj -> C:\Users\soyar\source\computer graphics\lab2 cube\x64\Debug\ConsoleApplication2.exe
