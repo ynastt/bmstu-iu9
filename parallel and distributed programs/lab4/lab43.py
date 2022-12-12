@@ -1,22 +1,27 @@
-# без синхронизации потоков 
+# спровоцирована блокировка вследствие состязания
+# зависание потоков А, В, С, проявляется в постоянно пустом списке К
 import threading
 import time
-# import os
 
 s = []
 r = []
 
 #lists length
 n = 10
+# lock oblect
+locking = threading.Lock()
+locking1 = threading.Lock()
 
 
 def a():
     print('A started')
     global s
     for i in range(n):
+        locking.acquire()
         s.append(i + 1)
+        locking.release()
         print('A added', i + 1)
-        time.sleep(0.2)
+        time.sleep(0.4)
     print('A finished')
 
 
@@ -27,10 +32,16 @@ def b():
         if len(s) == 0:
             time.sleep(1)
         else:
+            locking.acquire()
+            time.sleep(0.5)
+            locking1.acquire()
             el = s.pop()    
             print('B got', el)
             r.append(el * el)
-        print('B finished')    
+            locking1.release()
+            time.sleep(0.5)
+            locking.release()
+    print('B finished')    
 
 
 def c():
@@ -40,10 +51,16 @@ def c():
         if len(s) == 0:
             time.sleep(1)
         else:
+            locking1.acquire()
+            time.sleep(0.5)
+            locking.acquire()
             el = s.pop()  
             print('C got', el)  
             r.append(el // 3)
-        print('C finished')
+            locking.release()
+            time.sleep(0.5)
+            locking1.release()
+    print('C finished')
 
 
 def d():
@@ -54,13 +71,15 @@ def d():
             print('list R is empty')
             time.sleep(1)
         else:
+            locking1.acquire()
             el = r.pop() 
             print(f'last element from D is {el}') 
+            locking1.release()
             # if el == n//3 or el == n**2:
             #     print('D finished')
             #     os._exit(0)   
-        print('D finished')        
-
+    print('D finished') 
+            
 
 threads = [ threading.Thread(target=a), threading.Thread(target=b), threading.Thread(target=c), threading.Thread(target=d)] 
 # запуск потоков
@@ -70,4 +89,4 @@ for t in threads:
 # ожидание завершения всех потоков
 for t in threads:
     t.join()
-   
+     
