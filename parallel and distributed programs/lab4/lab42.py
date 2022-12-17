@@ -1,6 +1,7 @@
 # синхронизация поток с помощью критической области 
 import threading
 import time
+import os
 
 s = []
 r = []
@@ -70,6 +71,7 @@ def d():
             locking1.release()
             print(f'last element from D is {el}') 
     print('D finished')
+    os._exit(0)
             
 
 threads = [ threading.Thread(target=a), threading.Thread(target=b), threading.Thread(target=c), threading.Thread(target=d)] 
