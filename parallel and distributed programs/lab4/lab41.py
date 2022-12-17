@@ -56,10 +56,7 @@ def d():
         else:
             el = r.pop() 
             print(f'last element from D is {el}') 
-            # if el == n//3 or el == n**2:
-            #     print('D finished')
-            #     os._exit(0)   
-        print('D finished')        
+    print('D finished')        
 
 
 threads = [ threading.Thread(target=a), threading.Thread(target=b), threading.Thread(target=c), threading.Thread(target=d)] 
