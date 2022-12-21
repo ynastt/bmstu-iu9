@@ -1,4 +1,4 @@
--- Создать в базах данных пункта 1 задания 13 связанные таблицы.
+-- РЎРѕР·РґР°С‚СЊ РІ Р±Р°Р·Р°С… РґР°РЅРЅС‹С… РїСѓРЅРєС‚Р° 1 Р·Р°РґР°РЅРёСЏ 13 СЃРІСЏР·Р°РЅРЅС‹Рµ С‚Р°Р±Р»РёС†С‹.
 USE master;
 GO
 
@@ -71,8 +71,8 @@ CREATE TABLE Orders (
 );
 GO
 
--- Создать необходимые элементы базы данных (представления, триггеры), обеспечивающие работу
--- с данными связанных таблиц (выборку, вставку, изменение, удаление).
+-- РЎРѕР·РґР°С‚СЊ РЅРµРѕР±С…РѕРґРёРјС‹Рµ СЌР»РµРјРµРЅС‚С‹ Р±Р°Р·С‹ РґР°РЅРЅС‹С… (РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ, С‚СЂРёРіРіРµСЂС‹), РѕР±РµСЃРїРµС‡РёРІР°СЋС‰РёРµ СЂР°Р±РѕС‚Сѓ
+-- СЃ РґР°РЅРЅС‹РјРё СЃРІСЏР·Р°РЅРЅС‹С… С‚Р°Р±Р»РёС† (РІС‹Р±РѕСЂРєСѓ, РІСЃС‚Р°РІРєСѓ, РёР·РјРµРЅРµРЅРёРµ, СѓРґР°Р»РµРЅРёРµ).
 DROP VIEW IF EXISTS CustomerOrdersView
 GO
 
@@ -86,9 +86,9 @@ GO
 USE db1
 GO
 
--- вставка без особенностей
-DROP TRIGGER IF EXISTS CustomerUpd -- нельзя менять ID
-DROP TRIGGER IF EXISTS CustomerDel -- удалить заказы покупателя
+-- РІСЃС‚Р°РІРєР° Р±РµР· РѕСЃРѕР±РµРЅРЅРѕСЃС‚РµР№
+DROP TRIGGER IF EXISTS CustomerUpd -- РЅРµР»СЊР·СЏ РјРµРЅСЏС‚СЊ ID
+DROP TRIGGER IF EXISTS CustomerDel -- СѓРґР°Р»РёС‚СЊ Р·Р°РєР°Р·С‹ РїРѕРєСѓРїР°С‚РµР»СЏ
 GO
 
 CREATE TRIGGER CustomerUpd ON Customer
@@ -112,8 +112,8 @@ GO
 USE db2
 GO
 
-DROP TRIGGER IF EXISTS OrdersIns -- вставка только, если есть покупатель
-DROP TRIGGER IF EXISTS OrdersUpd --  нельзя менять ID  и изменение только если есть соответствующий покупатель
+DROP TRIGGER IF EXISTS OrdersIns -- РІСЃС‚Р°РІРєР° С‚РѕР»СЊРєРѕ, РµСЃР»Рё РµСЃС‚СЊ РїРѕРєСѓРїР°С‚РµР»СЊ
+DROP TRIGGER IF EXISTS OrdersUpd --  РЅРµР»СЊР·СЏ РјРµРЅСЏС‚СЊ ID  Рё РёР·РјРµРЅРµРЅРёРµ С‚РѕР»СЊРєРѕ РµСЃР»Рё РµСЃС‚СЊ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ РїРѕРєСѓРїР°С‚РµР»СЊ
 GO
 
 CREATE TRIGGER OrdersIns ON Orders
@@ -121,7 +121,7 @@ FOR INSERT
 AS
 	IF EXISTS (SELECT * FROM db1.dbo.Customer, inserted  
 				WHERE db1.dbo.Customer.CustomerID = inserted.customer_id)
-				PRINT('все ок вставка заказа существующего покупателя')
+				PRINT('РІСЃРµ РѕРє РІСЃС‚Р°РІРєР° Р·Р°РєР°Р·Р° СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РїРѕРєСѓРїР°С‚РµР»СЏ')
 	ELSE
 		BEGIN
 			RAISERROR('ERROR - CUSTOMER DOES NOT EXIST. YOU ARE NOT ALLOWED TO ADD ORDERS', 16, 1, 'OrdersIns')
@@ -147,9 +147,9 @@ AS
 GO
 
 INSERT INTO db1.dbo.Customer(CustomerID, Phone, LastName, FirstName, Patronymic, Email)  
-VALUES (1, '89573652341','Иванов','Иван', 'Иванович', 'ivva92@gmail.com'),
-	(2, '89342435152','Сергеев','Сергей', 'Сергеевич', 'sergiriv@gmail.com'),
-	(3, '89649245160','Зурхарниева','Ольга', 'Игоревна', 'zoi73@gmail.com')
+VALUES (1, '89573652341','РРІР°РЅРѕРІ','РРІР°РЅ', 'РРІР°РЅРѕРІРёС‡', 'ivva92@gmail.com'),
+	(2, '89342435152','РЎРµСЂРіРµРµРІ','РЎРµСЂРіРµР№', 'РЎРµСЂРіРµРµРІРёС‡', 'sergiriv@gmail.com'),
+	(3, '89649245160','Р—СѓСЂС…Р°СЂРЅРёРµРІР°','РћР»СЊРіР°', 'РРіРѕСЂРµРІРЅР°', 'zoi73@gmail.com')
 GO
 
 INSERT INTO Orders(OrderID, DeliveryDate, customer_id)
@@ -168,7 +168,7 @@ GO
 --raiserror
 --UPDATE db1.dbo.Customer SET CustomerID = 7 WHERE Email = 'zoi73@gmail.com'
 
-UPDATE db1.dbo.Customer SET LastName = 'Буканова' WHERE CustomerID = 2
+UPDATE db1.dbo.Customer SET LastName = 'Р‘СѓРєР°РЅРѕРІР°' WHERE CustomerID = 2
 
 --raiserror
 --UPDATE Orders SET OrderID = 4 WHERE OrderID = 1;
