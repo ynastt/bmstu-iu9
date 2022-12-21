@@ -23,7 +23,7 @@ GO
 USE lab9;
 GO
 
---таблицы
+--С‚Р°Р±Р»РёС†С‹
 DROP TABLE IF EXISTS Customer;
 GO
 
@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS Orders;
 
 CREATE TABLE Orders (
 	OrderID UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-	PaymentType nvarchar(30) NOT NULL DEFAULT('по карте'),
+	PaymentType nvarchar(30) NOT NULL DEFAULT('РїРѕ РєР°СЂС‚Рµ'),
 	MakingOrderDate date NOT NULL  DEFAULT(CONVERT(date,GETDATE())),
 	DeliveryDate date NOT NULL,
 	customer_id UNIQUEIDENTIFIER,
@@ -50,12 +50,12 @@ CREATE TABLE Orders (
 );
 GO
 
--- 1. Для одной из таблиц создать триггеры на вставку, удаление и обновление,
--- при выполнении заданных условий один из триггеров
--- должен инициировать возникновение ошибки (RAISERROR / THROW).
+-- 1. Р”Р»СЏ РѕРґРЅРѕР№ РёР· С‚Р°Р±Р»РёС† СЃРѕР·РґР°С‚СЊ С‚СЂРёРіРіРµСЂС‹ РЅР° РІСЃС‚Р°РІРєСѓ, СѓРґР°Р»РµРЅРёРµ Рё РѕР±РЅРѕРІР»РµРЅРёРµ,
+-- РїСЂРё РІС‹РїРѕР»РЅРµРЅРёРё Р·Р°РґР°РЅРЅС‹С… СѓСЃР»РѕРІРёР№ РѕРґРёРЅ РёР· С‚СЂРёРіРіРµСЂРѕРІ
+-- РґРѕР»Р¶РµРЅ РёРЅРёС†РёРёСЂРѕРІР°С‚СЊ РІРѕР·РЅРёРєРЅРѕРІРµРЅРёРµ РѕС€РёР±РєРё (RAISERROR / THROW).
 
 --
---	вставка
+--	РІСЃС‚Р°РІРєР°
 --
 DROP TRIGGER IF EXISTS Insert_Customer
 DROP TRIGGER IF EXISTS Delete_Customer
@@ -70,10 +70,10 @@ CREATE TRIGGER Insert_Customer ON Customer
 GO
 
 INSERT INTO Customer(Phone, LastName, FirstName, Patronymic, Email)
-VALUES('89477975430','Соколова','Ольга', 'Владимировна', 'olg3@gmail.com'),
-	('89573652341','Иванов','Петр', 'Сергеевич', 'petya92@gmail.com'),
-	('89342435152','Сергеева','Ирина', 'Ивановна', 'sergiriv@gmail.com'),
-	('89876245331','Петров','Сергев', 'Андреевич', 'kvakva@gmail.com');
+VALUES('89477975430','РЎРѕРєРѕР»РѕРІР°','РћР»СЊРіР°', 'Р’Р»Р°РґРёРјРёСЂРѕРІРЅР°', 'olg3@gmail.com'),
+	('89573652341','РРІР°РЅРѕРІ','РџРµС‚СЂ', 'РЎРµСЂРіРµРµРІРёС‡', 'petya92@gmail.com'),
+	('89342435152','РЎРµСЂРіРµРµРІР°','РСЂРёРЅР°', 'РРІР°РЅРѕРІРЅР°', 'sergiriv@gmail.com'),
+	('89876245331','РџРµС‚СЂРѕРІ','РЎРµСЂРіРµРІ', 'РђРЅРґСЂРµРµРІРёС‡', 'kvakva@gmail.com');
 GO
 
 SELECT * FROM Customer
@@ -81,8 +81,9 @@ GO
 
 SELECT * FROM Orders
 GO
---
---	удаление
+
+--	
+--	СѓРґР°Р»РµРЅРёРµ
 --
 CREATE TRIGGER Delete_Customer ON Customer
 	FOR DELETE 
@@ -93,10 +94,10 @@ CREATE TRIGGER Delete_Customer ON Customer
 	SET @idt = (SELECT CustomerId FROM deleted);
 	SET @name = (SELECT LastName FROM deleted);
 	SET @time = GETDATE()
-	PRINT FORMATMESSAGE('Удален пользователь %s, id: %s, дата операции: %s', @name, CONVERT(varchar(255), @idt), CONVERT(varchar(11), @time))
+	PRINT FORMATMESSAGE('РЈРґР°Р»РµРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ %s, id: %s, РґР°С‚Р° РѕРїРµСЂР°С†РёРё: %s', @name, CONVERT(varchar(255), @idt), CONVERT(varchar(11), @time))
 GO  
 
-DELETE FROM Customer WHERE LastName='Соколова';
+DELETE FROM Customer WHERE LastName='РЎРѕРєРѕР»РѕРІР°';
 GO
 
 SELECT * FROM Customer
@@ -105,12 +106,12 @@ GO
 SELECT * FROM Orders
 GO
 --
---	обновление
+--	РѕР±РЅРѕРІР»РµРЅРёРµ
 --
 CREATE TRIGGER Update_Customer ON Customer         
 	AFTER UPDATE 
 	AS
-	IF EXISTS( SELECT 1 FROM inserted WHERE FirstName LIKE N'%Ъ')
+	IF EXISTS( SELECT 1 FROM inserted WHERE FirstName LIKE N'%РЄ')
 		BEGIN
 			RAISERROR ('!ERROR!', 15, -1, 'Update_Customer');
 			ROLLBACK
@@ -118,19 +119,19 @@ CREATE TRIGGER Update_Customer ON Customer
 GO
 
 --raiserror
---UPDATE Customer SET FirstName = 'Петръ' WHERE LastName='Иванов';
+--UPDATE Customer SET FirstName = 'РџРµС‚СЂСЉ' WHERE LastName='РРІР°РЅРѕРІ';
 
-UPDATE Customer SET FirstName = 'Иван' WHERE LastName='Иванов';
+UPDATE Customer SET FirstName = 'РРІР°РЅ' WHERE LastName='РРІР°РЅРѕРІ';
 GO
 
 SELECT * FROM Customer
 GO
 
--- 2. Для представления создать триггеры на вставку, удаление и добавление,
--- обеспечивающие возможность выполнения операций с данными 
--- непосредственно через представление.
+-- 2. Р”Р»СЏ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ СЃРѕР·РґР°С‚СЊ С‚СЂРёРіРіРµСЂС‹ РЅР° РІСЃС‚Р°РІРєСѓ, СѓРґР°Р»РµРЅРёРµ Рё РґРѕР±Р°РІР»РµРЅРёРµ,
+-- РѕР±РµСЃРїРµС‡РёРІР°СЋС‰РёРµ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёР№ СЃ РґР°РЅРЅС‹РјРё 
+-- РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ С‡РµСЂРµР· РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ.
 
--- таблицы
+-- С‚Р°Р±Р»РёС†С‹
 DROP TABLE IF EXISTS Doctor;
 GO
 
@@ -155,16 +156,16 @@ CREATE TABLE Specialization (
 GO
 
 INSERT INTO Doctor(Phone, DoctorName, DateOfBirth, Email)
-    VALUES ('84958888888', 'Алексеев Алексей Алексеевич', CONVERT(date, N'06-11-2000'), 'alexsha@gmail.com'),
-           ('84958888881', 'Величко Егор', CONVERT(date, N'01-01-1967'), 'veleg9@gmail.com');
+    VALUES ('84958888888', 'РђР»РµРєСЃРµРµРІ РђР»РµРєСЃРµР№ РђР»РµРєСЃРµРµРІРёС‡', CONVERT(date, N'06-11-2000'), 'alexsha@gmail.com'),
+           ('84958888881', 'Р’РµР»РёС‡РєРѕ Р•РіРѕСЂ', CONVERT(date, N'01-01-1967'), 'veleg9@gmail.com');
 GO
 
 INSERT INTO Specialization(SpecDescription, doctor_id)
-	VALUES ('врач-хирург', (SELECT DoctorID FROM Doctor WHERE Doctor.Email = 'alexsha@gmail.com')),
-		   ('врач-кардиолог', (SELECT DoctorID FROM Doctor WHERE Doctor.Email = 'veleg9@gmail.com'));
+	VALUES ('РІСЂР°С‡-С…РёСЂСѓСЂРі', (SELECT DoctorID FROM Doctor WHERE Doctor.Email = 'alexsha@gmail.com')),
+		   ('РІСЂР°С‡-РєР°СЂРґРёРѕР»РѕРі', (SELECT DoctorID FROM Doctor WHERE Doctor.Email = 'veleg9@gmail.com'));
 GO
 
--- представление
+-- РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ
 DROP VIEW IF EXISTS SpecView;
 GO
 
@@ -179,13 +180,13 @@ SELECT * FROM SpecView
 GO
 
 --
---	вставка
+--	РІСЃС‚Р°РІРєР°
 --
 
--- ДО ТРИГЕРА МЫ ПОЛУЧИМ ОШИБКУ 
--- "Невозможно обновить представление или функцию "SpecView", так как изменение влияет на несколько базовых таблиц."
+-- Р”Рћ РўР РР“Р•Р Рђ РњР« РџРћР›РЈР§РРњ РћРЁРР‘РљРЈ 
+-- "РќРµРІРѕР·РјРѕР¶РЅРѕ РѕР±РЅРѕРІРёС‚СЊ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ РёР»Рё С„СѓРЅРєС†РёСЋ "SpecView", С‚Р°Рє РєР°Рє РёР·РјРµРЅРµРЅРёРµ РІР»РёСЏРµС‚ РЅР° РЅРµСЃРєРѕР»СЊРєРѕ Р±Р°Р·РѕРІС‹С… С‚Р°Р±Р»РёС†."
 --INSERT INTO SpecView (SpecializationDescription, DoctorName, DoctorEmail)
---VALUES ('Врач-оториноларинголог', 'Исаева Ольга Иваовна', 'olg@mail.ru');
+--VALUES ('Р’СЂР°С‡-РѕС‚РѕСЂРёРЅРѕР»Р°СЂРёРЅРіРѕР»РѕРі', 'РСЃР°РµРІР° РћР»СЊРіР° РРІР°РѕРІРЅР°', 'olg@mail.ru');
 --GO
 
 DROP TRIGGER IF EXISTS Insert_SpecView
@@ -209,8 +210,8 @@ CREATE TRIGGER Insert_SpecView ON SpecView
 GO
 
 INSERT INTO SpecView (SpecializationDescription, DoctorName, DoctorEmail)
-VALUES ('врач-терапевт', 'Куцзнецов Кузя Кузьмич', 'test1@gmail.com'),
-	('врач-хирург','Васнецов Василий Васильевич', 'test2@gmail.com');
+VALUES ('РІСЂР°С‡-С‚РµСЂР°РїРµРІС‚', 'РљСѓС†Р·РЅРµС†РѕРІ РљСѓР·СЏ РљСѓР·СЊРјРёС‡', 'test1@gmail.com'),
+	  ('РІСЂР°С‡-С…РёСЂСѓСЂРі','Р’Р°СЃРЅРµС†РѕРІ Р’Р°СЃРёР»РёР№ Р’Р°СЃРёР»СЊРµРІРёС‡', 'test2@gmail.com');
 
 SELECT * FROM Doctor
 
@@ -218,29 +219,29 @@ SELECT * FROM Specialization
 GO
 
 --
---	удаление
+--	СѓРґР°Р»РµРЅРёРµ
 --
 CREATE TRIGGER Delete_SpecView ON SpecView
     INSTEAD OF DELETE
     AS
     DELETE FROM s 
-		FROM Specialization as s
-		INNER JOIN deleted as del on del.SpecializationDescription = s.SpecDescription
-		INNER JOIN Doctor as d on d.Email = del.DoctorEmail
+		  FROM Specialization as s
+		  INNER JOIN deleted as del on del.SpecializationDescription = s.SpecDescription
+		  INNER JOIN Doctor as d on d.Email = del.DoctorEmail
     WHERE s.Doctor_id = d.DoctorID
 	
 
-	DELETE FROM Doctor WHERE DoctorName IN (
-		SELECT del.DoctorName
-		FROM deleted as del
-		INNER JOIN Doctor as d
-		ON d.Email = del.DoctorEmail)
+	  DELETE FROM Doctor WHERE DoctorName IN (
+		  SELECT del.DoctorName
+		  FROM deleted as del
+		  INNER JOIN Doctor as d
+		  ON d.Email = del.DoctorEmail)
 GO
 
--- пример, удаление одной записи
+-- РїСЂРёРјРµСЂ, СѓРґР°Р»РµРЅРёРµ РѕРґРЅРѕР№ Р·Р°РїРёСЃРё
 DELETE FROM SpecView WHERE SpecView.DoctorEmail = 'test1@gmail.com'
--- пример, удаление нескольких записей с одним атрибутов
-DELETE FROM SpecView WHERE SpecView.SpecializationDescription = 'врач-хирург' 
+-- РїСЂРёРјРµСЂ, СѓРґР°Р»РµРЅРёРµ РЅРµСЃРєРѕР»СЊРєРёС… Р·Р°РїРёСЃРµР№ СЃ РѕРґРЅРёРј Р°С‚СЂРёР±СѓС‚РѕРІ
+DELETE FROM SpecView WHERE SpecView.SpecializationDescription = 'РІСЂР°С‡-С…РёСЂСѓСЂРі' 
 
 SELECT * FROM Doctor
 SELECT * FROM Specialization
@@ -248,7 +249,7 @@ SELECT * FROM SpecView
 GO
 
 --
---	обновление
+--	РѕР±РЅРѕРІР»РµРЅРёРµ
 --
 CREATE TRIGGER Update_SpecView ON SpecView
 	INSTEAD OF UPDATE
@@ -276,15 +277,17 @@ CREATE TRIGGER Update_SpecView ON SpecView
 GO
 
 --raiserror
---UPDATE SpecView set SpecView.DoctorEmail = 'badtest@gmail.com' WHERE SpecView.SpecializationDescription = 'Врач-хирург'
+--UPDATE SpecView set SpecView.DoctorEmail = 'badtest@gmail.com' WHERE SpecView.SpecializationDescription = 'Р’СЂР°С‡-С…РёСЂСѓСЂРі'
 
 --SELECT * FROM Doctor
 --SELECT * FROM Specialization
 --SELECT * FROM SpecView
-UPDATE SpecView set SpecView.SpecializationDescription = 'врач-офтальмолог' WHERE SpecView.DoctorEmail = 'test2@gmail.com'
-UPDATE SpecView set SpecView.DoctorName = 'Степан Степанович' WHERE SpecView.SpecializationDescription = 'врач-хирург'
 
-UPDATE Doctor SET Doctor.Email = 'step1@mail.ru' WHERE DoctorName = 'Степан Степанович'
+UPDATE SpecView set SpecView.SpecializationDescription = 'РІСЂР°С‡-РѕС„С‚Р°Р»СЊРјРѕР»РѕРі' WHERE SpecView.DoctorEmail = 'test2@gmail.com'
+UPDATE SpecView set SpecView.DoctorName = 'РЎС‚РµРїР°РЅ РЎС‚РµРїР°РЅРѕРІРёС‡' WHERE SpecView.SpecializationDescription = 'РІСЂР°С‡-С…РёСЂСѓСЂРі'
+
+UPDATE Doctor SET Doctor.Email = 'step1@mail.ru' WHERE DoctorName = 'РЎС‚РµРїР°РЅ РЎС‚РµРїР°РЅРѕРІРёС‡'
+
 
 SELECT * FROM Doctor
 SELECT * FROM Specialization
