@@ -24,6 +24,9 @@ USE lab9;
 GO
 
 --таблицы
+DROP TABLE IF EXISTS Customer;
+GO
+
 CREATE TABLE Customer (
 	CustomerID UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
 	Phone char(11) NULL,
@@ -33,6 +36,8 @@ CREATE TABLE Customer (
 	Email varchar(100) NOT NULL UNIQUE
 );
 GO
+
+DROP TABLE IF EXISTS Orders;
 
 CREATE TABLE Orders (
 	OrderID UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
@@ -48,13 +53,15 @@ GO
 -- 1. Для одной из таблиц создать триггеры на вставку, удаление и обновление,
 -- при выполнении заданных условий один из триггеров
 -- должен инициировать возникновение ошибки (RAISERROR / THROW).
+
+--
+--	вставка
+--
 DROP TRIGGER IF EXISTS Insert_Customer
 DROP TRIGGER IF EXISTS Delete_Customer
 DROP TRIGGER IF EXISTS Update_Customer
 GO
---
---	вставка
---
+
 CREATE TRIGGER Insert_Customer ON Customer
 	AFTER INSERT 
 	AS
@@ -74,7 +81,8 @@ GO
 
 SELECT * FROM Orders
 GO
---
+
+--	
 --	удаление
 --
 CREATE TRIGGER Delete_Customer ON Customer
@@ -171,11 +179,6 @@ GO
 SELECT * FROM SpecView
 GO
 
-DROP TRIGGER IF EXISTS Insert_SpecView
-DROP TRIGGER IF EXISTS Delete_SpecView
-DROP TRIGGER IF EXISTS Update_SpecView
-GO
-
 --
 --	вставка
 --
@@ -185,6 +188,11 @@ GO
 --INSERT INTO SpecView (SpecializationDescription, DoctorName, DoctorEmail)
 --VALUES ('Врач-оториноларинголог', 'Исаева Ольга Иваовна', 'olg@mail.ru');
 --GO
+
+DROP TRIGGER IF EXISTS Insert_SpecView
+DROP TRIGGER IF EXISTS Delete_SpecView
+DROP TRIGGER IF EXISTS Update_SpecView
+GO
 
 CREATE TRIGGER Insert_SpecView ON SpecView
 	INSTEAD OF INSERT
@@ -203,7 +211,7 @@ GO
 
 INSERT INTO SpecView (SpecializationDescription, DoctorName, DoctorEmail)
 VALUES ('врач-терапевт', 'Куцзнецов Кузя Кузьмич', 'test1@gmail.com'),
-	('врач-хирург','Васнецов Василий Васильевич', 'test2@gmail.com');
+	  ('врач-хирург','Васнецов Василий Васильевич', 'test2@gmail.com');
 
 SELECT * FROM Doctor
 
@@ -217,17 +225,17 @@ CREATE TRIGGER Delete_SpecView ON SpecView
     INSTEAD OF DELETE
     AS
     DELETE FROM s 
-		FROM Specialization as s
-		INNER JOIN deleted as del on del.SpecializationDescription = s.SpecDescription
-		INNER JOIN Doctor as d on d.Email = del.DoctorEmail
+		  FROM Specialization as s
+		  INNER JOIN deleted as del on del.SpecializationDescription = s.SpecDescription
+		  INNER JOIN Doctor as d on d.Email = del.DoctorEmail
     WHERE s.Doctor_id = d.DoctorID
 	
 
-	DELETE FROM Doctor WHERE DoctorName IN (
-		SELECT del.DoctorName
-		FROM deleted as del
-		INNER JOIN Doctor as d
-		ON d.Email = del.DoctorEmail)
+	  DELETE FROM Doctor WHERE DoctorName IN (
+		  SELECT del.DoctorName
+		  FROM deleted as del
+		  INNER JOIN Doctor as d
+		  ON d.Email = del.DoctorEmail)
 GO
 
 -- пример, удаление одной записи
@@ -274,10 +282,12 @@ GO
 --SELECT * FROM Doctor
 --SELECT * FROM Specialization
 --SELECT * FROM SpecView
+
 UPDATE SpecView set SpecView.SpecializationDescription = 'врач-офтальмолог' WHERE SpecView.DoctorEmail = 'test2@gmail.com'
 UPDATE SpecView set SpecView.DoctorName = 'Степан Степанович' WHERE SpecView.SpecializationDescription = 'врач-хирург'
 
 UPDATE Doctor SET Doctor.Email = 'step1@mail.ru' WHERE DoctorName = 'Степан Степанович'
+
 
 SELECT * FROM Doctor
 SELECT * FROM Specialization
