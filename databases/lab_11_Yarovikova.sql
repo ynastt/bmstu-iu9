@@ -53,10 +53,10 @@ CREATE TABLE BookStore (
 );
 GO
 
--- äëÿ  PaymentType ëó÷øå èñïîëüçîâàòü int /* Enum 1- ïî êàðòå, 2 - íàëè÷íûìè ...*/
+-- Ð´Ð»Ñ  PaymentType Ð»ÑƒÑ‡ÑˆÐµ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ int /* Enum 1- Ð¿Ð¾ ÐºÐ°Ñ€Ñ‚Ðµ, 2 - Ð½Ð°Ð»Ð¸Ñ‡Ð½Ñ‹Ð¼Ð¸ ...*/
 CREATE TABLE Orders (
 	OrderID INT  PRIMARY KEY,
-	PaymentType nvarchar(30) NOT NULL DEFAULT('ïî êàðòå'),
+	PaymentType nvarchar(30) NOT NULL DEFAULT('Ð¿Ð¾ ÐºÐ°Ñ€Ñ‚Ðµ'),
 	MakingOrderDate date NOT NULL  DEFAULT(CONVERT(date,GETDATE())),
 	DeliveryDate date NOT NULL,
 	customer_id int,
@@ -68,15 +68,15 @@ CREATE TABLE Orders (
 );
 GO
 
--- äëÿ Genre òîæå ëó÷øå èñïîëüçîâàòü  int
+-- Ð´Ð»Ñ Genre Ñ‚Ð¾Ð¶Ðµ Ð»ÑƒÑ‡ÑˆÐµ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ  int
 CREATE TABLE Book (
 	BookID INT PRIMARY KEY,
 	ISBN  nvarchar(17) NOT NULL,
 	Title nvarchar(50) NOT NULL,
-	Genre nvarchar(50) NOT NULL CHECK (Genre IN ('Äåòåêòèâ', 'Íàó÷íàÿ ôàíòàñòèêà', 'Äðàìà', 'Ðîìàí',
-										'Ðîìàí-ýïîïåÿ', 'Ìèñòèêà', 'Ïüåñà', 'Ñêàçêà', 'Òåõíè÷åñêàÿ ëèòåðàòóðà')),
+	Genre nvarchar(50) NOT NULL CHECK (Genre IN ('Ð”ÐµÑ‚ÐµÐºÑ‚Ð¸Ð²', 'ÐÐ°ÑƒÑ‡Ð½Ð°Ñ Ñ„Ð°Ð½Ñ‚Ð°ÑÑ‚Ð¸ÐºÐ°', 'Ð”Ñ€Ð°Ð¼Ð°', 'Ð Ð¾Ð¼Ð°Ð½',
+										'Ð Ð¾Ð¼Ð°Ð½-ÑÐ¿Ð¾Ð¿ÐµÑ', 'ÐœÐ¸ÑÑ‚Ð¸ÐºÐ°', 'ÐŸÑŒÐµÑÐ°', 'Ð¡ÐºÐ°Ð·ÐºÐ°', 'Ð¢ÐµÑ…Ð½Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð»Ð¸Ñ‚ÐµÑ€Ð°Ñ‚ÑƒÑ€Ð°')),
 	PublishingYear numeric(4) NOT NULL CHECK (PublishingYear >= 1500 AND PublishingYear <= 2023),
-	PublishingHouse nvarchar(20) NULL DEFAULT(N'Íåèçâåñòíî'),
+	PublishingHouse nvarchar(20) NULL DEFAULT(N'ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ð¾'),
 	Price smallmoney NOT NULL CHECK (Price > 0),
 );
 GO
@@ -100,7 +100,7 @@ CREATE TABLE Author (
 	Patronymic nvarchar(20) NULL,
 	BirthYear numeric(4) NOT NULL CHECK (BirthYear > 1500 AND BirthYear < 2000),
 	DeathYear numeric(4) NULL, 
-	Country nvarchar(30) NULL DEFAULT ('Íåèçâåñòíà')
+	Country nvarchar(30) NULL DEFAULT ('ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ð°')
 );
 GO
 
@@ -116,7 +116,7 @@ CREATE TABLE BookByAuthor (
 );
 GO
 
--- òðèãåðû
+-- Ñ‚Ñ€Ð¸Ð³ÐµÑ€Ñ‹
 DROP TRIGGER IF EXISTS Insert_OrderLine
 GO
 
@@ -180,11 +180,11 @@ CREATE TRIGGER ViewIns ON ConnectBookAndAuthor
 		END
 GO
 
--- íóæåí òðèããåð íà óäàëåíèå òê 1:1
--- òðèãåð íà óäàëåíèå êíèãè - ïðîâåðèòü, ÷òî îñòàëàñü õîòÿ áû îäíà êíèãà ýòîãî àâòîðà 
--- ñóòü â òîì, ÷òî â ËÐ 4 ÿ ñäåëàëà òàê, ÷òî ó àâòîðà 1 èëè íåñêîëüêî êíèã. 
--- Ïîýòîìó ïðè óäàëåíèè êíèãè, íóæíî ïðîâåðèòü, åñòü ëè ó àâòîðà åùå êíèãè. Åñëè íåò - îøèáêà è îòêàòèòü íàçàä
--- åñëè ó àâòîðà åùå åñòü êíèãè, òî ìîæíî óäàëÿòü
+-- Ð½ÑƒÐ¶ÐµÐ½ Ñ‚Ñ€Ð¸Ð³Ð³ÐµÑ€ Ð½Ð° ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ Ñ‚Ðº 1:1
+-- Ñ‚Ñ€Ð¸Ð³ÐµÑ€ Ð½Ð° ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ ÐºÐ½Ð¸Ð³Ð¸ - Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ, Ñ‡Ñ‚Ð¾ Ð¾ÑÑ‚Ð°Ð»Ð°ÑÑŒ Ñ…Ð¾Ñ‚Ñ Ð±Ñ‹ Ð¾Ð´Ð½Ð° ÐºÐ½Ð¸Ð³Ð° ÑÑ‚Ð¾Ð³Ð¾ Ð°Ð²Ñ‚Ð¾Ñ€Ð° 
+-- ÑÑƒÑ‚ÑŒ Ð² Ñ‚Ð¾Ð¼, Ñ‡Ñ‚Ð¾ Ð² Ð›Ð  4 Ñ ÑÐ´ÐµÐ»Ð°Ð»Ð° Ñ‚Ð°Ðº, Ñ‡Ñ‚Ð¾ Ñƒ Ð°Ð²Ñ‚Ð¾Ñ€Ð° 1 Ð¸Ð»Ð¸ Ð½ÐµÑÐºÐ¾Ð»ÑŒÐºÐ¾ ÐºÐ½Ð¸Ð³. 
+-- ÐŸÐ¾ÑÑ‚Ð¾Ð¼Ñƒ Ð¿Ñ€Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ð¸ ÐºÐ½Ð¸Ð³Ð¸, Ð½ÑƒÐ¶Ð½Ð¾ Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ, ÐµÑÑ‚ÑŒ Ð»Ð¸ Ñƒ Ð°Ð²Ñ‚Ð¾Ñ€Ð° ÐµÑ‰Ðµ ÐºÐ½Ð¸Ð³Ð¸. Ð•ÑÐ»Ð¸ Ð½ÐµÑ‚ - Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð¸ Ð¾Ñ‚ÐºÐ°Ñ‚Ð¸Ñ‚ÑŒ Ð½Ð°Ð·Ð°Ð´
+-- ÐµÑÐ»Ð¸ Ñƒ Ð°Ð²Ñ‚Ð¾Ñ€Ð° ÐµÑ‰Ðµ ÐµÑÑ‚ÑŒ ÐºÐ½Ð¸Ð³Ð¸, Ñ‚Ð¾ Ð¼Ð¾Ð¶Ð½Ð¾ ÑƒÐ´Ð°Ð»ÑÑ‚ÑŒ
 DROP TRIGGER IF EXISTS BookDel
 GO
  
@@ -205,17 +205,17 @@ GO
 
 
 INSERT INTO Customer(Phone, LastName, FirstName, Patronymic, Email, City) 
-VALUES ('89573652341','Èâàíîâ','Ïåòð', 'Ñåðãååâè÷', 'petya92@gmail.com', 'Ìîñêâà'),
-	('89342435152','Ñåðãååâà','Èðèíà', 'Èâàíîâíà', 'sergiriv@gmail.com', 'Êàçàíü'),
-	('89649245160','Çóðõàðíèåâà','Îëüãà', 'Èãîðåâíà', 'zoi73@gmail.com', 'Óëüÿíîâñê'),
-	('89876245331','Ïåòðîâ','Ñåðãåâ', 'Àíäðååâè÷', 'kvakva@gmail.com', 'Ñàðàòîâ'),
-	('89764845132','Èâàíîâà','Èíãà', 'Èâàíîâíà', 'iviv@gmail.com', 'Óëüÿíîâñê'),
-	('89996545365','Âàñèëüåâ','Âàñèëèé', 'Âàñèëüåâè÷', 'vasssslv@gmail.com', 'Ñûçðàíü')
+VALUES ('89573652341','Ð˜Ð²Ð°Ð½Ð¾Ð²','ÐŸÐµÑ‚Ñ€', 'Ð¡ÐµÑ€Ð³ÐµÐµÐ²Ð¸Ñ‡', 'petya92@gmail.com', 'ÐœÐ¾ÑÐºÐ²Ð°'),
+	('89342435152','Ð¡ÐµÑ€Ð³ÐµÐµÐ²Ð°','Ð˜Ñ€Ð¸Ð½Ð°', 'Ð˜Ð²Ð°Ð½Ð¾Ð²Ð½Ð°', 'sergiriv@gmail.com', 'ÐšÐ°Ð·Ð°Ð½ÑŒ'),
+	('89649245160','Ð—ÑƒÑ€Ñ…Ð°Ñ€Ð½Ð¸ÐµÐ²Ð°','ÐžÐ»ÑŒÐ³Ð°', 'Ð˜Ð³Ð¾Ñ€ÐµÐ²Ð½Ð°', 'zoi73@gmail.com', 'Ð£Ð»ÑŒÑÐ½Ð¾Ð²ÑÐº'),
+	('89876245331','ÐŸÐµÑ‚Ñ€Ð¾Ð²','Ð¡ÐµÑ€Ð³ÐµÐ²', 'ÐÐ½Ð´Ñ€ÐµÐµÐ²Ð¸Ñ‡', 'kvakva@gmail.com', 'Ð¡Ð°Ñ€Ð°Ñ‚Ð¾Ð²'),
+	('89764845132','Ð˜Ð²Ð°Ð½Ð¾Ð²Ð°','Ð˜Ð½Ð³Ð°', 'Ð˜Ð²Ð°Ð½Ð¾Ð²Ð½Ð°', 'iviv@gmail.com', 'Ð£Ð»ÑŒÑÐ½Ð¾Ð²ÑÐº'),
+	('89996545365','Ð’Ð°ÑÐ¸Ð»ÑŒÐµÐ²','Ð’Ð°ÑÐ¸Ð»Ð¸Ð¹', 'Ð’Ð°ÑÐ¸Ð»ÑŒÐµÐ²Ð¸Ñ‡', 'vasssslv@gmail.com', 'Ð¡Ñ‹Ð·Ñ€Ð°Ð½ÑŒ')
 GO
 
 INSERT INTO BookStore(BookStoreID, BookStoreName, Email, URL_, Phone) 
-VALUES (1, 'Ëàáèðèíò', 'labirint@mail.ru', 'labirint.ru', '84999209525'),
-		(2, '×èòàé-Ãîðîä', 'chitaigorod@yandex.ru', 'chitai-gorod.ru', '89777209037')
+VALUES (1, 'Ð›Ð°Ð±Ð¸Ñ€Ð¸Ð½Ñ‚', 'labirint@mail.ru', 'labirint.ru', '84999209525'),
+		(2, 'Ð§Ð¸Ñ‚Ð°Ð¹-Ð“Ð¾Ñ€Ð¾Ð´', 'chitaigorod@yandex.ru', 'chitai-gorod.ru', '89777209037')
 GO
 
 INSERT INTO Orders(OrderID, DeliveryDate, customer_id, bookstore_id)
@@ -224,22 +224,22 @@ VALUES (1, CONVERT(date, N'01-01-2023'), 2, 2),
 GO
 
 INSERT INTO ConnectBookAndAuthor(BookID, ISBN, Title, Genre, PublishingYear, PublishingHouse, Price, AuthorID, FirstName, LastName, Patronymic, BirthYear, DeathYear, Country)
-VALUES (1, '978-5-9555-1339-3', 'Åâãåíèé Îíåãèí', 'Ðîìàí', 2010, 'Äðîôà Ïëþñ', '600', 1, 'Àëåêñàíäð', 'Ïóøêèí', 'Ñåðãååâè÷', 1799, 1837, 'Ðîññèÿ'),
-	(2, '978-5-04-112699-5', 'Êàïèòàíñêàÿ äî÷êà', 'Ðîìàí', 2020, 'Ýêñìî', '621', 1, 'Àëåêñàíäð', 'Ïóøêèí', 'Ñåðãååâè÷', 1799, 1837, 'Ðîññèÿ'),
-	(3, '978-5-9287-3237-0', 'Ïðèêëþ÷åíèÿ Øåðëîêà Õîëìñà: Ñîáàêà Áàñêåðâèëåé', 'Äåòåêòèâ', 2011, NULL,'1472', 2, 'Àðòóð','Êîíàí Äîéë', NULL, 1859, 1930, 'Âåëèêîáðèòàíèÿ'),
-	(4, '978-5-45-828618-3', 'Çàäà÷è è óïðàæíåíèÿ ïî ìàò àíàëèçó äëÿ ÂÒÓÇîâ', 'Òåõíè÷åñêàÿ ëèòåðàòóðà', 1972, 'Íàóêà', '790', 3, 'Áîðèñ', 'Äåìèäîâè÷', 'Ïàâëîâè÷', 1906, 1977, 'Ðîññèÿ'),
-	(4, '978-5-45-828618-3', 'Çàäà÷è è óïðàæíåíèÿ ïî ìàò àíàëèçó äëÿ ÂÒÓÇîâ', 'Òåõíè÷åñêàÿ ëèòåðàòóðà', 1972, 'Íàóêà', '790', 4, 'Àëåêñåé','Åôèìîâ','Âëàäèìèðîâè÷',1896, 1971,'Àçåðáàéäæàí'),      
-	(5, '978-5-17-113039-8', 'Ïðèêëþ÷åíèÿ Îëèâåðà Òâèñòà', 'Ðîìàí', 2021, 'ÀÑÒ', '590', 5, '×àðëç','Äèêêåíñ', NULL, 1812, 1870, 'Âåëèêîáðèòàíèÿ')
+VALUES (1, '978-5-9555-1339-3', 'Ð•Ð²Ð³ÐµÐ½Ð¸Ð¹ ÐžÐ½ÐµÐ³Ð¸Ð½', 'Ð Ð¾Ð¼Ð°Ð½', 2010, 'Ð”Ñ€Ð¾Ñ„Ð° ÐŸÐ»ÑŽÑ', '600', 1, 'ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€', 'ÐŸÑƒÑˆÐºÐ¸Ð½', 'Ð¡ÐµÑ€Ð³ÐµÐµÐ²Ð¸Ñ‡', 1799, 1837, 'Ð Ð¾ÑÑÐ¸Ñ'),
+	(2, '978-5-04-112699-5', 'ÐšÐ°Ð¿Ð¸Ñ‚Ð°Ð½ÑÐºÐ°Ñ Ð´Ð¾Ñ‡ÐºÐ°', 'Ð Ð¾Ð¼Ð°Ð½', 2020, 'Ð­ÐºÑÐ¼Ð¾', '621', 1, 'ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€', 'ÐŸÑƒÑˆÐºÐ¸Ð½', 'Ð¡ÐµÑ€Ð³ÐµÐµÐ²Ð¸Ñ‡', 1799, 1837, 'Ð Ð¾ÑÑÐ¸Ñ'),
+	(3, '978-5-9287-3237-0', 'ÐŸÑ€Ð¸ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ð¨ÐµÑ€Ð»Ð¾ÐºÐ° Ð¥Ð¾Ð»Ð¼ÑÐ°: Ð¡Ð¾Ð±Ð°ÐºÐ° Ð‘Ð°ÑÐºÐµÑ€Ð²Ð¸Ð»ÐµÐ¹', 'Ð”ÐµÑ‚ÐµÐºÑ‚Ð¸Ð²', 2011, NULL,'1472', 2, 'ÐÑ€Ñ‚ÑƒÑ€','ÐšÐ¾Ð½Ð°Ð½ Ð”Ð¾Ð¹Ð»', NULL, 1859, 1930, 'Ð’ÐµÐ»Ð¸ÐºÐ¾Ð±Ñ€Ð¸Ñ‚Ð°Ð½Ð¸Ñ'),
+	(4, '978-5-45-828618-3', 'Ð—Ð°Ð´Ð°Ñ‡Ð¸ Ð¸ ÑƒÐ¿Ñ€Ð°Ð¶Ð½ÐµÐ½Ð¸Ñ Ð¿Ð¾ Ð¼Ð°Ñ‚ Ð°Ð½Ð°Ð»Ð¸Ð·Ñƒ Ð´Ð»Ñ Ð’Ð¢Ð£Ð—Ð¾Ð²', 'Ð¢ÐµÑ…Ð½Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð»Ð¸Ñ‚ÐµÑ€Ð°Ñ‚ÑƒÑ€Ð°', 1972, 'ÐÐ°ÑƒÐºÐ°', '790', 3, 'Ð‘Ð¾Ñ€Ð¸Ñ', 'Ð”ÐµÐ¼Ð¸Ð´Ð¾Ð²Ð¸Ñ‡', 'ÐŸÐ°Ð²Ð»Ð¾Ð²Ð¸Ñ‡', 1906, 1977, 'Ð Ð¾ÑÑÐ¸Ñ'),
+	(4, '978-5-45-828618-3', 'Ð—Ð°Ð´Ð°Ñ‡Ð¸ Ð¸ ÑƒÐ¿Ñ€Ð°Ð¶Ð½ÐµÐ½Ð¸Ñ Ð¿Ð¾ Ð¼Ð°Ñ‚ Ð°Ð½Ð°Ð»Ð¸Ð·Ñƒ Ð´Ð»Ñ Ð’Ð¢Ð£Ð—Ð¾Ð²', 'Ð¢ÐµÑ…Ð½Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð»Ð¸Ñ‚ÐµÑ€Ð°Ñ‚ÑƒÑ€Ð°', 1972, 'ÐÐ°ÑƒÐºÐ°', '790', 4, 'ÐÐ»ÐµÐºÑÐµÐ¹','Ð•Ñ„Ð¸Ð¼Ð¾Ð²','Ð’Ð»Ð°Ð´Ð¸Ð¼Ð¸Ñ€Ð¾Ð²Ð¸Ñ‡',1896, 1971,'ÐÐ·ÐµÑ€Ð±Ð°Ð¹Ð´Ð¶Ð°Ð½'),      
+	(5, '978-5-17-113039-8', 'ÐŸÑ€Ð¸ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ ÐžÐ»Ð¸Ð²ÐµÑ€Ð° Ð¢Ð²Ð¸ÑÑ‚Ð°', 'Ð Ð¾Ð¼Ð°Ð½', 2021, 'ÐÐ¡Ð¢', '590', 5, 'Ð§Ð°Ñ€Ð»Ð·','Ð”Ð¸ÐºÐºÐµÐ½Ñ', NULL, 1812, 1870, 'Ð’ÐµÐ»Ð¸ÐºÐ¾Ð±Ñ€Ð¸Ñ‚Ð°Ð½Ð¸Ñ')
 GO
 
 -- raiserror
 -- INSERT INTO Book(BookID, ISBN, Title, Genre, PublishingYear, PublishingHouse, Price)
--- VALUES (1, '978-5-94387-772-8', 'Ñ++ íà ïðèìåðàõ', 'Òåõíè÷åñêàÿ ëèòåðàòóðà', 2019, 'Íàóêà è Òåõíèêà', '1700')	
+-- VALUES (1, '978-5-94387-772-8', 'Ð¡++ Ð½Ð° Ð¿Ñ€Ð¸Ð¼ÐµÑ€Ð°Ñ…', 'Ð¢ÐµÑ…Ð½Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð»Ð¸Ñ‚ÐµÑ€Ð°Ñ‚ÑƒÑ€Ð°', 2019, 'ÐÐ°ÑƒÐºÐ° Ð¸ Ð¢ÐµÑ…Ð½Ð¸ÐºÐ°', '1700')	
 -- GO
 
 -- raiserror
 -- INSERT INTO Author(FirstName, LastName, Patronymic, BirthYear, DeathYear, Country)
--- VALUES ('Îñêàð','Óàéëüä', NULL, 1854, 1900, 'Èðëàíäèÿ')	   
+-- VALUES ('ÐžÑÐºÐ°Ñ€','Ð£Ð°Ð¹Ð»ÑŒÐ´', NULL, 1854, 1900, 'Ð˜Ñ€Ð»Ð°Ð½Ð´Ð¸Ñ')	   
 -- GO
 
 INSERT INTO OrderLineBook(OrderID, LineID, Quantity, book_id)
@@ -248,10 +248,10 @@ VALUES(1, 1, 3, 2),
 	(2, 1, 2, 4)
 GO
 
-SELECT * FROM Customer
-SELECT * FROM BookStore
-SELECT * FROM Orders
-SELECT * FROM OrderLineBook
+--SELECT * FROM Customer
+--SELECT * FROM BookStore
+--SELECT * FROM Orders
+--SELECT * FROM OrderLineBook
 SELECT * FROM Book
 SELECT * FROM Author
 SELECT * FROM BookByAuthor
@@ -267,12 +267,12 @@ SELECT * FROM BookByAuthor
 GO
 
 
-DELETE FROM Author WHERE AuthorID = 5
-SELECT * FROM Book
-SELECT * FROM Author
-SELECT * FROM BookByAuthor
-GO
-
+--DELETE FROM Author WHERE AuthorID = 5
+--SELECT * FROM Book
+--SELECT * FROM Author
+--SELECT * FROM BookByAuthor
+--GO
+/*
 --4
 SELECT DISTINCT PublishingHouse FROM Book
 
@@ -287,9 +287,9 @@ FROM Orders FULL OUTER JOIN BookStore ON Orders.bookstore_id = BookStore.BookSto
 
 SELECT * FROM Book WHERE Price BETWEEN 300 AND 1000 ORDER BY PublishingYear ASC
 
-SELECT * FROM Book WHERE  Genre IN ('Äåòåêòèâ', 'Äðàìà', 'Ðîìàí') ORDER BY Price DESC
+SELECT * FROM Book WHERE  Genre IN ('Ð”ÐµÑ‚ÐµÐºÑ‚Ð¸Ð²', 'Ð”Ñ€Ð°Ð¼Ð°', 'Ð Ð¾Ð¼Ð°Ð½') ORDER BY Price DESC
 
-SELECT * FROM Author WHERE FirstName LIKE 'À%'
+SELECT * FROM Author WHERE FirstName LIKE 'Ð%'
 
 SELECT COUNT(AuthorID) AS [Alive authors] FROM Author WHERE DeathYear IS NULL 
 
@@ -326,3 +326,4 @@ INTERSECT
 SELECT * FROM Customer WHERE CustomerID BETWEEN 3 AND 6
 ORDER BY CustomerID
 GO 
+*/
