@@ -248,10 +248,10 @@ VALUES(1, 1, 3, 2),
 	(2, 1, 2, 4)
 GO
 
---SELECT * FROM Customer
---SELECT * FROM BookStore
---SELECT * FROM Orders
---SELECT * FROM OrderLineBook
+SELECT * FROM Customer
+SELECT * FROM BookStore
+SELECT * FROM Orders
+SELECT * FROM OrderLineBook
 SELECT * FROM Book
 SELECT * FROM Author
 SELECT * FROM BookByAuthor
@@ -267,12 +267,12 @@ SELECT * FROM BookByAuthor
 GO
 
 
---DELETE FROM Author WHERE AuthorID = 5
---SELECT * FROM Book
---SELECT * FROM Author
---SELECT * FROM BookByAuthor
---GO
-/*
+DELETE FROM Author WHERE AuthorID = 5
+SELECT * FROM Book
+SELECT * FROM Author
+SELECT * FROM BookByAuthor
+GO
+
 --4
 SELECT DISTINCT PublishingHouse FROM Book
 
@@ -326,4 +326,4 @@ INTERSECT
 SELECT * FROM Customer WHERE CustomerID BETWEEN 3 AND 6
 ORDER BY CustomerID
 GO 
-*/
+
