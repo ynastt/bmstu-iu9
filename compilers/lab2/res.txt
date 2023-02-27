@@ -1,0 +1,21 @@
+ynastt@ynastt-VirtualBox:~/go/src/compilers/lab2/demo$ go build demo.go
+ynastt@ynastt-VirtualBox:~/go/src/compilers/lab2/demo$ ./demo test/test.go
+package main
+
+import "fmt"
+
+const goodbye string = "Goodbye!"
+const world string = "World!"
+const hello string = "Hello,"
+const tt string = "tt"
+
+var s string = tt
+
+func main() {
+        fmt.Println(s)
+        fmt.Println(hello)
+        fmt.Println(world)
+
+        var x string = goodbye
+        fmt.Println(x)
+}
