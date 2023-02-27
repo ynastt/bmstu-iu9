@@ -127,6 +127,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 	// a priori х = 1 1 1 1
+	xf := []float64{1, 1, 1, 1}
 	// a posteriori:
 	x := solution(a, b, c, d)
 
@@ -142,13 +143,25 @@ func main() {
 	fmt.Printf("A = %.16f\n\n", f)
 
 	fmt.Print("X: ")
+	for _, n := range xf {
+		fmt.Print(fmt.Sprintf("%.16f", n), " ")
+	}
+	fmt.Println()
+
+	fmt.Print("d: ")
+	for _, n := range d {
+		fmt.Print(fmt.Sprintf("%.16f", n), " ")
+	}
+	fmt.Println()
+
+	fmt.Print("\nX*: ")
 	for _, n := range x {
 		fmt.Print(fmt.Sprintf("%.16f", n), " ")
 	}
 	fmt.Println()
 
 	d_new := mulMatVec(m, x)
-	fmt.Print("new vector d: ")
+	fmt.Print("d*: ")
 	for _, n := range d_new {
 		fmt.Print(fmt.Sprintf("%.16f", n), " ")
 	}
@@ -157,7 +170,7 @@ func main() {
 	// the diference between old vector d and new vector d
 	var dif float64
 	r := make([]float64, 0)
-	fmt.Print("vector r: ")
+	fmt.Print("\nvector r = |d - d*|: ")
 	for i := 0; i < N; i++ {
 		dif = math.Abs(d[i] - d_new[i])
 		r = append(r, dif)
@@ -188,7 +201,12 @@ func main() {
 	}
 	
 	e := mulMatVec(inv_m, r)
-	fmt.Print("vector e: ")
+	fmt.Print("vector e1 = |x - x*|: ")
+	for i, n := range xf {
+		fmt.Print(fmt.Sprintf("%.16f",  math.Abs(n - x[i])), " ")
+	}
+	fmt.Println()
+	fmt.Print("vector e2 = A^(-1) * r: ")
 	for _, n := range e {
 		fmt.Print(fmt.Sprintf("%.16f", n), " ")
 	}
