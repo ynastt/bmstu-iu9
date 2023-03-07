@@ -40,10 +40,11 @@ def res(metd, k, a, b, f):
         iter += 1
     print(f' iterations: {iter}')
     print(f' res: {I_h}')
+    print(f' res + Richardson: {I_h + R}')
 
 if __name__ == "__main__":
     print("FUNC: exp(x)")
-    for i in range(1,4) :
+    for i in range(1,5) :
         print("\n-----------\nEPS = " + str(eps))
         print("\nCentral rectangles method: ")
         res(rect, 2, 0, 1, testFunc)
