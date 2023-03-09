@@ -1,0 +1,56 @@
+# f(x) = xcos(x)^2
+# [a,b] = [0, pi]
+
+-----------
+EPS = 0.01
+
+Central rectangles method: 
+ iterations: 2
+ res: 2.4674011002723395
+ res + Richardson: 2.4674011002723395
+
+Trapezoids method: 
+ iterations: 2
+ res: 2.4674011002723395
+ res + Richardson: 2.4674011002723395
+
+Simpson`s method: 
+ iterations: 2
+ res: 2.4674011002723395
+ res + Richardson: 2.4674011002723395
+
+-----------
+EPS = 0.001
+
+Central rectangles method: 
+ iterations: 2
+ res: 2.4674011002723395
+ res + Richardson: 2.4674011002723395
+
+Trapezoids method: 
+ iterations: 2
+ res: 2.4674011002723395
+ res + Richardson: 2.4674011002723395
+
+Simpson`s method: 
+ iterations: 2
+ res: 2.4674011002723395
+ res + Richardson: 2.4674011002723395
+
+-----------
+EPS = 0.0001
+
+Central rectangles method: 
+ iterations: 2
+ res: 2.4674011002723395
+ res + Richardson: 2.4674011002723395
+
+Trapezoids method: 
+ iterations: 2
+ res: 2.4674011002723395
+ res + Richardson: 2.4674011002723395
+
+Simpson`s method: 
+ iterations: 2
+ res: 2.4674011002723395
+ res + Richardson: 2.4674011002723395
