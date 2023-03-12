@@ -1,56 +1,75 @@
 # f(x) = xcos(x)^2
-# [a,b] = [0, pi]
+# [a,b] = [0, pi/2]
 
 -----------
 EPS = 0.01
 
 Central rectangles method: 
  iterations: 2
- res: 2.4674011002723395
- res + Richardson: 2.4674011002723395
+ res: 0.37363222359352405
+ res + Richardson: 0.36525604184824206
 
 Trapezoids method: 
- iterations: 2
- res: 2.4674011002723395
- res + Richardson: 2.4674011002723395
+ iterations: 3
+ res: 0.3636125883876151
+ res + Richardson: 0.36695246678958476
 
 Simpson`s method: 
  iterations: 2
- res: 2.4674011002723395
- res + Richardson: 2.4674011002723395
+ res: 0.3669524667895847
+ res + Richardson: 0.3668393717934952
 
 -----------
 EPS = 0.001
 
 Central rectangles method: 
- iterations: 2
- res: 2.4674011002723395
- res + Richardson: 2.4674011002723395
+ iterations: 4
+ res: 0.36725322733841864
+ res + Richardson: 0.36684480994171986
 
 Trapezoids method: 
- iterations: 2
- res: 2.4674011002723395
- res + Richardson: 2.4674011002723395
+ iterations: 4
+ res: 0.36604553395806505
+ res + Richardson: 0.3668565158148817
 
 Simpson`s method: 
  iterations: 2
- res: 2.4674011002723395
- res + Richardson: 2.4674011002723395
+ res: 0.3669524667895847
+ res + Richardson: 0.3668393717934952
 
 -----------
 EPS = 0.0001
 
 Central rectangles method: 
- iterations: 2
- res: 2.4674011002723395
- res + Richardson: 2.4674011002723395
+ iterations: 6
+ res: 0.36687538006255127
+ res + Richardson: 0.3668502538890432
 
 Trapezoids method: 
- iterations: 2
- res: 2.4674011002723395
- res + Richardson: 2.4674011002723395
+ iterations: 6
+ res: 0.36680006961565864
+ res + Richardson: 0.36685029927146423
 
 Simpson`s method: 
- iterations: 2
- res: 2.4674011002723395
- res + Richardson: 2.4674011002723395
+ iterations: 3
+ res: 0.3668565158148816
+ res + Richardson: 0.3668501190832347
+
+-----------
+EPS = 1e-05
+
+Central rectangles method: 
+ iterations: 7
+ res: 0.366856550324328
+ res + Richardson: 0.36685027374492024
+
+Trapezoids method: 
+ iterations: 8
+ res: 0.3668471375817167
+ res + Richardson: 0.3668502751625873
+
+Simpson`s method: 
+ iterations: 3
+ res: 0.3668565158148816
+ res + Richardson: 0.3668501190832347
+ 
