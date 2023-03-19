@@ -40,79 +40,71 @@ func main() {
 	h = (r - l) / SIZE
 	xs := []float64{}
 	for i := 0; i <= SIZE; i++ {
-		xs = append(xs, float64(i) * h)
+		xs = append(xs, l + float64(i) * h)
 	}
 	ys := []float64{}
 	for i := 0; i <= SIZE; i++ {
 		ys = append(ys, f(xs[i]))
 	}
 
-	fmt.Println("table for f(x):")
-	for i := 0; i <= SIZE; i++ {
-		fmt.Printf("%f; %f\n", xs[i], ys[i])
-	}
-	fmt.Println()
+	// fmt.Println("table for f(x):")
+	// for i := 0; i <= SIZE; i++ {
+	// 	fmt.Printf("%.1f; %.16f\n", xs[i], ys[i])
+	// }
 
 	d := []float64{}
-	for i := 1; i < SIZE - 1; i++ {
+	for i := 1; i < SIZE; i++ {
 		d = append(d, 3 * (ys[i + 1] - 2 * ys[i] + ys[i - 1]) / (h * h) )
 	}
 
 	b := []float64{}
-	for i := 1; i < SIZE - 1; i++ {
+	for i := 1; i < SIZE; i++ {
 		b = append(b, 4)
 	}
 
 	a := []float64{}
-	for i := 1; i < SIZE - 2; i++ {
+	for i := 1; i < SIZE - 1; i++ {
 		a = append(a, 1)
 	}
 
 	c := []float64{}
-	for i := 1; i < SIZE - 2; i++ {
+	for i := 1; i < SIZE - 1; i++ {
 		c = append(c, 1)
 	}
 
-	alpha, beta := direct(b, a, c, d, SIZE - 2)
-	coefC := reverse(alpha, beta, SIZE - 2)
+	alpha, beta := direct(b, a, c, d, SIZE - 1)
+	coefC := reverse(alpha, beta, SIZE - 1)
 	coefC = append([]float64{0}, coefC...)
-
-	coefA :=  make([]float64, 0, SIZE - 1)
-	for i := 0; i < SIZE - 1; i++ {
-		coefA = append(coefA, ys[i])
-	}
-
-	coefB := make([]float64, 0, SIZE - 1)
-	for i := 0; i < SIZE - 2; i++ {
-		coefB = append(coefB, (ys[i + 1] - ys[i]) / h - h / 3 * (coefC[i + 1] + 2 * coefC[i]))
-	}
-	coefB = append(coefB, (ys[SIZE - 1]-ys[SIZE - 2]) / h - 2.0 / 3 * h * coefC[SIZE - 2])
-
-	coefD := make([]float64, 0, SIZE-1)
-	for i := 0; i < SIZE - 2; i++ {
-		coefD = append(coefD, (coefC[i + 1] - coefC[i]) / ( 3 * h))
-	}
-	coefD = append(coefD, -coefC[len(coefC) - 1] / (3 * h))
-
-
-	fmt.Println("coefA: ", coefA)
-	fmt.Println("coefB: ", coefB)
-	fmt.Println("coefC: ", coefC)
-	fmt.Println("coefD: ", coefD)
+	coefC = append(coefC, 0)
 	
-	fmt.Println("\nSplines in interpolation nodes:")
-	for i := 0; i < SIZE - 1; i++ {
+	coefA :=  make([]float64, 0, SIZE)
+	for i := 1; i <= SIZE; i++ {
+		coefA = append(coefA, ys[i - 1])
+	}
+
+	coefB := make([]float64, 0, SIZE + 1)
+	for i := 1; i <= SIZE; i++ {
+		coefB = append(coefB, (ys[i] - ys[i - 1]) / h - (h / 3) * (coefC[i] + 2 * coefC[i - 1]))
+	}
+	
+	coefD := make([]float64, 0, SIZE)
+	for i := 1; i <= SIZE; i++ {
+		coefD = append(coefD, (coefC[i] - coefC[i - 1]) / ( 3 * h))
+	}
+	
+	fmt.Println("\ninterpolation nodes:") // погрешность сопоставима с вычислительной
+	for i := 0; i < SIZE; i++ {
 		varX := l + float64(i) * h
 		varY := f(varX)
 		s := coefA[i] + coefB[i] * (varX - xs[i]) + coefC[i] * math.Pow(varX - xs[i], 2) + coefD[i] * math.Pow(varX - xs[i], 3)
-		fmt.Printf("xi: %f, yi: %f, yi*: %f, |yi-yi*|: %f\n", varX, varY, s, math.Abs(varY - s))
+		fmt.Printf("x: %.1f, y: %.16f, y*: %.16f, |y-y*|: %.16f\n", varX, varY, s, math.Abs(varY - s))
 	}
-
-	fmt.Println("\nSplines in the middles of interpolation nodes:")
-	for i := 0; i < SIZE - 1; i++ {
+	// ближе к краям тоже сопоставима с выч
+	fmt.Println("\nin the middles of interpolation nodes:")
+	for i := 0; i < SIZE; i++ {
 		varX := l + (float64(i + 1) - 0.5) * h
 		varY := f(varX)
 		s := coefA[i] + coefB[i] * (varX - xs[i]) + coefC[i] * math.Pow(varX - xs[i], 2) + coefD[i] * math.Pow(varX - xs[i], 3)
-		fmt.Printf("xi: %f, yi: %f, yi*: %f, |yi-yi*|: %f\n", varX, varY, s, math.Abs(varY - s))
+		fmt.Printf("x: %.2f, y: %.16f, y*: %.16f, |y-y*|: %.16f\n", varX, varY, s, math.Abs(varY - s))
 	}
 }
