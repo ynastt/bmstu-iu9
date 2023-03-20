@@ -1,0 +1,8 @@
+PS D:\bmstu\compilers\lab12> go run main.go test.txt
+syntax error ([0], 0)
+String ([0], 6): """world"""
+RegExp ([1], 0): /[ab]\n/
+String ([1], 9): """3"4"""
+syntax error ([2], 0)
+String ([2 4], 2): """abcde"""
+RegExp ([5], 0): /av\n/
