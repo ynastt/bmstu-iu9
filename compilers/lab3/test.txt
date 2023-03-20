@@ -1,0 +1,6 @@
+hello """world"""
+/[ab]\n/ """3"4"""
+z """abc
+d
+e"""
+/av\n/
