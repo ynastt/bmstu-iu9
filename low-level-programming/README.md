@@ -1,5 +1,5 @@
 # low-level-programming
-assembly language tasks (1-6 in TASM, 7 in FASM)
+assembly language tasks (1-6 - TASM, 7 - FASM)
 ## tasks
 1. lab1 - calculate an expression `(a+b)/c + d + 3`
 2. doplab1 - output the value of the calculated expression in dec and hex numeric systems
