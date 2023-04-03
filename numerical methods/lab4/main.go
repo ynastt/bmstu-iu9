@@ -1,3 +1,4 @@
+//метод прогонки
 package main
 
 import (
@@ -32,28 +33,33 @@ func f(x float64) float64 {
 	return math.Exp(x)
 }
 
-func analyticalSolution(x float64) float64 {
+func analytical(x float64) float64 {
 	return math.Exp(x)
 }
 
 var (
-	p = 1.0
-	q = -1.0
-	a = 1.0
-	b = math.E
+	p = 2.0
+	q = -2.0
+	a =  analytical(0) //1.0
+	b = analytical(1) //math.E
 )
 
 func main() {
+	fmt.Printf("y'' + %0.1fy' %0.1fy = exp(x)\n", p, q)
+	fmt.Printf("y(0) = %f\ny(1) = %f\n", a, b)
 	n := 9
-	h := 1.0 / float64(n+1)
-	xs := make([]float64, 0, n+1)
-	for i := 0; i <= n; i++ {
+	fmt.Printf("Количество разбиений: %d\n", n + 1)
+	h := 1.0 / float64(n + 1)
+	//fmt.Println(h)
+	xs := make([]float64, 0, n + 2)
+	for i := 0; i <= n + 1; i++ {
 		xs = append(xs, float64(i) * h)
 	}
-	as := make([]float64, 0, n-1)
-	bs := make([]float64, 0, n)
-	cs := make([]float64, 0, n-1)
-	ds := make([]float64, 0, n)
+	
+	as := make([]float64, 0, n)
+	bs := make([]float64, 0, n + 1)
+	cs := make([]float64, 0, n)
+	ds := make([]float64, 0, n + 1)
 
 	for i := 0; i < n; i++ {
 		as = append(as, 1 - h / 2 *p)
@@ -68,11 +74,12 @@ func main() {
 	ds[0] = h * h * f(0) - a * (1 - h / 2 * p)
 	ds[len(ds) - 1] = h * h * f(float64(len(ds) - 1) * h) - b * (1 + h / 2 * p)
 
-	alpha, beta := direct(bs, as, cs, ds, n + 1)
-	ys := reverse(alpha, beta, n + 1)
-
-	for i, y := range ys {
-		fmt.Printf("x=%.16f, y=%.16f, y*=%.16f  |y-y*|=%.16f\n",
-					xs[i], analyticalSolution(xs[i]), y, math.Abs(y-analyticalSolution(xs[i])))
+	alpha, beta := direct(bs, as, cs, ds, len(ds))
+	ys := reverse(alpha, beta, len(ds))
+	ys = append(ys, b)
+	fmt.Println(len(xs), len(ys))
+	for i := range ys {
+		fmt.Printf("x=%.1f, y=%.16f, y*=%.16f  |y-y*|=%.16f\n",
+			float64(i) * h, analytical(float64(i) * h), ys[i], math.Abs(ys[i] - analytical(float64(i) * h)))
 	}
 }
