@@ -45,16 +45,11 @@ object FormulaOps {
 }
 
 object Main extends App {
-  val f1 = new Formula("")
-  val s2 = new EquationSystem(((3, 4), (2, 5)), (18, 19))
-  val s3 = new EquationSystem(((2.0, 1.0), (3.0, 2.0)), (5.0, 3.0))
-  val s4 = new EquationSystem(((2, 1), (4, 2)), (5, 3))
-  println(s1.solve())
-  println(s2.solve())
-  println(s3.solve())
-  println(s4.solve())
-
-  val s5 = new EquationSystem((("a", "b"), ("c", "d")), ("e", "f"))
-  /* Следующая строчка не компилируется */
-  // println(s5.solve())
+  val f1 = new Formula("abc") // string constant
+  val f2 = new Formula("a", 1) // variable with name a
+  val f3 = new Formula(2_00L) // Long constant
+  val f4 = new Formula(13_00L) // Long constant
+  val f45 = f4.add(f5) //1500 ?
+  println(f45.solve()) //?
+  
 }
