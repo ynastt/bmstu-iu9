@@ -23,20 +23,24 @@ trait FormulaOps[T] {
 }
 
 object FormulaOps {
-  implicit def float_ops[T](implicit
-      frac: Fractional[T]
-  ): FormulaOps[T, T] =
-    new FormulaOps[T, T] {
-      def div(a: T, b: T): T = frac.div(a, b)
+  implicit def float_ops[T](implicit frac: Fractional[T]): FormulaOps[T] =
+    new FormulaOps[T] {
       def add(a: T, b: T): T = frac.plus(a, b)
+      def sub(a: T, b: T): T = frac.minus(a, b)
+      def mul(a: T, b: T): T = frac.times(a, b)
+      def div(a: T, b: T): T = frac.div(a, b)
     }
 
-  implicit def int_ops[T](implicit
-      integral: Integral[T]
-  ): FormulaOps[T, Ratio[T]] =
-    new FormulaOps[T, Ratio[T]] {
-      def div(a: T, b: T): Ratio[T] = new Ratio(a, b)
-
+  implicit def int_ops[T](implicit integral: Integral[T]): FormulaOps[T] =
+    new FormulaOps[T] {
+			def add(a: T, b: T): T = integral.plus(a, b)
+      def sub(a: T, b: T): T = integral.minus(a, b)
+      def mul(a: T, b: T): T = integral.times(a, b)
+      def div(a: T, b: T): T = integral.quot(a, b)
+    }
+  implicit def str_ops[T](implicit s: String): FormulaOps[T] =
+    new FormulaOps[T] {
+			def add(a: T, b: T): T = a.toString() + b.toString()
     }
 }
 
