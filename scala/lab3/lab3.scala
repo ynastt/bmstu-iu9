@@ -1,9 +1,11 @@
 //aaaaaaaaaaa
 // flag: 1 - for variable's name, 2 - for constants type T, 3 +, 4 -, 5 *, 6 /
+// flag: 1 - for variable's name, 2 - for constants type T, 3 +, 4 -, 5 *, 6 /
 class Formula[T](a: T, flag: Int) {
   val form = a
   val typ = flag
-
+	// val variables: List[String] = List()
+  // val constants: List[T] = List()
   this(str: String, f: Int) = Formula(str, 1)
   this(value: T) = Formula(value, 2)
 
@@ -35,9 +37,13 @@ class Formula[T](a: T, flag: Int) {
     new Formula(res)
   }
   
-  def solve(mapa: Map[String, T])(implicit ops: FormulaOps[T]): T = {
-    
+  def solve(mapa: Map[String, T]): T = {
+    if (flag == 1) {
+    	val value = mapa(form)
+      value
+    }
   }
+  
 }
 
 trait FormulaOps[T] {
@@ -62,7 +68,7 @@ object FormulaOps {
     }
   implicit final val strOps: FormulaOps[String] =
     new FormulaOps[String] {
-			def add(a: String, b: String): String = a + b
+			def add(a: String, b: String): String = a + b 
     }
 }
 
