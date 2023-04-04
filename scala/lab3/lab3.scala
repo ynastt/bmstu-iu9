@@ -83,3 +83,80 @@ object Main extends App {
   println(f45.solve()) //?
   
 }
+
+// popitka number two
+class Variable(val name: String)
+
+class Formula[T] private (s: Map[String, T] => T) {
+  
+  def this(varName: Variable) = this(varMap => varMap(varName.name))
+  def this(value: T) = this(varMap => value)
+  
+  def eval(vars: Map[String, T]): T = s(vars) 
+
+  def +(other: Formula[T])(implicit op: FormulaOps[T]): Formula[T] = {
+    new Formula(varMap => op.add(this.eval(varMap), other.eval(varMap)))
+  }
+
+  def -(other: Formula[T])(implicit num: Numeric[T]): Formula[T] = {
+    new Formula(varMap => num.minus(this.eval(varMap), other.eval(varMap)))
+  }
+
+  def *(other: Formula[T])(implicit num: Numeric[T]): Formula[T] = {
+    new Formula(varMap => num.times(this.eval(varMap), other.eval(varMap)))
+  }
+  
+  def /(other: Formula[T])(implicit op: DivOps[T]): Formula[T] = {
+    new Formula(varMap => op.div(this.eval(varMap), other.eval(varMap)))
+  }
+  
+  // override def toString() : String = {
+  //      return this.s().toString()
+  //   }
+}
+
+trait DivOps[T] {
+  def div(a: T, b: T): T
+}
+
+object DivOps {
+  implicit def float_ops[T](implicit frac: Fractional[T]): DivOps[T] =
+    new DivOps[T] {
+      def div(a: T, b: T): T = frac.div(a, b)
+    }
+
+  implicit def int_ops[T](implicit integral: Integral[T]): DivOps[T] =
+    new DivOps[T] {
+      def div(a: T, b: T): T = integral.quot(a, b)
+    }
+}
+
+trait FormulaOps[T] {
+  def add(a: T, b: T): T
+}
+
+object FormulaOps {
+  implicit def num_ops[T](implicit num: Numeric[T]): FormulaOps[T] =
+    new FormulaOps[T] {
+      def add(a: T, b: T): T = num.plus(a, b)
+    }
+  
+  implicit final val str_ops: FormulaOps[String] =
+    new FormulaOps[String] {
+      def add(a: String, b: String): String = a + b
+    }
+}
+
+object Main extends App {
+  val f1 = new Formula("abc") // string constant
+  val a = new Variable("a") // variable with name a
+  val f2 = new Formula(a) 
+  println(a.name)
+  val f3 = new Formula("d") // string constant
+  val f13 = f1 + f3 // "abcd"
+  println(f13) // ??
+  val f4 = new Formula(2_000L)
+  val f5 = new Formula(2_0L)
+  val f45 = f4 / f5
+  println(f45) //?
+}
