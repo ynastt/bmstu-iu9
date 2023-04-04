@@ -1,12 +1,29 @@
 //aaaaaaaaaaa
+//aaaaaaaaaaa
 // flag: 1 - for variable's name, 2 - for constants type T, 3 +, 4 -, 5 *, 6 /
 class Formula[T](a: T, flag: Int) {
-  val formula = a
+  val form = a
 
   this(str: String, f: Int) = Formula(str, 1)
   this(value: T) = Formula(value, 2)
 
-  def solve[S]()(implicit ops: EquationSystemOps[T, S]): Option[(S, S)] = {
+	def add(f1 : Formula[T])(implicit ops: FormulaOps[T]): Formula[T] = {
+    
+  }
+
+  def sub[]()(implicit ops: FormulaOps[T]): Formula[T] = {
+    
+  }
+
+  def mul[]()(implicit ops: FormulaOps[T]): Formula[T] = {
+    
+  }
+
+  def div[]()(implicit ops: FormulaOps[T]): Formula[T] = {
+    
+  }
+  
+  def solve[S]()(implicit ops: FormulaOps[T]): Option[(S, S)] = {
     val d = num.minus(num.times(a11, a22), num.times(a21, a12))
     if (num.equiv(d, num.zero)) {
       None
