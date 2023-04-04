@@ -1,37 +1,42 @@
 //aaaaaaaaaaa
-//aaaaaaaaaaa
 // flag: 1 - for variable's name, 2 - for constants type T, 3 +, 4 -, 5 *, 6 /
 class Formula[T](a: T, flag: Int) {
   val form = a
+  val typ = flag
 
   this(str: String, f: Int) = Formula(str, 1)
   this(value: T) = Formula(value, 2)
 
 	def add(f1 : Formula[T])(implicit ops: FormulaOps[T]): Formula[T] = {
-    
+    val s1 = form
+    val s2 = f1.form
+    val sum = ops.add(s1, s2)
+    new Formula(sum)
   }
 
-  def sub[]()(implicit ops: FormulaOps[T]): Formula[T] = {
-    
+  def sub(f1 : Formula[T])(implicit ops: FormulaOps[T]): Formula[T] = {
+    val s1 = form
+    val s2 = f1.form
+    val sub = ops.sub(s1, s2)
+    new Formula(sub)
   }
 
-  def mul[]()(implicit ops: FormulaOps[T]): Formula[T] = {
-    
+  def mul(f1 : Formula[T])(implicit ops: FormulaOps[T]): Formula[T] = {
+    val s1 = form
+    val s2 = f1.form
+    val res = ops.mul(s1, s2)
+    new Formula(res)
   }
 
-  def div[]()(implicit ops: FormulaOps[T]): Formula[T] = {
-    
+  def div(f1 : Formula[T])(implicit ops: FormulaOps[T]): Formula[T] = {
+    val s1 = form
+    val s2 = f1.form
+    val res = ops.div(s1, s2)
+    new Formula(res)
   }
   
-  def solve[S]()(implicit ops: FormulaOps[T]): Option[(S, S)] = {
-    val d = num.minus(num.times(a11, a22), num.times(a21, a12))
-    if (num.equiv(d, num.zero)) {
-      None
-    } else {
-      val d1 = num.minus(num.times(b1, a22), num.times(a12, b2))
-      val d2 = num.minus(num.times(a11, b2), num.times(b1, a21))
-      Some((ops.div(d1, d), ops.div(d2, d)))
-    }
+  def solve(mapa: Map[String, T])(implicit ops: FormulaOps[T]): T = {
+    
   }
 }
 
@@ -64,6 +69,8 @@ object FormulaOps {
 object Main extends App {
   val f1 = new Formula("abc") // string constant
   val f2 = new Formula("a", 1) // variable with name a
+  val f12 = f1.add(f2) // "abc" + a
+  println(f12.solve(Map.apply("a" -> "d"))) // "abcd"
   val f3 = new Formula(2_00L) // Long constant
   val f4 = new Formula(13_00L) // Long constant
   val f45 = f4.add(f5) //1500 ?
