@@ -38,9 +38,9 @@ object FormulaOps {
       def mul(a: T, b: T): T = integral.times(a, b)
       def div(a: T, b: T): T = integral.quot(a, b)
     }
-  implicit def str_ops[T](implicit s: String): FormulaOps[T] =
-    new FormulaOps[T] {
-			def add(a: T, b: T): T = a.toString() + b.toString()
+  implicit final val strOps: FormulaOps[String] =
+    new FormulaOps[String] {
+			def add(a: String, b: String): String = a + b
     }
 }
 
