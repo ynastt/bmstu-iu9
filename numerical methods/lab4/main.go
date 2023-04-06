@@ -38,48 +38,59 @@ func analytical(x float64) float64 {
 }
 
 var (
-	p = 2.0
-	q = -2.0
+	p = 1.0
+	q = -1.0
 	a =  analytical(0) //1.0
 	b = analytical(1) //math.E
 )
 
 func main() {
+	fmt.Println("МЕТОД ПРОГОКНИ")
 	fmt.Printf("y'' + %0.1fy' %0.1fy = exp(x)\n", p, q)
 	fmt.Printf("y(0) = %f\ny(1) = %f\n", a, b)
-	n := 9
-	fmt.Printf("Количество разбиений: %d\n", n + 1)
-	h := 1.0 / float64(n + 1)
+	n := 40
+	fmt.Printf("Количество разбиений: %d\n", n)
+	h := 1.0 / float64(n)
 	//fmt.Println(h)
-	xs := make([]float64, 0, n + 2)
-	for i := 0; i <= n + 1; i++ {
+	xs := make([]float64, 0, n)
+	for i := 0; i < n + 1; i++ {
 		xs = append(xs, float64(i) * h)
 	}
 	
-	as := make([]float64, 0, n)
-	bs := make([]float64, 0, n + 1)
-	cs := make([]float64, 0, n)
-	ds := make([]float64, 0, n + 1)
+	as := make([]float64, 0, n - 2)
+	bs := make([]float64, 0, n - 1)
+	cs := make([]float64, 0, n - 2)
+	ds := make([]float64, 0, n -1)
 
-	for i := 0; i < n; i++ {
+	for i := 1; i < n - 1; i++ {
 		as = append(as, 1 - h / 2 *p)
 		cs = append(cs, 1 + h / 2 * p)
 	}
 
-	for i := 0; i < n + 1; i++ {
+	for i := 1; i < n; i++ {
 		bs = append(bs, h * h * q - 2)
-		ds = append(ds, h * h * f(float64(i) * h))
 	}
 
-	ds[0] = h * h * f(0) - a * (1 - h / 2 * p)
+	ds = append(ds, h * h * f(0) - a * (1 - h / 2 * p))
+	for i := 2; i < n; i++ {
+		ds = append(ds, h * h * f(float64(i) * h))
+	}
 	ds[len(ds) - 1] = h * h * f(float64(len(ds) - 1) * h) - b * (1 + h / 2 * p)
 
+	//fmt.Println(len(as), len(bs), len(cs), len(ds))
+	fmt.Println("rang:", len(ds))
 	alpha, beta := direct(bs, as, cs, ds, len(ds))
-	ys := reverse(alpha, beta, len(ds))
+	ys := []float64{a}
+	ys = append(ys, reverse(alpha, beta, len(ds))...)
 	ys = append(ys, b)
-	fmt.Println(len(xs), len(ys))
-	for i := range ys {
-		fmt.Printf("x=%.1f, y=%.16f, y*=%.16f  |y-y*|=%.16f\n",
-			float64(i) * h, analytical(float64(i) * h), ys[i], math.Abs(ys[i] - analytical(float64(i) * h)))
+	//fmt.Println(len(xs), len(ys))
+	// for i := range ys {
+	// 	fmt.Printf("x=%.1f, y=%.6f, y*=%.6f  |y-y*|=%.6f\n",
+	// 		float64(i) * h, analytical(xs[i]), ys[i], math.Abs(ys[i] - analytical(xs[i])))
+	// }
+
+	for i := 0; i < len(ys); i+=4 {
+		fmt.Printf("x=%.1f, y=%.6f, y*=%.6f  |y-y*|=%.6f\n",
+			float64(i) * h, analytical(xs[i]), ys[i], math.Abs(ys[i] - analytical(xs[i])))
 	}
 }
