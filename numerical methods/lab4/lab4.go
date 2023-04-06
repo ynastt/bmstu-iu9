@@ -52,9 +52,8 @@ func main() {
 	fmt.Printf("y'' + %0.1fy' + %0.1fy = (2 - 0.75*x)*cos(2x) + 1.5*sin(x)*cos(x)\n", p, q)
 	fmt.Printf("y(0) = %f\ny(1) = %f\n", a, b)
 	n := 40
-	fmt.Printf("Количество разбиений: %d\n", n)
+	//fmt.Printf("Количество разбиений: %d\n", n)
 	h := 1.0 / float64(n)
-	//fmt.Println(h)
 	xs := make([]float64, 0, n)
 	for i := 0; i < n + 1; i++ {
 		xs = append(xs, float64(i) * h)
@@ -80,17 +79,18 @@ func main() {
 	}
 	ds[len(ds) - 1] = h * h * f(float64(len(ds) - 1) * h) - b * (1 + h / 2 * p)
 
-	//fmt.Println(len(as), len(bs), len(cs), len(ds))
 	fmt.Println("rang:", len(ds))
 	alpha, beta := direct(bs, as, cs, ds, len(ds))
 	ys := []float64{a}
 	ys = append(ys, reverse(alpha, beta, len(ds))...)
 	ys = append(ys, b)
+	
 	//fmt.Println(len(xs), len(ys))
 	// for i := range ys {
 	// 	fmt.Printf("x=%.1f, y=%.6f, y*=%.6f  |y-y*|=%.6f\n",
 	// 		float64(i) * h, analytical(xs[i]), ys[i], math.Abs(ys[i] - analytical(xs[i])))
 	// }
+	
 	maxInaccuracy := 0.0
 	for i := 0; i < len(ys); i+=4 {
 		fmt.Printf("x=%.1f, y=%.6f, y*=%.6f  |y-y*|=%.6f\n",
