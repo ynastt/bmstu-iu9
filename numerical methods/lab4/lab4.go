@@ -1,4 +1,5 @@
 // индивидуальный вариант 29
+// метод прогонки
 package main
 
 import (
@@ -29,60 +30,74 @@ func reverse(alpha, beta []float64, size int) (x []float64) {
 	return x
 }
 
+
 func f(x float64) float64 {
 	return 3 * math.Sin(2 * x) 
 }
 
 //через вольфрам альфа 
-func analyticalSolution(x float64) float64 {
+func analytical(x float64) float64 {
 	return (2 - 0.75 * x) * math.Cos(2 * x) + 1.5 * math.Sin(x) * math.Cos(x)  	
 }
 
 var (
 	p = 0.0
 	q = 4.0
-	a = analyticalSolution(0)
-	b = analyticalSolution(1)
+	a = analytical(0)
+	b = analytical(1)
 )
 
 func main() {
-	n := 9
-	h := 1.0 / float64(n+1)
-	xs := make([]float64, 0, n+1)
-	for i := 0; i <= n; i++ {
+	fmt.Println("МЕТОД ПРОГОКНИ")
+	fmt.Printf("y'' + %0.1fy' + %0.1fy = (2 - 0.75*x)*cos(2x) + 1.5*sin(x)*cos(x)\n", p, q)
+	fmt.Printf("y(0) = %f\ny(1) = %f\n", a, b)
+	n := 40
+	fmt.Printf("Количество разбиений: %d\n", n)
+	h := 1.0 / float64(n)
+	//fmt.Println(h)
+	xs := make([]float64, 0, n)
+	for i := 0; i < n + 1; i++ {
 		xs = append(xs, float64(i) * h)
 	}
-	as := make([]float64, 0, n-1)
-	bs := make([]float64, 0, n)
-	cs := make([]float64, 0, n-1)
-	ds := make([]float64, 0, n)
+	
+	as := make([]float64, 0, n - 2)
+	bs := make([]float64, 0, n - 1)
+	cs := make([]float64, 0, n - 2)
+	ds := make([]float64, 0, n -1)
 
-	for i := 0; i < n; i++ {
+	for i := 1; i < n - 1; i++ {
 		as = append(as, 1 - h / 2 *p)
 		cs = append(cs, 1 + h / 2 * p)
 	}
 
-	for i := 0; i < n + 1; i++ {
+	for i := 1; i < n; i++ {
 		bs = append(bs, h * h * q - 2)
+	}
+
+	ds = append(ds, h * h * f(0) - a * (1 - h / 2 * p))
+	for i := 2; i < n; i++ {
 		ds = append(ds, h * h * f(float64(i) * h))
 	}
-
-	ds[0] = h * h * f(0) - a * (1 - h / 2 * p)
 	ds[len(ds) - 1] = h * h * f(float64(len(ds) - 1) * h) - b * (1 + h / 2 * p)
 
-	alpha, beta := direct(bs, as, cs, ds, n + 1)
-	ys := reverse(alpha, beta, n + 1)
-
-	//maxDiff := 0.0
-
-	for i, y := range ys {
-		fmt.Printf("x=%.16f, y=%.16f, y*=%.16f  |y-y*|=%.16f\n",
-					xs[i], analyticalSolution(xs[i]), y, math.Abs(y-analyticalSolution(xs[i])))
-
-		// if math.Abs(y-analyticalSolution(xs[i])) > maxDiff {
-		// 	maxDiff = math.Abs(y - analyticalSolution(xs[i]))
-		// }
+	//fmt.Println(len(as), len(bs), len(cs), len(ds))
+	fmt.Println("rang:", len(ds))
+	alpha, beta := direct(bs, as, cs, ds, len(ds))
+	ys := []float64{a}
+	ys = append(ys, reverse(alpha, beta, len(ds))...)
+	ys = append(ys, b)
+	//fmt.Println(len(xs), len(ys))
+	// for i := range ys {
+	// 	fmt.Printf("x=%.1f, y=%.6f, y*=%.6f  |y-y*|=%.6f\n",
+	// 		float64(i) * h, analytical(xs[i]), ys[i], math.Abs(ys[i] - analytical(xs[i])))
+	// }
+	maxInaccuracy := 0.0
+	for i := 0; i < len(ys); i+=4 {
+		fmt.Printf("x=%.1f, y=%.6f, y*=%.6f  |y-y*|=%.6f\n",
+			float64(i) * h, analytical(xs[i]), ys[i], math.Abs(ys[i] - analytical(xs[i])))
+			if math.Abs(ys[i] - analytical(xs[i])) > maxInaccuracy {
+				maxInaccuracy = math.Abs(ys[i] - analytical(xs[i]))
+			}
 	}
-
-	//fmt.Printf("max_diff=%.16f\n", maxDiff)
+	fmt.Printf("||y-y*||=%.6f\n", maxInaccuracy)
 }
