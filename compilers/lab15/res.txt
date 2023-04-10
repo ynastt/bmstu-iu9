@@ -1,0 +1,11 @@
+ynast@ubuntu22:~/compilers/lab15$ sh run.sh
+SYMBOL (1,1) - (1,15): `a\'b\n\0BC1c`
+KEYWORD_FOR (1,16) - (1,19): for
+Error (2,2): unexpected character
+Error (2,4): unexpected character
+KEYWORD_FORWARD (2,5) - (2,12): forward
+KEYWORD_Z (2,13) - (2,14): z
+IDENT (3,1) - (3,11): 0
+Error (3,13): unexpected character
+Error (3,14): unexpected character
+IDENT (3,15) - (3,22): 1
