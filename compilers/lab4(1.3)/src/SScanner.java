@@ -95,7 +95,30 @@ public class SScanner {
                             return new IdentToken(compiler.addName(currWord), currWord, start, curCopy);
                         }
                     } else if (cur.isDigit()) {
-                        compiler.addMessage(true, start, "ident cannot start with not a letter");
+                        int StartedWithdigit = 0;
+                        Boolean isError = false;
+                        do {
+                            if (cur.isLetter()) {
+                                if (StartedWithdigit == 1) {
+                                    currWord = "";
+                                    compiler.addMessage(true, start, "ident cannot start with not a letter");
+                                    isError = true;
+                                    while (cur.getCp() != '\n' && cur.getCp() != ' ' && cur.getCp() != -1) {
+                                        cur.next();
+                                    }
+
+                                }
+                            } else {
+                                StartedWithdigit = 1;
+                                currWord += (char)(cur.getCp());
+                                cur.next();
+                            }
+                        } while(cur.isLetterOrDigit());
+                        curCopy = cur.copy();
+                        if (!isError) {
+                            return new NumberToken(Long.parseLong(currWord, 16), currWord, start, curCopy);
+                        }
+                    } else {
                         while (cur.getCp() != '\n' && cur.getCp() != ' ' && cur.getCp() != -1) {
                             cur.next();
                         }

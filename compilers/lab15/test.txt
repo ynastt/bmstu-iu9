@@ -1,3 +1,13 @@
-`a\'b\n\0BC1c` for
+for
 @ $ forward z 
-id&9enT!Fi %1 n5&@'8d
+id9enTFi $1 
+id9enTFi 
+id9enT
+id9enT
+id9en
+id9enT '\\' '\''
+'t'
+'\n'  
+'\0xC' 
+'\0xBC' 
+'\0x12AC' 
