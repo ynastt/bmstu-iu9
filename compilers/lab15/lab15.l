@@ -78,8 +78,6 @@
         printf(":%s\n",msg);
     }
 
-    int lexem_size;
-
     typedef struct{
         int size;
         char** names;
@@ -124,9 +122,9 @@ IDENT           [a-zA-Z0-9]{2,10}
 
 [\n\t ]+
 
-\'          	  	        {
-						        BEGIN(CHAR1); 
-						        continued = 1; 
+\'          	  	    {
+				BEGIN(CHAR1); 
+				continued = 1; 
                             }    
 
 <CHAR1><<EOF>>              {
@@ -161,18 +159,14 @@ IDENT           [a-zA-Z0-9]{2,10}
                                 yylval->charCode = 0;
                                 return TAG_CHAR;    
                             }                    
-<CHAR1>\\0x                  {
-                                yylval->charCode= yytext[0];
-                                BEGIN(CHAR3);
-                                continued = 1;
-                            }
-<CHAR3>[0-9a-zA-Z]*         {
+<CHAR1>\\[0-9a-fA-F]*       {
                                 int x;
+                                yytext++;
                                 sscanf(yytext, "%x", &x);
                                 yylval->charCode = x;
                                 BEGIN(CHAR2);
-                                continued = 1;   
-                            }                            
+                                continued = 1;
+                            }                           
 <CHAR1>.                    {
                                 yylval->charCode = yytext[0];
                                 BEGIN(CHAR2);
