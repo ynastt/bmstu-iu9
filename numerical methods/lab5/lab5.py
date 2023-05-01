@@ -1,63 +1,87 @@
-import math
+import pandas as pd
 import numpy as np
-from numpy import linalg
+from tabulate import tabulate
 
-l = 1
-r = 5
-n = 9
 m = 4
+l = 0
+r = 1
+n = 10
 
-h = (r - l) / (n - 1)
-y = []
-x = []
-mids = []
-a = []
-b = [0] * m
+# для индивидуального варианта
+# l = 1
+# r = 5
+# n = 8
+
+h = (r - l) / n
 
 def f(x):
-    return x**2
+    return np.exp(x)
 
-x = [l + i * h for i in range(0, n+1)]
-mids = [l + (i + 0.5) * h for i in range(0, n+1)]
+def find_lambd2(A, b):
+    return (np.linalg.inv(A).dot(b.T)).T
 
-y = [f(l + i * h) for i in range(0, n+1)]   
-# y = [3.33, 2.30, 1.60, 1.27, 1.18, 0.99, 1.41, 0.80, 1.12]
-a = [[sum(x[k] ** (i+j) for k in range(0,n))  for j in range(0, m)] for i in range(0,m)]
-
-b = [sum(y[k] * (x[k] ** i) for k in range(0,n))  for i in range(0, m)]
-
-b = np.array(b).reshape(len(b), 1)    
-
-print('\na:\n', np.array(a))
-print('\nb:\n', np.array(b))
-
-
-mat = linalg.inv(a)
-lambd = np.dot(mat, b)
-print('\nλ:\n', lambd)
-
-z = []
-z_mid = []
-for k in range(n):
-    z_k = 0
-    z_mid_k = 0
+def find_lambd(A, b):
+    T = np.zeros((m,m))
+    x = np.empty(m)
+    y = np.empty(m)
+    
+    # T 
     for i in range(m):
-        z_k += lambd[i][0] * x[k]**i
-        z_mid_k += lambd[i][0] * mids[k]**i
-    z.append(z_k)
-    z_mid.append(z_mid_k)
+        for j in range(i):
+            T[i][j] = (A[i][j] - sum([T[i][k] * T[j][k] for k in range(j)])) / T[j][j]
+        T[i][i] = np.sqrt(A[i][i] - sum(T[i][k] ** 2 for k in range(i)))
+        
+    # прямой ход
+    for i in range(m):
+        y[i] = (b[i] - sum([T[i,k]*y[k] for k in range(i)])) / T[i,i] 
+    
+    # обратный ход
+    for i in range(m-1, -1, -1):
+        x[i] = (y[i] - sum([T[k,i]*x[k] for k in range(i+1, m)])) / T[i,i] 
 
+    return x
+    
+xs = np.linspace(l, r, n + 1, True)
+ys = np.vectorize(f)(xs)
 
-D = sum((y[k] - z[k])**2 for k in range(0,n))
-D = (math.sqrt(D)) / (math.sqrt(n))
+# для индивидуального варианта
+# mids = np.linspace(l + 0.5 * h, r - 0.5 * h, n, True)
+# ys = np.array([3.33, 2.30, 1.60, 1.27, 1.18, 0.99, 1.41, 0.80, 1.12])
+# print("\nxs:\n", xs)
+# print("\nys:\n", ys)
+# print("\nmids:\n", mids)
+
+A = np.empty((m,m))
+b = np.empty(m)
+A = np.array([[sum(xs[k] ** (i+j) for k in range(0,n+1))  for j in range(0, m)] for i in range(0,m)])
+b = np.array([sum(ys[k] * (xs[k] ** i) for k in range(0,n+1))  for i in range(0, m)])
+print("\nA:", A)
+print("\nb:", b)
+
+lambd = find_lambd(A,b)
+print("\nλ:", lambd)
+
+def z(x):
+    return sum([lambd[i] * x**i for i in range(m)])
+
+D = sum([(ys[k] - z(xs)[k]) for k in range(m+1)])**2 
+D = np.sqrt(D) / np.sqrt(n)
 print("\nСКО Δ:", D)
 
-d = sum(y[k]**2 for k in range(0,n))
-d = D / d
+d = sum([ys[k]**2 for k in range(n+1)])
+d = D / np.sqrt(d)
 print("\nотн. погрешность δ:", d)
 print()
 
-for k in range(n):
-    print("x:", x[k], "  y:", y[k], "  y*:", z[k], "  |y - y*|:", abs(y[k] - z[k]))
-    if k != n-1:
-        print("x:", mids[k], "          y*:", z_mid[k])
+tab = np.linspace(l, r, n+n+1, True)
+counted = np.vectorize(z)(tab)
+given = np.vectorize(f)(tab)
+
+res = pd.DataFrame({"x": tab, "f(x)": given, "z(x)": counted,  "|f - z|": np.abs(given - counted)})
+print(tabulate(res, headers='keys', tablefmt='github', showindex=False))
+
+# для индивидуального варианта
+# for k in range(n + 1):
+#     print("x:", xs[k], "  f(x):", ys[k], "  z(x):", z(xs)[k], "  |f - z|:", abs(ys[k] - z(xs)[k]))
+#     if k != n:
+#         print("x:", mids[k], "              z(x):", z(mids)[k])
