@@ -1,0 +1,11 @@
+PS D:\bmstu\numericMethods\lab6> python3 lab6.py
+f:  3*x**2 - 3*x*y - 2*x - 4*y**2 + y
+df/dx:  6*x - 3*y - 2
+df/dy:  -3*x - 8*y + 1
+d^2f/dx^2:  6
+d^2f/dxdy:  -3
+d^2f/dy^2:  -8
+
+methods min (0.333329076144370, 0.000103369186268979)
+analytical min: (0.3333333333333333, 0.0)
+difference: (4.25718896357452e-6, 0.000103369186268979)
