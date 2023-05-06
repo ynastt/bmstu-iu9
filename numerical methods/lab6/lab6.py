@@ -7,9 +7,7 @@ x, y = symbols('x y')
 
 def f():
     return 3*x**2 - 3*x*y - 4*y**2 - 2*x + y
-    # return 2*x**2 + 2*x*y + 2*x + y**2 + 0.3 * sin(x**2 + y**2)
 
-# a?
 def analytical_min():
     return 1/3, 0.0
 
