@@ -66,8 +66,8 @@ if __name__ == "__main__":
 
     b = np.array([1.0 + bb, 2.0 - bb, 3.0, 1.0])
     
-    print(a)
-    print(b)
+    print('\nA:\n',a)
+    print('\nb:', b)
     blen = len(b)
 
     x = [0] * blen
