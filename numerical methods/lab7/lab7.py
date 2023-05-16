@@ -123,7 +123,7 @@ if __name__ == "__main__":
         print("δ_k:", delta)
 
         if delta < 0.01:
-            print("\nstop\n")
+            # print("\nstop\n")
             break
         else:
             x = x1
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     print("B:", new_b)
 
     print("\n--Zeidel's method--\n")
-    new_x = zeidel(a, b, 0.0001)
+    new_x = zeidel(a, b, 0.01)
 
     print("X", new_x)
     new_b = [0] * blen
@@ -152,4 +152,5 @@ if __name__ == "__main__":
     diff2 = [np.abs(rr[i] - new_x[i]) for i in range(len(rr))]
     dd = {"true x*": rr, "simple iter x_s": x, "zeidel x_z": new_x,  "|x* - x_s|": diff1, "|x* - x_z|": diff2}
     res = pd.DataFrame(dd)
+    print('\n--Result table--\n')
     print(tabulate(res, headers='keys', tablefmt='github', showindex=False))
