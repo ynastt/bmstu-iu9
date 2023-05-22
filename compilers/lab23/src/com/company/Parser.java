@@ -37,7 +37,7 @@ public class Parser {
         Stack<String> stackStr = new Stack<>();
         stackIn.push(sparent);
         stackStr.push("GRAMMAR");
-        System.out.println(tokens.size());
+
         int i = 0;
         // next token
         Token a = tokens.get(i);

@@ -18,7 +18,7 @@ public class Lexer {
         String EndBrace = ">";
         String Open = "\\(";
         String Close = "\\)";
-        String Arrow = "^ {2,3}(?:\\s)";
+        String Arrow = "^ {3,4}(?=\\S)";
         String comment = "\\'.*";
         String pattern = "(?<Term>^" + Term + ")|(?<NonTerm>^" + NonTerm +
                 ")|(?<ArithmeticOp>^" + ArithmeticOp +

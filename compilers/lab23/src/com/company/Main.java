@@ -19,11 +19,11 @@ public class Main {
                 Lexer ide = new Lexer();
                 ArrayList<Token> t = ide.main(str, indInFile);
                 tokens.addAll(t);
-//                for (int j = 0; j < t.size(); j++) {
-//                    tokens.add(t.get(j));
-//                    System.out.printf("%s (%d,%d): %s%n",
-//                            t.get(j).type, t.get(j).row, t.get(j).column + 1, t.get(j).token);
-//                }
+                for (int j = 0; j < t.size(); j++) {
+                    tokens.add(t.get(j));
+                    System.out.printf("%s (%d,%d): %s%n",
+                            t.get(j).type, t.get(j).row, t.get(j).column + 1, t.get(j).token);
+                }
                 comments.addAll(ide.getComments());
                 str = b.readLine();
             }
@@ -31,7 +31,7 @@ public class Main {
         catch(IOException ex){
             System.out.println(ex.getMessage());
         }
-        System.out.println(tokens.size());
+
         Token t = new Token();
         t.type = "EOF";
         tokens.add(t);
