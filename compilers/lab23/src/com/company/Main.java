@@ -13,12 +13,10 @@ public class Main {
             str = b.readLine();
             while(str != null ){
                 indInFile++;
-                if (str.charAt(0) == '<' && str.charAt(str.length()-1) == '>') {
-                    str = str.substring(1,str.length()-1);
-                }
                 Lexer ide = new Lexer();
                 ArrayList<Token> t = ide.main(str, indInFile);
                 tokens.addAll(t);
+                System.out.println();
                 for (int j = 0; j < t.size(); j++) {
                     tokens.add(t.get(j));
                     System.out.printf("%s (%d,%d): %s%n",
@@ -37,9 +35,10 @@ public class Main {
         tokens.add(t);
         Parser parser = new Parser();
         parser.init_table();
+        System.out.println("\nTREE:");
         Node tree = parser.topDownParse(tokens);
         tree.print("");
-        System.out.println("COMMENTS:");
+        System.out.println("\nCOMMENTS:");
         for(Fragment comm : comments){
             System.out.println(comm.toString());
         }
