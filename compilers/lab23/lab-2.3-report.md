@@ -24,48 +24,48 @@
 В качестве входного языка выступает язык представления правил грамматики, 
 лексика и синтаксис которого восстанавливаются из примера в индивидуальном варианте.
 Отметим, что каждое определение грамматики заключено в угловых скобках.
-Таким образом, имеем:
-`PROG ::= StartBrace DEF EndBrace PROG | $$\varepsilon$$`
+Таким образом, имеем:  
+`PROG ::= StartBrace DEF EndBrace PROG | $$\varepsilon$$`  
 где PROG - программа (входной текст), StartBrace и EndBrace - угловые скобк,
-DEF - определение грамматики.
+DEF - определение грамматики.  
 При этом определение представляет собой либо правило переписывания нетерминала, 
-либо аксиому:
-`DEF ::= RULE | AXIOM`
+либо аксиому:  
+`DEF ::= RULE | AXIOM`  
 Правило грамматики выглядит как нетерминальный символ, за которым следует правая
-часть правила в виде перечисления альтернатив:
-`RULE ::= NonTerm RP`
+часть правила в виде перечисления альтернатив:  
+`RULE ::= NonTerm RP`  
 Аксиома начинается с ключевого слова "axiom", после которого следует нетерминал в 
-угловых скобках:
-`AXIOM ::= AxiomSign StartBrace NonTerm EndBrace`
+угловых скобках:  
+`AXIOM ::= AxiomSign StartBrace NonTerm EndBrace`  
 Каждая правая часть правила представляет собой последовательность альтернатив, 
-заключенных в угловые скобки:
-`RP ::= StartBody BODY EndBrace RP | $$\varepsilon$$`
+заключенных в угловые скобки:  
+`RP ::= StartBody BODY EndBrace RP | $$\varepsilon$$`  
 А сама альтернатива, расположенная внутри угловых скобок является последовательностью
-терминальных и нетерминальных символов:
-`BODY ::= NonTerm BODY | Term BODY | $$\varepsilon$$`
+терминальных и нетерминальных символов:  
+`BODY ::= NonTerm BODY | Term BODY | $$\varepsilon$$`  
 
-Таким образом, имеем следующие токены:
-- Терминал (имя с маленькой буквы или знак пунктуации, кроме угловых скобок);
-- Нетерминал (имя с заглавной буквы, с возможной одинарной кавычкой после);
-- Ключевое слово "axiom";
+Таким образом, имеем следующие токены:  
+- Терминал (имя с маленькой буквы или знак пунктуации, кроме угловых скобок);  
+- Нетерминал (имя с заглавной буквы, с возможной одинарной кавычкой после);  
+- Ключевое слово "axiom";  
 - Открывающие и закрывающие угловые кавычки.
 
 ## Лексическая структура
-StartBrace ::= '<'
-EndBrace ::= '>'
-Term ::= 'a' | 'b' | ... | 'z' | '+' | '*' | '(' | ')'
-NonTerm ::= 'A' | 'B' | ... | 'Z' | 'A'' | 'B'' | ... | 'Z''
-AxiomSign ::= "axiom"
-Comment ::= '.* 
+StartBrace ::= '<'  
+EndBrace ::= '>'  
+Term ::= 'a' | 'b' | ... | 'z' | '+' | '*' | '(' | ')'  
+NonTerm ::= 'A' | 'B' | ... | 'Z' | 'A'' | 'B'' | ... | 'Z''  
+AxiomSign ::= "axiom"  
+Comment ::= '.*   
 (то есть комментарий это любые слова после одинарной кавычки)
 
 ## Грамматика языка
-PROG ::= StartBrace DEF EndBrace PROG | $$\varepsilon$$
-DEF ::= RULE | AXIOM
-AXIOM ::= AxiomSign StartBrace NonTerm EndBrace
-RULE ::= NonTerm RP
-RP ::= StartBody BODY EndBrace RP | $$\varepsilon$$
-BODY ::= NonTerm BODY | Term BODY | $$\varepsilon$$
+PROG ::= StartBrace DEF EndBrace PROG | $\varepsilon$  
+DEF ::= RULE | AXIOM  
+AXIOM ::= AxiomSign StartBrace NonTerm EndBrace  
+RULE ::= NonTerm RP  
+RP ::= StartBody BODY EndBrace RP | $\varepsilon$ 
+BODY ::= NonTerm BODY | Term BODY | $\varepsilon$  
 
 ## Программная реализация
 
