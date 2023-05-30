@@ -39,7 +39,7 @@ DEF - определение грамматики.
 `AXIOM ::= AxiomSign StartBrace NonTerm EndBrace`  
 Каждая правая часть правила представляет собой последовательность альтернатив, 
 заключенных в угловые скобки:  
-`RP ::= StartBody BODY EndBrace RP | $$\varepsilon$$`  
+`RP ::= StartBrace BODY EndBrace RP | $$\varepsilon$$`  
 А сама альтернатива, расположенная внутри угловых скобок является последовательностью
 терминальных и нетерминальных символов:  
 `BODY ::= NonTerm BODY | Term BODY | $$\varepsilon$$`  
