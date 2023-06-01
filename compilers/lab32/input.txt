@@ -1,0 +1,6 @@
+Sub mySub(ByVal q As String)
+Dim str As String
+str = q
+Dim d As Int
+d = 2 + 5
+End Sub
