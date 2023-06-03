@@ -1,0 +1,106 @@
+====rule #1=====
+<E    <T {< <+> <-> > T} > >
+Rule -> OPEN  NTERM Alt {Alt} CLOSE
+	  <       E      Alt         >
+
+<T {< <+> <-> > T} >
+Alt -> OPEN Body CLOSE {OPEN Body CLOSE} | eps
+       <    Body     >
+
+T {< <+> <-> > T} 
+Body -> NTERM {Body}
+	  T  Body 
+	 
+{< <+> <-> > T}
+Body -> STAROPEN Body STARCLOSE {Body}
+        {        Body         }
+
+< <+> <-> > T
+Body -> OPEN I CLOSE {Body} 
+        <    I     >  Body
+
+<+> <->                                 T
+I -> OPEN Body CLOSE {I}              Body -> NTERM {Body}
+     <     Body    >  I                         T
+
++
+Body -> TERM {Body}
+         +
+
+<->
+I -> OPEN Body CLOSE {I}
+     <    Body    >
+
+-
+Body -> TERM {Body}
+         -
+
+
+
+
+====rule #2=====
+<T    <F {< <*> </> > F}>>
+Rule -> OPEN  NTERM Alt {Alt} CLOSE
+	  <       T      Alt        >
+
+<F {< <*> </> > F}>
+Alt -> OPEN Body CLOSE {OPEN Body CLOSE} | eps
+       <    Body     >
+
+F {< <*> </> > F} 
+Body -> NTERM {Body}
+	  F  Body 
+	 
+{< <*> </> > F}
+Body -> STAROPEN Body STARCLOSE {Body}
+        {        Body         }
+
+< <*> </> > F
+Body -> OPEN I CLOSE {Body} 
+        <    I     >  Body
+
+<*> </>                               F
+I -> OPEN Body CLOSE {I}              Body -> NTERM {Body}
+     <     Body    >  I                        F
+
+*
+Body -> TERM {Body}
+         *
+ 
+</>
+I -> OPEN Body CLOSE {I}
+     <    Body    >
+
+/
+Body -> TERM {Body}
+        /
+
+
+
+
+
+====rule #3=====
+<F    <n> <- F>  <( E )>  >
+Rule -> OPEN  NTERM Alt {Alt} CLOSE
+	  <      F    Alt  Alt   Alt    >
+
+<n> <- F> <( E )>
+Alt -> OPEN Body CLOSE {OPEN Body CLOSE} | eps
+       <    Body     >  <   Body    >  <    Body    >
+
+
+<n>                              <- F>                      <( E )>
+Alt -> OPEN Body CLOSE           Alt -> OPEN Body CLOSE     Alt -> OPEN Body CLOSE
+
+
+n                                  - F                       ( E )
+Body -> TERM {Body}              Body -> TERM {Body}         Body -> TERM {Body}
+	  n                                 -   Body                   (     Body
+	 
+                                 F                           E )
+                                 Body -> NTERM {Body}        Body -> NTERM {Body}
+                                         F                            E    Body
+                                                             
+                                                             )
+                                                             Body -> TERM {Body}
+                                                                      )
