@@ -1,0 +1,94 @@
+Сформулируем абстрактный синтаксис.
+
+Программа начинается с объявления типов, затем идет объявление переменных, за которым располагается последовательность операторов:
+
+Program → TYPE TypeDefs VAR VarDefs BEGIN Statements END .
+
+Объявления типов — ноль и более объявлений:
+TypeDefs → TypeDef*
+
+Объявление типа состоит из имени, знака равно, ключевого слова RECORD, СуперТипа, тела с объявлением переменных и ключевого слова END и точки с запятой:
+TypeDef → VARNAME = RECORD SuperType VarDefs END;
+
+СуперТип заключен в круглые скобки, если он есть
+SuperType → ( VARNAME ) | ε
+
+Объявления переменных — ноль и более объявлений переменных:
+VarDefs → VarDef*
+
+Объявление переменной состоит из имен переменных данного типа и самого типа, после знака двоеточия:
+VarDef → Vars : Type ;
+
+Имен переменных одного типа может быть несколько через запятую, а может быть одно:
+Vars → VARNAME  
+Vars → VARNAME , Vars | ε
+
+Тип — целый, вещественный, логический, СуперТип, указатель на тип:
+Type → INTEGER | REAL | BOOLEAN | VARNAME | POINTER TO Type
+
+Последовательность операторов — ноль или более операторов, разделённых точкой с запятой:
+Statements → Statement ; … ; Statement | ε
+
+Оператор — присваивание, создание нового указателя, ветвление, цикл с предусловием, цикл со счётчиком, последовательность операторов в операторных скобках begin … end и пустой оператор, который ничего не делает:
+
+Statement → Var := Expr
+	  | NEW ( VARNAME )
+          | IF Expr THEN Statements ELSE Statements
+          | WHILE Expr DO Statement
+          | FOR Var := Expr TO Expr DO Statement
+          | BEGIN Statements END
+          | ε
+
+!Присваивание может быть для переменной, для поля переменной пользовательского типа, для  разыменованного указателя (Var^): 
+Var → Var ^ | Var.VARNAME | VARNAME
+
+Выражение — переменная, константа, двуместная операция, одноместная операция:
+Expr → VARNAME
+     | Const
+     | Expr BinOp Expr
+     | UnOp Expr
+
+
+Const → INT_CONST | REAL_CONST | TRUE | FALSE
+BinOp → + | - | * | / | ** | AND | OR | > | < | >= | <= | = | <> | DIV | MOD
+UnOp → + | - | NOT
+
+
+
+Перейдём к конкретной грамматике:
+ 
+Program → TYPE TypeDefs VAR VarDefs BEGIN Statements END.
+TypeDefs →  ε | TypeDefs TypeDef
+TypeDef → VARNAME = RECORD SuperType VarDefs END;
+SuperType → ( VARNAME ) | ε
+VarDefs → ε | VarDefs VarDef
+VarDef → Vars : Type ;
+Vars → VARNAME | VARNAME , Vars | ε
+Type → INTEGER | REAL | BOOLEAN | VARNAME | POINTER TO Type
+
+Statements → Statement | Statements ; Statement
+
+Statement → Var := Expr
+	  | NEW ( VARNAME )
+          | IF Expr THEN Statements ELSE Statements
+          | WHILE Expr DO Statement
+          | FOR Var := Expr TO Expr DO Statement
+          | BEGIN Statements END
+          | ε
+
+Expr → ArithmExpr
+     | ArithmExpr CmpOp ArithmExpr
+
+CmpOp → > | < | >= | <= | = | <>
+
+ArithmExpr → Term | + Term | - Term | ArithmExpr AddOp Term
+AddOp → + | - | OR
+
+Term → Factor | Term MulOp Factor
+MulOp → * | / | DIV | MUL | AND
+
+Factor → NOT Factor | Var | Const | ( Expr )
+
+Var → Var ^ | Var.VARNAME | VARNAME
+
+Const → INT_CONST | REAL_CONST | TRUE | FALSE
