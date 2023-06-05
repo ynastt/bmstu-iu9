@@ -184,23 +184,21 @@ typedef enum yysymbol_kind_t yysymbol_kind_t;
 
 
 /* Second part of user prologue.  */
-#line 30 "parser.y"
+#line 32 "parser.y"
 
 int yylex(YYSTYPE *yylval_param, YYLTYPE *yylloc_param, yyscan_t scanner);
-void yyerror(YYLTYPE *loc, yyscan_t scanner, long env[26], const char *message);
-#line 35 "parser.y"
+void yyerror(YYLTYPE *loc, yyscan_t scanner, long env[26], int tab, bool user_tab, const char *message);
+#line 37 "parser.y"
 
-
-int tab = 0;
-bool user_tab = false;
-
-void print_tabs() {
+void print_tabs(int tab) {
     for(int i = 0; i < tab; i++) {
         printf("  ");
     }
 }
 
-#line 204 "parser.tab.c"
+
+
+#line 202 "parser.tab.c"
 
 
 #ifdef short
@@ -791,7 +789,7 @@ enum { YYENOMEM = -2 };
       }                                                           \
     else                                                          \
       {                                                           \
-        yyerror (&yylloc, scanner, env, YY_("syntax error: cannot back up")); \
+        yyerror (&yylloc, scanner, env, tab, user_tab, YY_("syntax error: cannot back up")); \
         YYERROR;                                                  \
       }                                                           \
   while (0)
@@ -907,7 +905,7 @@ do {                                                                      \
     {                                                                     \
       YYFPRINTF (stderr, "%s ", Title);                                   \
       yy_symbol_print (stderr,                                            \
-                  Kind, Value, Location, scanner, env); \
+                  Kind, Value, Location, scanner, env, tab, user_tab); \
       YYFPRINTF (stderr, "\n");                                           \
     }                                                                     \
 } while (0)
@@ -919,13 +917,15 @@ do {                                                                      \
 
 static void
 yy_symbol_value_print (FILE *yyo,
-                       yysymbol_kind_t yykind, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, yyscan_t scanner, long env[26])
+                       yysymbol_kind_t yykind, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, yyscan_t scanner, long env[26], int tab, bool user_tab)
 {
   FILE *yyoutput = yyo;
   YY_USE (yyoutput);
   YY_USE (yylocationp);
   YY_USE (scanner);
   YY_USE (env);
+  YY_USE (tab);
+  YY_USE (user_tab);
   if (!yyvaluep)
     return;
   YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
@@ -940,14 +940,14 @@ yy_symbol_value_print (FILE *yyo,
 
 static void
 yy_symbol_print (FILE *yyo,
-                 yysymbol_kind_t yykind, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, yyscan_t scanner, long env[26])
+                 yysymbol_kind_t yykind, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, yyscan_t scanner, long env[26], int tab, bool user_tab)
 {
   YYFPRINTF (yyo, "%s %s (",
              yykind < YYNTOKENS ? "token" : "nterm", yysymbol_name (yykind));
 
   YYLOCATION_PRINT (yyo, yylocationp);
   YYFPRINTF (yyo, ": ");
-  yy_symbol_value_print (yyo, yykind, yyvaluep, yylocationp, scanner, env);
+  yy_symbol_value_print (yyo, yykind, yyvaluep, yylocationp, scanner, env, tab, user_tab);
   YYFPRINTF (yyo, ")");
 }
 
@@ -981,7 +981,7 @@ do {                                                            \
 
 static void
 yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp, YYLTYPE *yylsp,
-                 int yyrule, yyscan_t scanner, long env[26])
+                 int yyrule, yyscan_t scanner, long env[26], int tab, bool user_tab)
 {
   int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
@@ -995,7 +995,7 @@ yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp, YYLTYPE *yylsp,
       yy_symbol_print (stderr,
                        YY_ACCESSING_SYMBOL (+yyssp[yyi + 1 - yynrhs]),
                        &yyvsp[(yyi + 1) - (yynrhs)],
-                       &(yylsp[(yyi + 1) - (yynrhs)]), scanner, env);
+                       &(yylsp[(yyi + 1) - (yynrhs)]), scanner, env, tab, user_tab);
       YYFPRINTF (stderr, "\n");
     }
 }
@@ -1003,7 +1003,7 @@ yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp, YYLTYPE *yylsp,
 # define YY_REDUCE_PRINT(Rule)          \
 do {                                    \
   if (yydebug)                          \
-    yy_reduce_print (yyssp, yyvsp, yylsp, Rule, scanner, env); \
+    yy_reduce_print (yyssp, yyvsp, yylsp, Rule, scanner, env, tab, user_tab); \
 } while (0)
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
@@ -1044,12 +1044,14 @@ int yydebug;
 
 static void
 yydestruct (const char *yymsg,
-            yysymbol_kind_t yykind, YYSTYPE *yyvaluep, YYLTYPE *yylocationp, yyscan_t scanner, long env[26])
+            yysymbol_kind_t yykind, YYSTYPE *yyvaluep, YYLTYPE *yylocationp, yyscan_t scanner, long env[26], int tab, bool user_tab)
 {
   YY_USE (yyvaluep);
   YY_USE (yylocationp);
   YY_USE (scanner);
   YY_USE (env);
+  YY_USE (tab);
+  YY_USE (user_tab);
   if (!yymsg)
     yymsg = "Deleting";
   YY_SYMBOL_PRINT (yymsg, yykind, yyvaluep, yylocationp);
@@ -1069,7 +1071,7 @@ yydestruct (const char *yymsg,
 `----------*/
 
 int
-yyparse (yyscan_t scanner, long env[26])
+yyparse (yyscan_t scanner, long env[26], int tab, bool user_tab)
 {
 /* Lookahead token kind.  */
 int yychar;
@@ -1353,193 +1355,193 @@ yyreduce:
   case 4: /* $@1: %empty  */
 #line 53 "parser.y"
             {printf("Sub ");}
-#line 1357 "parser.tab.c"
+#line 1359 "parser.tab.c"
     break;
 
   case 5: /* $@2: %empty  */
 #line 53 "parser.y"
                                        {printf("%s", (yyvsp[0].ident));}
-#line 1363 "parser.tab.c"
+#line 1365 "parser.tab.c"
     break;
 
   case 6: /* $@3: %empty  */
 #line 53 "parser.y"
                                                                       {printf("(");}
-#line 1369 "parser.tab.c"
+#line 1371 "parser.tab.c"
     break;
 
   case 7: /* $@4: %empty  */
 #line 54 "parser.y"
                            {printf(") ");}
-#line 1375 "parser.tab.c"
+#line 1377 "parser.tab.c"
     break;
 
   case 8: /* Proc: SUB $@1 IDENT $@2 LEFT_PAREN $@3 Params RIGHT_PAREN $@4 StatementBlock END SUB  */
 #line 54 "parser.y"
                                                                   {printf("End Sub\n"); tab = 0; user_tab = false;}
-#line 1381 "parser.tab.c"
+#line 1383 "parser.tab.c"
     break;
 
   case 10: /* $@5: %empty  */
 #line 58 "parser.y"
                       {printf(",");}
-#line 1387 "parser.tab.c"
+#line 1389 "parser.tab.c"
     break;
 
   case 12: /* TestEnter: ENTER  */
 #line 61 "parser.y"
               {printf("\n"); user_tab = true; }
-#line 1393 "parser.tab.c"
+#line 1395 "parser.tab.c"
     break;
 
   case 13: /* TestEnter: %empty  */
 #line 62 "parser.y"
           {printf(" "); user_tab = false;}
-#line 1399 "parser.tab.c"
+#line 1401 "parser.tab.c"
     break;
 
   case 14: /* $@6: %empty  */
 #line 65 "parser.y"
               {printf("ByVal ");}
-#line 1405 "parser.tab.c"
+#line 1407 "parser.tab.c"
     break;
 
   case 15: /* $@7: %empty  */
 #line 65 "parser.y"
                                            {printf("%s ", (yyvsp[0].ident));}
-#line 1411 "parser.tab.c"
+#line 1413 "parser.tab.c"
     break;
 
   case 16: /* $@8: %empty  */
 #line 66 "parser.y"
              {printf("As ");}
-#line 1417 "parser.tab.c"
+#line 1419 "parser.tab.c"
     break;
 
   case 17: /* Param: BYVAL $@6 IDENT $@7 AS $@8 IDENT  */
 #line 66 "parser.y"
                                        {printf("%s", (yyvsp[0].ident));}
-#line 1423 "parser.tab.c"
+#line 1425 "parser.tab.c"
     break;
 
   case 18: /* $@9: %empty  */
 #line 69 "parser.y"
               {printf("\n"); user_tab = true; tab += 1;}
-#line 1429 "parser.tab.c"
+#line 1431 "parser.tab.c"
     break;
 
   case 20: /* $@10: %empty  */
 #line 70 "parser.y"
           {user_tab = false;}
-#line 1435 "parser.tab.c"
+#line 1437 "parser.tab.c"
     break;
 
   case 28: /* Statement: COMMENT  */
 #line 80 "parser.y"
                   {printf("%s\n", (yyvsp[0].comment));}
-#line 1441 "parser.tab.c"
+#line 1443 "parser.tab.c"
     break;
 
   case 29: /* $@11: %empty  */
 #line 84 "parser.y"
-        { //printf("\n%d %d\n", tab, user_tab);
+        { 
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
             printf("Dim ");
         }
-#line 1453 "parser.tab.c"
+#line 1455 "parser.tab.c"
     break;
 
   case 30: /* $@12: %empty  */
 #line 91 "parser.y"
                  {printf("%s ", (yyvsp[0].ident));}
-#line 1459 "parser.tab.c"
+#line 1461 "parser.tab.c"
     break;
 
   case 31: /* $@13: %empty  */
 #line 91 "parser.y"
                                          {printf("As ");}
-#line 1465 "parser.tab.c"
+#line 1467 "parser.tab.c"
     break;
 
   case 32: /* $@14: %empty  */
 #line 91 "parser.y"
                                                                    {printf("%s", (yyvsp[0].ident));}
-#line 1471 "parser.tab.c"
+#line 1473 "parser.tab.c"
     break;
 
   case 34: /* $@15: %empty  */
 #line 95 "parser.y"
                 {   
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
             printf("%s ", (yyvsp[0].ident));
 		}
-#line 1483 "parser.tab.c"
+#line 1485 "parser.tab.c"
     break;
 
   case 35: /* $@16: %empty  */
 #line 102 "parser.y"
                        {printf("= ");}
-#line 1489 "parser.tab.c"
+#line 1491 "parser.tab.c"
     break;
 
   case 37: /* $@17: %empty  */
 #line 106 "parser.y"
-                { //printf("\n%d %d\n", tab, user_tab);
+                { 
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;         
             }
             printf("For ");
             tab += 1;
 		}
-#line 1502 "parser.tab.c"
+#line 1504 "parser.tab.c"
     break;
 
   case 38: /* $@18: %empty  */
 #line 114 "parser.y"
                  {printf("%s ", (yyvsp[0].ident));}
-#line 1508 "parser.tab.c"
+#line 1510 "parser.tab.c"
     break;
 
   case 39: /* $@19: %empty  */
 #line 115 "parser.y"
            {printf("As ");}
-#line 1514 "parser.tab.c"
+#line 1516 "parser.tab.c"
     break;
 
   case 40: /* $@20: %empty  */
 #line 115 "parser.y"
                                      {printf("%s ", (yyvsp[0].ident));}
-#line 1520 "parser.tab.c"
+#line 1522 "parser.tab.c"
     break;
 
   case 41: /* $@21: %empty  */
 #line 116 "parser.y"
                {printf("= ");}
-#line 1526 "parser.tab.c"
+#line 1528 "parser.tab.c"
     break;
 
   case 42: /* $@22: %empty  */
 #line 116 "parser.y"
                                        {printf("To ");}
-#line 1532 "parser.tab.c"
+#line 1534 "parser.tab.c"
     break;
 
   case 43: /* $@23: %empty  */
 #line 117 "parser.y"
-        {//printf("\n%d %d\n", tab, user_tab);
+        {
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
 		}
-#line 1543 "parser.tab.c"
+#line 1545 "parser.tab.c"
     break;
 
   case 44: /* $@24: %empty  */
@@ -1547,104 +1549,104 @@ yyreduce:
                 {
 			tab -= 1; 
 			if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
 			printf("Next ");
 		}
-#line 1556 "parser.tab.c"
+#line 1558 "parser.tab.c"
     break;
 
   case 46: /* $@25: %empty  */
 #line 137 "parser.y"
         {
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
         }
-#line 1567 "parser.tab.c"
+#line 1569 "parser.tab.c"
     break;
 
   case 47: /* $@26: %empty  */
 #line 143 "parser.y"
             {printf("Exit For");}
-#line 1573 "parser.tab.c"
+#line 1575 "parser.tab.c"
     break;
 
   case 49: /* $@27: %empty  */
 #line 145 "parser.y"
             {
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
             }
-#line 1584 "parser.tab.c"
+#line 1586 "parser.tab.c"
     break;
 
   case 50: /* $@28: %empty  */
 #line 151 "parser.y"
                 {printf("Exit Sub");}
-#line 1590 "parser.tab.c"
+#line 1592 "parser.tab.c"
     break;
 
   case 52: /* Expr: IDENT  */
 #line 155 "parser.y"
               {printf("%s", (yyvsp[0].ident));}
-#line 1596 "parser.tab.c"
+#line 1598 "parser.tab.c"
     break;
 
   case 54: /* $@29: %empty  */
 #line 157 "parser.y"
                    { printf(" + "); }
-#line 1602 "parser.tab.c"
+#line 1604 "parser.tab.c"
     break;
 
   case 56: /* $@30: %empty  */
 #line 158 "parser.y"
                    { printf(" - "); }
-#line 1608 "parser.tab.c"
+#line 1610 "parser.tab.c"
     break;
 
   case 58: /* $@31: %empty  */
 #line 159 "parser.y"
                    { printf(" * "); }
-#line 1614 "parser.tab.c"
+#line 1616 "parser.tab.c"
     break;
 
   case 60: /* $@32: %empty  */
 #line 160 "parser.y"
                    { printf(" / "); }
-#line 1620 "parser.tab.c"
+#line 1622 "parser.tab.c"
     break;
 
   case 62: /* Literal: NUMBER  */
 #line 163 "parser.y"
                {printf("%ld", (yyvsp[0].number));}
-#line 1626 "parser.tab.c"
+#line 1628 "parser.tab.c"
     break;
 
   case 63: /* Literal: STRING  */
 #line 164 "parser.y"
                  {printf("%s", (yyvsp[0].string));}
-#line 1632 "parser.tab.c"
+#line 1634 "parser.tab.c"
     break;
 
   case 64: /* Literal: MY_TRUE  */
 #line 165 "parser.y"
                   {printf("True ");}
-#line 1638 "parser.tab.c"
+#line 1640 "parser.tab.c"
     break;
 
   case 65: /* Literal: MY_FALSE  */
 #line 166 "parser.y"
                    {printf("False ");}
-#line 1644 "parser.tab.c"
+#line 1646 "parser.tab.c"
     break;
 
 
-#line 1648 "parser.tab.c"
+#line 1650 "parser.tab.c"
 
       default: break;
     }
@@ -1692,7 +1694,7 @@ yyerrlab:
   if (!yyerrstatus)
     {
       ++yynerrs;
-      yyerror (&yylloc, scanner, env, YY_("syntax error"));
+      yyerror (&yylloc, scanner, env, tab, user_tab, YY_("syntax error"));
     }
 
   yyerror_range[1] = yylloc;
@@ -1710,7 +1712,7 @@ yyerrlab:
       else
         {
           yydestruct ("Error: discarding",
-                      yytoken, &yylval, &yylloc, scanner, env);
+                      yytoken, &yylval, &yylloc, scanner, env, tab, user_tab);
           yychar = YYEMPTY;
         }
     }
@@ -1766,7 +1768,7 @@ yyerrlab1:
 
       yyerror_range[1] = *yylsp;
       yydestruct ("Error: popping",
-                  YY_ACCESSING_SYMBOL (yystate), yyvsp, yylsp, scanner, env);
+                  YY_ACCESSING_SYMBOL (yystate), yyvsp, yylsp, scanner, env, tab, user_tab);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
@@ -1807,7 +1809,7 @@ yyabortlab:
 | yyexhaustedlab -- YYNOMEM (memory exhaustion) comes here.  |
 `-----------------------------------------------------------*/
 yyexhaustedlab:
-  yyerror (&yylloc, scanner, env, YY_("memory exhausted"));
+  yyerror (&yylloc, scanner, env, tab, user_tab, YY_("memory exhausted"));
   yyresult = 2;
   goto yyreturnlab;
 
@@ -1822,7 +1824,7 @@ yyreturnlab:
          user semantic actions for why this is necessary.  */
       yytoken = YYTRANSLATE (yychar);
       yydestruct ("Cleanup: discarding lookahead",
-                  yytoken, &yylval, &yylloc, scanner, env);
+                  yytoken, &yylval, &yylloc, scanner, env, tab, user_tab);
     }
   /* Do not reclaim the symbols of the rule whose action triggered
      this YYABORT or YYACCEPT.  */
@@ -1831,7 +1833,7 @@ yyreturnlab:
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-                  YY_ACCESSING_SYMBOL (+*yyssp), yyvsp, yylsp, scanner, env);
+                  YY_ACCESSING_SYMBOL (+*yyssp), yyvsp, yylsp, scanner, env, tab, user_tab);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -1850,6 +1852,8 @@ yyreturnlab:
 int main(int argc, char *argv[]) {
     FILE *input = 0;
     long env[26] = { 0 };
+    int tab = 0;
+    bool user_tab = false;
     yyscan_t scanner;
     struct Extra extra;
 
@@ -1862,7 +1866,7 @@ int main(int argc, char *argv[]) {
     }
 
     init_scanner(input, &scanner, &extra);
-    yyparse(scanner, env);
+    yyparse(scanner, env, tab, user_tab);
     destroy_scanner(scanner);
 
     if (input != stdin) {

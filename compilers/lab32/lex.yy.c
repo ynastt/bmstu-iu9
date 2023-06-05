@@ -526,12 +526,11 @@ static const flex_int16_t yy_chk[150] =
     yylloc->last_column = extra->cur_column; \
   }
 
-void yyerror(YYLTYPE *loc, yyscan_t scanner, long env[26], const char *message) {
+void yyerror(YYLTYPE *loc, yyscan_t scanner, long env[26], int i, int tab, bool user_tab, const char *message) {
     printf("Error (%d,%d): %s\n", loc->first_line, loc->first_column, message);
 }
-
+#line 533 "lex.yy.c"
 #line 534 "lex.yy.c"
-#line 535 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -811,9 +810,9 @@ YY_DECL
 		}
 
 	{
-#line 41 "lexer.l"
+#line 40 "lexer.l"
 
-#line 817 "lex.yy.c"
+#line 816 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -872,133 +871,133 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 42 "lexer.l"
+#line 41 "lexer.l"
 
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 44 "lexer.l"
+#line 43 "lexer.l"
 return ENTER;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 46 "lexer.l"
+#line 45 "lexer.l"
 return SUB;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 47 "lexer.l"
+#line 46 "lexer.l"
 return BYVAL;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 48 "lexer.l"
+#line 47 "lexer.l"
 return AS;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 49 "lexer.l"
+#line 48 "lexer.l"
 return DIM;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 50 "lexer.l"
+#line 49 "lexer.l"
 return END;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 51 "lexer.l"
+#line 50 "lexer.l"
 return IF;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 52 "lexer.l"
+#line 51 "lexer.l"
 return FOR;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 53 "lexer.l"
+#line 52 "lexer.l"
 return TO;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 54 "lexer.l"
+#line 53 "lexer.l"
 return THEN;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 55 "lexer.l"
+#line 54 "lexer.l"
 return MY_EXIT;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 56 "lexer.l"
+#line 55 "lexer.l"
 return NEXT;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 57 "lexer.l"
+#line 56 "lexer.l"
 return MY_RETURN; 
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 59 "lexer.l"
+#line 58 "lexer.l"
 return ASSIGN;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 60 "lexer.l"
+#line 59 "lexer.l"
 return '+';
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 61 "lexer.l"
+#line 60 "lexer.l"
 return '-';
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 62 "lexer.l"
+#line 61 "lexer.l"
 return MUL;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 63 "lexer.l"
+#line 62 "lexer.l"
 return DIV;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 64 "lexer.l"
+#line 63 "lexer.l"
 return LEFT_PAREN;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 65 "lexer.l"
+#line 64 "lexer.l"
 return RIGHT_PAREN;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 66 "lexer.l"
+#line 65 "lexer.l"
 return GREATER_THAN;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 67 "lexer.l"
+#line 66 "lexer.l"
 return COMMA;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 68 "lexer.l"
+#line 67 "lexer.l"
 return MY_TRUE;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 69 "lexer.l"
+#line 68 "lexer.l"
 return MY_FALSE;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 72 "lexer.l"
+#line 71 "lexer.l"
 {
     yylval->number = atoi(yytext);
     return NUMBER;
@@ -1006,7 +1005,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 77 "lexer.l"
+#line 76 "lexer.l"
 {
     yylval->ident = yytext;
     return IDENT;
@@ -1014,7 +1013,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 82 "lexer.l"
+#line 81 "lexer.l"
 {
     yylval->string = yytext;
     return STRING;
@@ -1022,7 +1021,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 87 "lexer.l"
+#line 86 "lexer.l"
 {
     yylval->string = yytext;
     return COMMENT;
@@ -1030,10 +1029,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 92 "lexer.l"
+#line 91 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 1037 "lex.yy.c"
+#line 1036 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2188,7 +2187,7 @@ void yyfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 92 "lexer.l"
+#line 91 "lexer.l"
 
 
 void init_scanner(FILE *input, yyscan_t *scanner, struct Extra *extra) {

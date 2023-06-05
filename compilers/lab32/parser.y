@@ -9,6 +9,8 @@
 /* параметры для yyparse() */
 %parse-param {yyscan_t scanner}
 %parse-param {long env[26]}
+%parse-param {int tab}
+%parse-param {bool user_tab}
 
 %union {
     long number;
@@ -29,19 +31,17 @@
 
 %{
 int yylex(YYSTYPE *yylval_param, YYLTYPE *yylloc_param, yyscan_t scanner);
-void yyerror(YYLTYPE *loc, yyscan_t scanner, long env[26], const char *message);
+void yyerror(YYLTYPE *loc, yyscan_t scanner, long env[26], int tab, bool user_tab, const char *message);
 %}
 
 %{
-
-int tab = 0;
-bool user_tab = false;
-
-void print_tabs() {
+void print_tabs(int tab) {
     for(int i = 0; i < tab; i++) {
         printf("  ");
     }
 }
+
+
 %}
 
 %%
@@ -81,9 +81,9 @@ Statement:
         ; 
 DimStatement:
         DIM 
-        { //printf("\n%d %d\n", tab, user_tab);
+        { 
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
             printf("Dim ");
@@ -94,7 +94,7 @@ AssignStatement:
         IDENT 
 		{   
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
             printf("%s ", $1);
@@ -103,9 +103,9 @@ AssignStatement:
         ;
 LoopStatement:
         FOR 
-		{ //printf("\n%d %d\n", tab, user_tab);
+		{ 
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;         
             }
             printf("For ");
@@ -114,9 +114,9 @@ LoopStatement:
         IDENT[L] {printf("%s ", $L);} 
         AS {printf("As ");} IDENT[R] {printf("%s ", $R);}
         ASSIGN {printf("= ");} Expr TO {printf("To ");} Expr TestEnter
-        {//printf("\n%d %d\n", tab, user_tab);
+        {
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
 		} 
@@ -124,7 +124,7 @@ LoopStatement:
 		{
 			tab -= 1; 
 			if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
 			printf("Next ");
@@ -136,7 +136,7 @@ ExitStatement:
         MY_EXIT 
         {
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
         }
@@ -144,7 +144,7 @@ ExitStatement:
         | MY_EXIT 
             {
             if (user_tab){
-                print_tabs();
+                print_tabs(tab);
                 user_tab = false;     
             }
             }
@@ -173,6 +173,8 @@ Literal:
 int main(int argc, char *argv[]) {
     FILE *input = 0;
     long env[26] = { 0 };
+    int tab = 0;
+    bool user_tab = false;
     yyscan_t scanner;
     struct Extra extra;
 
@@ -185,7 +187,7 @@ int main(int argc, char *argv[]) {
     }
 
     init_scanner(input, &scanner, &extra);
-    yyparse(scanner, env);
+    yyparse(scanner, env, tab, user_tab);
     destroy_scanner(scanner);
 
     if (input != stdin) {
