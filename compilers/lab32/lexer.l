@@ -41,22 +41,33 @@ void yyerror(YYLTYPE *loc, yyscan_t scanner, long env[26], const char *message) 
 %%
 [\r ]+
 
-[\n] return ENTER;
+[\n]+ return ENTER;
 
 Sub return SUB;
 ByVal return BYVAL;
 As return AS;
 Dim return DIM;
 End return END;
+If return IF;
+For return FOR;
+To return TO;
+Then return THEN;
+Exit return MY_EXIT;
+Next return NEXT;
+Return return MY_RETURN; 
 
 =  return ASSIGN;
 \+  return '+';
 \-  return '-';
+\*  return MUL;
+\/  return DIV;
 \( return LEFT_PAREN;
 \) return RIGHT_PAREN;
+\> return GREATER_THAN;
 ,   return COMMA;
 True return MY_TRUE;
 False return MY_FALSE;
+
 
 [0-9]+(\.[0-9]+)? {
     yylval->number = atoi(yytext);
@@ -68,7 +79,7 @@ False return MY_FALSE;
     return IDENT;
 }
 
-\"[A-Za-z][A-Za-z0-9]*\"   {
+\"[A-Za-z][A-Za-z]*\"   {
     yylval->string = yytext;
     return STRING;
 }

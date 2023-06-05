@@ -18,7 +18,9 @@
 }
 
 %left '+' '-'
+%left MUL DIV
 %token LEFT_PAREN RIGHT_PAREN COMMA END SUB BYVAL AS DIM ASSIGN MY_TRUE MY_FALSE ENTER
+%token IF FOR TO NEXT THEN ELSE MY_RETURN MY_EXIT GREATER_THAN
 
 %token <number> NUMBER
 %token <comment> COMMENT
@@ -32,53 +34,134 @@ void yyerror(YYLTYPE *loc, yyscan_t scanner, long env[26], const char *message);
 
 %{
 
-int space = 0;
-int first_space = 1;
-void print_space() {
-    for(int i = 0; i < space; i++) {
-        printf("   ");
+int tab = 0;
+bool user_tab = false;
+
+void print_tabs() {
+    for(int i = 0; i < tab; i++) {
+        printf("  ");
     }
 }
 %}
 
 %%
 Program:
-        Proc Program
+        Proc TestEnter Program
         |
         ;
 Proc: 
-        SUB {printf("Sub ");} Header Statements END SUB {printf("End Sub\n");}
-        ;
-Header:
-        IDENT LEFT_PAREN {printf("%s(", $1);} Params RIGHT_PAREN {printf(")\n");} ENTER
+        SUB {printf("Sub ");} IDENT[L] {printf("%s", $L);} LEFT_PAREN {printf("(");}
+        Params RIGHT_PAREN {printf(") ");} StatementBlock END SUB {printf("End Sub\n"); tab = 0; user_tab = false;} 
         ;
 Params:
-        BYVAL IDENT AS IDENT {printf("ByVal %s As %s", $2, $4);} MoreParams
-        |
+        Param 
+        | Param COMMA {printf(",");} TestEnter Params
         ;
-MoreParams:
-        COMMA BYVAL IDENT AS IDENT {printf(", ByVal %s As %s", $3, $5);} MoreParams
-        |
-        ;
+TestEnter:
+        ENTER {printf("\n"); user_tab = true; }
+        | {printf(" "); user_tab = false;}
+        ;        
+Param:
+        BYVAL {printf("ByVal ");} IDENT[L] {printf("%s ", $L);} 
+          AS {printf("As ");} IDENT[R] {printf("%s", $R);} 
+        ;     
+StatementBlock:
+        ENTER {printf("\n"); user_tab = true; tab += 1;} Statements 
+        | {user_tab = false;} Statements 
 Statements:
         Statement Statements
-        | 
+        |
         ;
 Statement:
-        IDENT ASSIGN {printf("\t"); printf("%s ", $1);} Expr {printf("\n");} ENTER
-        | {printf("\t");} DIM {printf("Dim ");} IDENT[L] {printf("%s ", $L);} AS {printf("As ");} IDENT[R] {printf("%s", $R);} ENTER {printf("\n");}
-        | COMMENT {printf("\t"); printf("%s\n", $1);} ENTER
-        | ENTER {printf("\n");}
+        AssignStatement
+        | DimStatement
+        | LoopStatement
+        | ExitStatement
+        | COMMENT {printf("%s\n", $1);}
+        ; 
+DimStatement:
+        DIM 
+        { //printf("\n%d %d\n", tab, user_tab);
+            if (user_tab){
+                print_tabs();
+                user_tab = false;     
+            }
+            printf("Dim ");
+        } 
+        IDENT[L] {printf("%s ", $L);} AS {printf("As ");} IDENT[R] {printf("%s", $R);} TestEnter      
         ;
+AssignStatement:
+        IDENT 
+		{   
+            if (user_tab){
+                print_tabs();
+                user_tab = false;     
+            }
+            printf("%s ", $1);
+		} 
+		ASSIGN {printf("= ");} Expr TestEnter
+        ;
+LoopStatement:
+        FOR 
+		{ //printf("\n%d %d\n", tab, user_tab);
+            if (user_tab){
+                print_tabs();
+                user_tab = false;         
+            }
+            printf("For ");
+            tab += 1;
+		} 
+        IDENT[L] {printf("%s ", $L);} 
+        AS {printf("As ");} IDENT[R] {printf("%s ", $R);}
+        ASSIGN {printf("= ");} Expr TO {printf("To ");} Expr TestEnter
+        {//printf("\n%d %d\n", tab, user_tab);
+            if (user_tab){
+                print_tabs();
+                user_tab = false;     
+            }
+		} 
+		Statements NEXT 
+		{
+			tab -= 1; 
+			if (user_tab){
+                print_tabs();
+                user_tab = false;     
+            }
+			printf("Next ");
+		} 
+		TestEnter
+        ;
+
+ExitStatement:
+        MY_EXIT 
+        {
+            if (user_tab){
+                print_tabs();
+                user_tab = false;     
+            }
+        }
+        FOR {printf("Exit For");} TestEnter 
+        | MY_EXIT 
+            {
+            if (user_tab){
+                print_tabs();
+                user_tab = false;     
+            }
+            }
+            SUB {printf("Exit Sub");} TestEnter  
+        ;  
+                                    
 Expr:
-        IDENT {printf("%s ", $1);}
+        IDENT {printf("%s", $1);}
         | Literal
-        | Expr '+' { printf("+ "); } Expr  
-        | Expr '-' { printf("- "); } Expr  
+        | Expr '+' { printf(" + "); } Expr  
+        | Expr '-' { printf(" - "); } Expr  
+        | Expr MUL { printf(" * "); } Expr 
+        | Expr DIV { printf(" / "); } Expr
         ;
 Literal:
-        NUMBER {printf("%ld ", $1);}
-        | STRING {printf("%s ", $1);}
+        NUMBER {printf("%ld", $1);}
+        | STRING {printf("%s", $1);}
         | MY_TRUE {printf("True ");}
         | MY_FALSE {printf("False ");}
         ;

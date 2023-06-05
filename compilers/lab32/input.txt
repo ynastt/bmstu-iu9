@@ -1,6 +1,26 @@
-Sub mySub(ByVal q As String)
-Dim str As String
-str = q
-Dim d As Int
-d = 2 + 5
+Sub mySub(ByVal q As String, ByVal q2 As Integer)
+  Dim d As Int
+  Dim str As String 
+  str = "hello" 
+  str = q 
+  d = 2 + 5
 End Sub
+
+Sub name(ByVal n As Long, ByVal z As String)
+  Dim q As Long 
+  q = 3
+For i As Long = 1 To 5
+    For j As Long = 2 To 3
+      n = n + q
+    Exit Sub
+      n = n - q 
+      n = n + q
+  Next    
+  Next
+End Sub
+
+Sub    mySub(ByVal q As String, ByVal q2 As Integer,
+ByVal c2 As Integer)  Dim d As Int
+Dim str As String str="hello" 
+str = q
+d=2+5           End Sub

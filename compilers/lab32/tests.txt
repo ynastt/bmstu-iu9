@@ -1,0 +1,34 @@
+Sub forsum(ByVal n As Long)
+For q As Long = 2 To 5
+n = n + q
+n = n - q 
+n = n + q
+Next
+End Sub
+
+Sub forifsum(ByVal n As Long)
+    Dim q As Long 
+    q = 3
+    For i As Long = 1 To 5
+        For j As Long = 2 To 3
+            If n > 0 Then
+                n = n + q
+                Exit Sub
+            Else
+                n = n - q 
+            n = n + q
+            End If
+        Next    
+    Next
+End Sub
+
+Sub myReturnSub(ByVal q As String)
+    Return
+End Sub
+
+Sub myExitTextSub(ByVal name As Integer)
+    name = 5 + 3
+    Exit Sub
+    'ну
+    name = 1
+End Sub

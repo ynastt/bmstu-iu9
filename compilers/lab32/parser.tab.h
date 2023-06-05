@@ -54,22 +54,33 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    LEFT_PAREN = 258,              /* LEFT_PAREN  */
-    RIGHT_PAREN = 259,             /* RIGHT_PAREN  */
-    COMMA = 260,                   /* COMMA  */
-    END = 261,                     /* END  */
-    SUB = 262,                     /* SUB  */
-    BYVAL = 263,                   /* BYVAL  */
-    AS = 264,                      /* AS  */
-    DIM = 265,                     /* DIM  */
-    ASSIGN = 266,                  /* ASSIGN  */
-    MY_TRUE = 267,                 /* MY_TRUE  */
-    MY_FALSE = 268,                /* MY_FALSE  */
-    ENTER = 269,                   /* ENTER  */
-    NUMBER = 270,                  /* NUMBER  */
-    COMMENT = 271,                 /* COMMENT  */
-    IDENT = 272,                   /* IDENT  */
-    STRING = 273                   /* STRING  */
+    MUL = 258,                     /* MUL  */
+    DIV = 259,                     /* DIV  */
+    LEFT_PAREN = 260,              /* LEFT_PAREN  */
+    RIGHT_PAREN = 261,             /* RIGHT_PAREN  */
+    COMMA = 262,                   /* COMMA  */
+    END = 263,                     /* END  */
+    SUB = 264,                     /* SUB  */
+    BYVAL = 265,                   /* BYVAL  */
+    AS = 266,                      /* AS  */
+    DIM = 267,                     /* DIM  */
+    ASSIGN = 268,                  /* ASSIGN  */
+    MY_TRUE = 269,                 /* MY_TRUE  */
+    MY_FALSE = 270,                /* MY_FALSE  */
+    ENTER = 271,                   /* ENTER  */
+    IF = 272,                      /* IF  */
+    FOR = 273,                     /* FOR  */
+    TO = 274,                      /* TO  */
+    NEXT = 275,                    /* NEXT  */
+    THEN = 276,                    /* THEN  */
+    ELSE = 277,                    /* ELSE  */
+    MY_RETURN = 278,               /* MY_RETURN  */
+    MY_EXIT = 279,                 /* MY_EXIT  */
+    GREATER_THAN = 280,            /* GREATER_THAN  */
+    NUMBER = 281,                  /* NUMBER  */
+    COMMENT = 282,                 /* COMMENT  */
+    IDENT = 283,                   /* IDENT  */
+    STRING = 284                   /* STRING  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -85,7 +96,7 @@ union YYSTYPE
     char* ident;
     char* comment;
 
-#line 89 "parser.tab.h"
+#line 100 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
