@@ -1,0 +1,43 @@
+Sub name(ByVal n As Long, ByVal z As String,
+ByVal c As String)
+    Dim q As Long 
+    q = 3
+    For i As Long = 1 To 5
+        For j As Long = 2 To 3
+            n = n + q
+            Exit Sub
+            n = n - q 
+            n = n + q
+        Next    
+    Next
+End Sub
+
+
+
+Proc ::= "Sub" Ident "(" Params ")" ENTER Statements "End" "Sub" 
+Params ::= Param | Param "," ENTER Params 
+Param ::= "ByVal" Ident "As" Type 
+Type ::= "Integer" | "String" | "Boolean" | "Double" | "Long"
+Statements ::= Statement Statements | eps
+
+Statement ::= Assign_statement | DimStatement 
+            | Loop_statement | Exit_statement |
+            | COMMENT 
+
+DimStatement ::= "Dim" Ident "As" Type ENTER
+Assign_statement ::= Ident "=" Expr ENTER
+Loop_statement ::= "For" Ident "As" Type "=" Expr "To" Expr ENTER Statements "Next" ENTER
+Exit_statement ::= "Exit For" ENTER | "Exit Sub" ENTER
+
+Expr ::= Ident | Literal | Expr Op Expr | eps
+Op ::= "+" | "-" | "*" | "/" 
+Literal ::= NUMBER | STRING | Boolean_literal 
+
+Boolean_literal ::= "True" | "False"
+Double_literal ::= Int_literal "." Int_literal
+
+Ident ::= [A-Za-z][A-Za-z0-9]*
+STRING ::= \"[A-Za-z][A-Za-z]*\"
+NUMBER ::= [0-9]+(\.[0-9]+)?
+COMMENT ::= '[^\n]*
+ENTER ::= "\n" | eps
