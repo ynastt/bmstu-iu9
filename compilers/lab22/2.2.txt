@@ -70,10 +70,9 @@ Statements → Statement | Statements ; Statement
 
 Statement → Var := Expr
 	  | NEW ( VARNAME )
-          | IF Expr THEN Statements ELSE Statements
-          | WHILE Expr DO Statement
-          | FOR Var := Expr TO Expr DO Statement
-          | BEGIN Statements END
+          | IF Expr THEN Statements ELSE Statements END
+          | WHILE Expr DO Statement END
+          | FOR Var := Expr TO Expr DO Statement END
           | ε
 
 Expr → ArithmExpr

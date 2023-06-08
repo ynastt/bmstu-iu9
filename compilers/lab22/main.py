@@ -97,11 +97,6 @@ class ForStatement(Statement):
 
 
 @dataclass
-class StatementsBlock(Statement):
-    body : list[Statement]
-
-
-@dataclass
 class EmptyStatement(Statement):
     pass
 
@@ -198,7 +193,6 @@ NStatement |= KW_WHILE, NExpr, KW_DO, NStatements, KW_END, WhileStatement
 NStatement |= (
     KW_FOR, NVar, ':=', NExpr, KW_TO, NExpr, KW_DO, NStatement, KW_END, ForStatement
 )
-NStatement |= KW_BEGIN, NStatements, KW_END, StatementsBlock
 NStatement |= EmptyStatement
 
 
