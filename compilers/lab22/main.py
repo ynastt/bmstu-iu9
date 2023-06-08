@@ -90,7 +90,7 @@ class WhileStatement(Statement):
 
 @dataclass
 class ForStatement(Statement):
-    variable : Any #DerefExpr or FieldExpr
+    variable : Any 
     start : Expr
     end : Expr
     body : Statement
@@ -178,7 +178,7 @@ NVarsDefs |= NVarsDefs, NVarsDef, lambda vds, vd: vds + [vd]
 NVarsDef |= NVars, ':', NType, ';', VarsDef
 
 NVars |= VARNAME, lambda v: [v]
-NVars |= VARNAME, ',', NVars, lambda v, vs: vs + [v]
+NVars |= VARNAME, ',', NVars, lambda v, vs: [v] + vs
 
 NType |= KW_INTEGER, lambda: BasicType.Integer
 NType |= KW_REAL, lambda: BasicType.Real
@@ -196,7 +196,7 @@ NStatement |= (
 )
 NStatement |= KW_WHILE, NExpr, KW_DO, NStatements, KW_END, WhileStatement
 NStatement |= (
-    KW_FOR, NVar, ':=', NExpr, KW_TO, NExpr, KW_DO, NStatement, ForStatement
+    KW_FOR, NVar, ':=', NExpr, KW_TO, NExpr, KW_DO, NStatement, KW_END, ForStatement
 )
 NStatement |= KW_BEGIN, NStatements, KW_END, StatementsBlock
 NStatement |= EmptyStatement
