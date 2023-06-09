@@ -69,11 +69,10 @@ Type → INTEGER | REAL | BOOLEAN | VARNAME | POINTER TO Type
 Statements → Statement | Statements ; Statement
 
 Statement → Var := Expr
-	  | NEW ( VARNAME )
+	     | NEW ( VARNAME )
           | IF Expr THEN Statements ELSE Statements END
           | WHILE Expr DO Statement END
           | FOR Var := Expr TO Expr DO Statement END
-          | BEGIN Statements END
           | ε
 
 Expr → ArithmExpr

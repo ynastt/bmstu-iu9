@@ -26,8 +26,10 @@ VAR
   p1, p2 : Point;
   s : Shape;
   c : Circle;
+  c2 : Circle;
   r : Rectangle;
   z : INTEGER;
+  tr: BOOLEAN;
   b : Cube;
   ps : POINTER TO Shape;
   pc : POINTER TO Circle;
@@ -38,23 +40,30 @@ BEGIN
   c := s;               (* ок, есть общий предок *)
   (* b := c; *)         (* ошибка, Структуры b и c не имеют общего предка *)
   (* p1 := 2 * 5; *)    (* ошибка, несовпадение типов *)
+  c2 := c;
   p1.x := 10;
+  (* c.x := 12; *)      (* Нарушение Объектно-Ориентированного наследования: c.x *)
+  p1.x := z;
   p1.y := 3.5;
+  (* s.center := TRUE; *) (* Ошибка, Несовместимые типы: UserType(name='Point') := BasicType.Boolean*)
+  (* s.length := 6.6;*)   (* Нарушение Объектно-Ориентированного наследования *)
   s.center := p1;
   s.color := 100500;
   
   c.radius := 7;
   r.center.x := 5.2;
+  (*r.center.x.t := 0;*)      (*Нарушение Объектно-Ориентированного наследования: x.t*)
   r.center.y := 2.5;
   r.color := 500100;
   r.width := 4.5;
-  r.heigh := 5.4;
+  r.height := 5.4;
 
   c := r;
   NEW(pr);
 
   pr^ := r;
-  pz^ := r;
+  (* x := r; *)        (* Ошибка x: Необъявленная переменная  *)
+
   (* pr := pc; *)      (* ошибка, pc не является производной от pr *)
   ps := pr;            (* ок, pr является производной от ps *)
   NEW(pc);
