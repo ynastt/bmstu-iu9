@@ -68,7 +68,7 @@ class PointerBadAssignment(SemanticError):
 
     @property
     def message(self):
-        return f'{self.varname2} не является производной от {self.varname1}'
+        return f'Структура {self.varname2} не является производной от {self.varname1}'
 
 
 class BinBadType(SemanticError):
@@ -205,8 +205,8 @@ class Program:
                     raise RepeatedVariable(vardef.names_coord, name)
                 else:
                     vars[name] = vardef.type   
-        print(f'\nvars:')
-        for v in vars: print(v, vars[v])
+        # print(f'\nvars:')
+        # for v in vars: print(v, vars[v])
 
         types = {}     
         for typedef in self.type_defs:
@@ -218,11 +218,11 @@ class Program:
         for typedef in self.type_defs:
             name = typedef.name
             types[name].possibleFields = types[name].findPossibleFields(types)   
-        print(f'\n\ntypes:')
-        for t in types: print(t, types[t].ancestorType, types[t].varsDefs, types[t].possibleFields )
+        # print(f'\n\ntypes:')
+        # for t in types: print(t, types[t].ancestorType, types[t].varsDefs, types[t].possibleFields )
         
         for statement in self.statements:
-            print(f'\n\n***current statement: {statement}')
+            # print(f'\n\n***current statement: {statement}')
             statement.check(vars, types)
 
 class Expr(abc.ABC):
@@ -244,18 +244,16 @@ class AssignStatement(Statement):
     
     def check(self, vars, types):
         if type(self.variable) is SingleVarExpr:
-            print("single")
-            print(self.variable)
+            # print(self.variable)
             v = self.variable.varname[0]
-            print(f' varname: {v},\n expr: {self.expr}')
+            # print(f' varname: {v},\n expr: {self.expr}')
             if v not in vars:
                 raise UnknownVar(self.var_coord, v)
             
-            # print("variable is known")
             self.expr.check(vars, types)
             is_numeric = lambda t: t in (BasicType.Integer, BasicType.Real)
             if vars[v] == self.expr.type:
-                print(f'  same type')
+                # print(f'  same type')
                 return
             if is_numeric(vars[v]) and is_numeric(self.expr.type):
                 return
@@ -263,23 +261,19 @@ class AssignStatement(Statement):
             if type(vars[v]) is UserType and type(self.expr.type) is UserType:
                 lf = set()
                 lftype = vars[v].name
-                # print(lftype)
                 lf.add(lftype)
                 anc = types[lftype].ancestorType
                 while type(anc) is UserType:
                     lf.add(anc.name) 
                     anc = types[anc.name].ancestorType
-                # print(f'all lf ancs: {lf}')
 
                 rf = set()
                 rftype = self.expr.type.name
-                # print(rftype)
                 rf.add(rftype)
                 anc = types[rftype].ancestorType
                 while type(anc) is UserType:
                     rf.add(anc.name)
                     anc = types[anc.name].ancestorType
-                # print(f'all rf ancs: {rf}')
                 shared = lf & rf
                 # print(f'shared ancestor {shared}')
                 if len(shared) == 0:
@@ -292,7 +286,6 @@ class AssignStatement(Statement):
                 #  ОК, когда: указатель на базовую структуру := указатель на производную структуру
                 rftype = self.expr.type.pointerTo.name
                 anc = types[rftype].ancestorType
-                # print(anc)
                 if type(anc) is not EmptyAncestorType:
                     if vars[v].pointerTo.name != anc.name:
                         raise PointerBadAssignment(self.var_coord, self.variable.varname[0], self.expr.varname[0])
@@ -302,22 +295,18 @@ class AssignStatement(Statement):
             else:           
                 raise BinBadType(self.var_coord, vars[v], ':=', self.expr.type)   
         elif type(self.variable) is DerefenceExpr:
-            print("derefence var")
             v = self.variable
             ex = self.expr
             # print(f' varname: {v}, expr: {ex}')
             self.variable.check(vars, types)
             self.expr.check(vars, types)
         elif type(self.variable) is VarWithFieldsExpr:
-            print("fields var")
             v = self.variable
             ex = self.expr
-            print(f' varname: {v},\n expr: {ex}')
+            # print(f' varname: {v},\n expr: {ex}')
             self.variable.check(vars, types)
             self.expr.check(vars, types)
-            # проверяю, соответствие типов присваимовой пееременной ex prи поля var.field переменной var, которому присваивается значение
-            print("...LATER...")
-            common_type = None
+            # проверяю, соответствие типов присваимовой пееременной expr и поля var.field 
             is_numeric = lambda t: t in (BasicType.Integer, BasicType.Real)
 
             if self.variable.type == self.expr.type:
@@ -357,7 +346,7 @@ class IfStatement(Statement):
         return IfStatement(cond, ccond, then_branch, else_branch)
     def check(self, vars, types):
         self.condition.check(vars, types)
-        print(f'IF CONDITION: {self.condition}')
+        # print(f'IF CONDITION: {self.condition}')
         if self.condition.type != BasicType.Boolean:
             raise NotBoolCond(self.cond_coord, self.condition.type)
         for t in self.then_branch:
@@ -378,10 +367,9 @@ class WhileStatement(Statement):
         return WhileStatement(cond, ccond, body)
     def check(self, vars, types):
         self.condition.check(vars, types)
-        print(f'WHILE CONDITION: {self.condition}')
+        # print(f'WHILE CONDITION: {self.condition}')
         if self.condition.type != BasicType.Boolean:
             raise NotBoolCond(self.cond_coord, self.condition.type)
-        print("here")
         for b in self.body:
             b.check(vars, types)
 
@@ -454,7 +442,7 @@ class SingleVarExpr(Expr):
     
     def check(self, vars, types):
         v = self.varname[0]
-        print(f'  single varname: {v}, type: {vars[v]}')
+        # print(f'  single varname: {v}, type: {vars[v]}')
         try:
             self.type = vars[v]
         except KeyError:
@@ -474,12 +462,11 @@ class VarWithFieldsExpr(Expr):
     def check(self, vars, types):
         varname = self
         varfield = self.field
-        print(f'\nvar of var: {varname}\n  field: {varfield}')
-        print("are fields correct?")
+        # print(f'\nvar of var: {varname}\n  field: {varfield}')
         # OOP?
         fields = []
         while type(varname) is VarWithFieldsExpr:
-            print(f'   var: {varname}\n   field: {varfield}')
+            # print(f'   var: {varname}\n   field: {varfield}')
             fields.append(varfield)
 
             if type(varname.var) is SingleVarExpr:
@@ -489,18 +476,18 @@ class VarWithFieldsExpr(Expr):
                 except KeyError:
                     raise UnknownVar(self.var_coord, name)
                 
-                print(f'    name: {name}, field: {varfield}')
+                # print(f'    name: {name}, field: {varfield}')
                 fields =list(reversed(fields))
-                print(fields)
+                # print(fields)
                 if type(vars[name]) is UserType:
                     typ =vars[name].name
                 elif type(vars[name]) is PointerType:
                     typ =vars[name].pointerTo.name    
-                print(typ)
+                # print(typ)
                 fds = types[typ].possibleFields
                 prev = name
                 for f in fields:
-                    print(f'pos fields: {fds}')
+                    # print(f'posbl fields: {fds}')
                     if len(fds) != 0 and f not in fds:
                         raise NotOOPInheritance(self.var_coord, prev + "." + f)
                     t = fds[f]
@@ -513,8 +500,8 @@ class VarWithFieldsExpr(Expr):
                     if type(t) is PointerType: 
                         fds = types[t.pointerTo.name].possibleFields   
                     prev = f
-                    print(fds)
-                    print(self.type)
+                    # print(fds)``
+                    # print(self.type)
                 break
             varname = varname.var
             varfield = varname.field
