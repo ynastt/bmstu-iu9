@@ -1,0 +1,88 @@
+TYPE
+  Point = RECORD
+    x, y : REAL;
+  END;
+  Shape = RECORD
+    center : Point;
+    color : INTEGER;
+    next : POINTER TO Shape;
+  END;
+  Circle = RECORD(Shape)
+    radius : REAL;
+  END;
+  Rectangle = RECORD(Shape)
+    width, height : REAL;
+  END;
+  Figure = RECORD
+    ctr : Point;
+    col : INTEGER;
+    next : POINTER TO Figure;
+  END;
+  Cube = RECORD(Figure)
+    length : REAL;
+  END;
+
+VAR
+  p1, p2 : Point;
+  s : Shape;
+  c : Circle;
+  c2 : Circle;
+  r : Rectangle;
+  z : INTEGER;
+  tr: BOOLEAN;
+  b : Cube;
+  ps : POINTER TO Shape;
+  pc : POINTER TO Circle;
+  pr : POINTER TO Rectangle;
+  pz : POINTER TO INTEGER;
+
+BEGIN
+  c := s;               (* ок, есть общий предок *)
+  (* b := c; *)         (* ошибка, Структуры b и c не имеют общего предка *)
+  
+  (* p1 := 2 * 5; *)    (* ошибка, несовпадение типов *)
+  c2 := c;
+  p1.x := 10;
+  (* c.x := 12; *)      (* Ошибка, Нарушение Объектно-Ориентированного наследования: c.x *)
+  p1.x := z;
+  p1.y := 3.5;
+  (* s.center := TRUE; *) (* Ошибка, Несовместимые типы: UserType(name='Point') := BasicType.Boolean*)
+  (* s.length := 6.6;*)   (* Ошибка, Нарушение Объектно-Ориентированного наследования *)
+  s.center := p1;
+  s.color := 100500;
+  
+  c.radius := 7;
+  r.center.x := 5.2;
+  (*r.center.x.t := 0;*)      (*Ошибка, Нарушение Объектно-Ориентированного наследования: x.t*)
+  r.center.y := 2.5;
+  r.color := 500100;
+  r.width := 4.5;
+  r.height := 5.4;
+
+  c := r;
+  NEW(pr);
+
+  pr^ := r;
+  (* x := r; *)        (* Ошибка x: Необъявленная переменная  *)
+
+  (* pr := pc; *)      (* ошибка, pc не является производной от pr *)
+  ps := pr;            (* ок, pr является производной от ps *)
+  NEW(pc);
+  pc^ := c;
+  pr^ := c;
+  ps.next := pc;
+
+  (* комментарий *)
+  WHILE p1.x * p1.y < 77777 DO
+    p1.x := p1.x * 1.5;
+    p1.y := p1.y * 2.5;
+  END;
+
+  (*IF p1.x * pc.radius THEN*) (*Ошибка, Условие имеет тип BasicType.Real вместо логического*)
+  IF p1.x > pc.radius THEN
+    p2 := p1;
+    p1 := pc.center;
+  ELSE
+    p2 := pr.center;
+  END;
+END.

@@ -1,0 +1,57 @@
+TYPE
+  Point = RECORD
+    x, y : REAL;
+  END;
+  Shape = RECORD
+    center : Point;
+    color : INTEGER;
+    next : POINTER TO Shape;
+  END;
+  Circle = RECORD(Shape)
+    radius : REAL;
+  END;
+  Rectangle = RECORD(Shape)
+    width, height : REAL;
+  END;
+
+VAR
+  p1, p2 : Point;
+  s : Shape;
+  c : Circle;
+  r : Rectangle;
+  ps : POINTER TO Shape;
+  pc : POINTER TO Circle;
+  pr : POINTER TO Rectangle;
+BEGIN
+  p1.x := 10;
+  p1.y := 3.5;
+  s.center := p1;
+  s.color := 100500;
+  c := s;
+  c.radius := 7;
+  r.center.x := 5.2;
+  r.center.y := 2.5;
+  r.color := 500100;
+  r.width := 4.5;
+  r.heigh := 5.4;
+  c := r;
+  NEW(pr);
+  pr^ := r;
+  ps := pr;
+  NEW(pc);
+  pc^ := c;
+  ps.next := pc;
+
+  (* комментарий *)
+  WHILE p1.x * p1.y < 77777 DO
+    p1.x := p1.x * 1.5;
+    p1.y := p1.y * 2.5;
+  END;
+
+  IF p1.x > pc.radius THEN
+    p2 := p1;
+    p1 := pc.center;
+  ELSE
+    p2 := pr.center;
+  END;
+END.
