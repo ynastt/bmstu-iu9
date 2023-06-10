@@ -6,6 +6,13 @@ Sub mySub(ByVal q As String, ByVal q2 As Integer)
   d = 2 + 5
 End Sub
 
+Sub myExitTextSub(ByVal name As Integer)
+    name = 5 + 3
+    Exit Sub
+    'hello there
+    name = 1
+End Sub
+
 Sub name(ByVal n As Long, ByVal z As String)
   Dim q As Long 
   q = 3
@@ -21,6 +28,6 @@ End Sub
 
 Sub    mySub(ByVal q As String, ByVal q2 As Integer,
 ByVal c2 As Integer)  Dim d As Int
-Dim str As String str="hello" 
+Dim str As String str="hello" 'inline comment
 str = q
 d=2+5           End Sub
