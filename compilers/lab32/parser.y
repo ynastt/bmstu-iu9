@@ -50,8 +50,8 @@ Program:
         |
         ;
 Proc: 
-        SUB {printf("Sub ");} IDENT[L] {printf("%s", $L);} LEFT_PAREN {printf("(");}
-        Params RIGHT_PAREN {printf(") ");} StatementBlock END SUB {printf("End Sub\n"); tab = 0; user_tab = false;} 
+        SUB {printf("Sub ");} TestEnter fIDENT[L] {printf("%s", $L);} LEFT_PAREN {printf("(");}
+        Params RIGHT_PAREN {printf(")");} StatementBlock END SUB {printf("End Sub\n"); tab = 0; user_tab = false;} 
         ;
 Params:
         Param 
@@ -77,7 +77,7 @@ Statement:
         | DimStatement
         | LoopStatement
         | ExitStatement
-        | COMMENT {printf("%s\n", $1);}
+        | {if (user_tab) { print_tabs(tab); user_tab = false; }} COMMENT[COM] {printf("%s", $COM);} TestEnter
         ; 
 DimStatement:
         DIM 
