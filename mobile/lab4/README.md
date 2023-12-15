@@ -21,3 +21,6 @@ to generate MapKit Mobile SDK key https://developer.tech.yandex.ru/services/
 реализована возможность кликнуть на метку объекта и получить подробную
 информацию об объекте отмеченном на карте.  
 Вариант: http://pstgu.yss.su/iu9/mobiledev/lab4_yandex_map/2023.php?x=var20
+
+### Ссылка на архив проекта
+https://drive.google.com/file/d/1Xz9C9jGg_gpCL7FmFCTG1thrBYJOMf3I/view
