@@ -1,0 +1,61 @@
+s1 = valid_sample1.var(ddof=1)
+s2 = valid_sample2.var(ddof=1)
+
+betta = (s1/s2)**(1/2)
+print(betta)
+
+# betta = (s1**2/s2**2)**(1/2)
+# print(betta)
+
+L1 = np.mean(np.log(valid_sample1))
+L2 = np.mean(np.log(valid_sample1))
+alphaa = np.exp(L1 - betta*L2)
+
+print("alpha^: ", alphaa, " beta^:", betta)
+
+sample2_new = [alphaa*i**betta for i in valid_sample2]
+
+plt.figure()
+plt.hist(valid_sample1, bins=20, density=True, histtype='step', cumulative=True)
+plt.hist(sample2_new, bins=20, density=True, histtype='step', cumulative=True)
+plt.legend(['sample1', 'new'])
+plt.xlabel('Value')
+plt.ylabel('Cumulative Probability')
+plt.show()
+
+# проверим, если нормализовать
+scale = 100000.0
+smpl1 = [x/scale for x in valid_sample1]
+smpl2 = [x/scale for x in valid_sample2]
+
+samples = smpl1
+xs = np.arange(min(samples), max(samples), (max(samples) - min(samples)) / 100)
+values = list(map(lambda x: distr_func(samples, x), xs))
+result1 = minimize(squared_sum, [0, 0], args=(samples,))
+
+samples = smpl2
+xs = np.arange(min(samples), max(samples), (max(samples) - min(samples)) / 100)
+values = list(map(lambda x: distr_func(samples, x), xs))
+result2 = minimize(squared_sum, [0, 0], args=(samples,))
+
+betta = result2.x[1] / result1.x[1]
+alphaa = (result2.x[0] / result1.x[0]) ** (1 / result1.x[1])
+# print("alpha^: ", alphaa, " beta^:", betta)
+
+new_s2 = [alphaa*i**betta for i in smpl2]
+plt.figure()
+plt.hist(smpl1, bins=20, density=True, histtype='step', cumulative=True)
+plt.hist(new_s2, bins=20, density=True, histtype='step', cumulative=True)
+plt.legend(['sample1', 'new'])
+plt.xlabel('Normalized Value')
+plt.ylabel('Cumulative Probability')
+plt.show()
+
+
+plt.figure()
+plt.hist(smpl1, bins=len(sorted(set(smpl1))), density=True, histtype='step', cumulative=True)
+plt.hist(new_s2, bins=len(sorted(set(new_s2))), density=True, histtype='step', cumulative=True)
+plt.legend(['sample1', 'new'])
+plt.xlabel('Normalized Value')
+plt.ylabel('Cumulative Probability')
+plt.show()
